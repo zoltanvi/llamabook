@@ -6,4 +6,4 @@ dist/
 nbdist/
 .nb-gradle/
 /.project
-/.settings/*
+.settings/*
