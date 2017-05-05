@@ -664,6 +664,101 @@ public class ModelDao {
 
 	
 	
+	public List<Profil> szulinap_List(Profil user){
+		String List_szulinap = "SELECT Profil.vezeteknev, Profil.keresztnev, Profil.birthdate FROM Profil WHERE MONTH(Profile.birthdate) = 5";
+		List<Profil> szulnaposok = new ArrayList();
+		try(Connection conn = DriverManager.getConnection(DATABASE_FILE);
+				Statement st = conn.createStatement();)
+		{
+			ResultSet rs = st.executeQuery(List_szulinap);
+
+			while (rs.next()) {
+				Profil u = new Profil();
+				u.setVezeteknev(rs.getString("vezeteknev"));
+				u.setKeresztnev(rs.getString("keresztnev"));
+				u.setBirthdate(rs.getDate("birthdate"));
+				szulnaposok.add(u);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Nem sikerült kilistázni a szülinaposokat! ");
+			e.printStackTrace();
+		}
+		return szulnaposok;
+	}
+	
+	public List<Profil> ismerosMunka_list(Profil user){
+		String List_ismerosMunka = "SELECT Profil.vezeteknev, Profil.keresznev FROM Profil, Jelol FULL OUTER JOIN Jelol ON  Profil.email = Jelol.email WHERE Jelol.isFriend = 0 AND Profil.munkahely ...========= még kigondolom";
+		List<Profil> ismMunka = new ArrayList<Profil>();
+		try(Connection conn = DriverManager.getConnection(DATABASE_FILE);
+				Statement st = conn.createStatement();)
+		{
+			ResultSet rs = st.executeQuery(List_ismerosMunka);
+
+			while (rs.next()) {
+				Profil u = new Profil();
+				u.setVezeteknev(rs.getString("vezeteknev"));
+				u.setKeresztnev(rs.getString("keresztnev"));
+				u.setMunkahely(rs.getString("munkahely"));
+				ismMunka.add(u);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Nem sikerült kilistázni az ajánlott ismerősöket munkahely alapján.");
+			e.printStackTrace();
+		}
+		return ismMunka;
+		
+	}        
+        
+        	public List<Profil> ismerosSuli_list(Profil user){
+		String List_ismerosSuli = "SELECT Profil.vezeteknev, Profil.keresznev FROM Profil, Jelol FULL OUTER JOIN Jelol ON  Profil.email = Jelol.email WHERE Jelol.isFriend = 0 AND ========= ezt is kigondolom még ";
+		List<Profil> ismSuli = new ArrayList<Profil>();
+		try(Connection conn = DriverManager.getConnection(DATABASE_FILE);
+				Statement st = conn.createStatement();)
+		{
+			ResultSet rs = st.executeQuery(List_ismerosSuli);
+
+			while (rs.next()) {
+				Profil u = new Profil();
+				u.setVezeteknev(rs.getString("vezeteknev"));
+				u.setKeresztnev(rs.getString("keresztnev"));
+				u.setIskola(rs.getString("iskola"));
+				ismSuli.add(u);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Nem sikerült kilistázni az ajánlott ismerősöket iskola alapján.");
+			e.printStackTrace();
+		}
+		return ismSuli;
+		
+	}
+
+                public List<Profil> ismerosSzulinap_list(Profil user){
+		String List_ismerosSzulinap = "SELECT Profil.vezeteknev, Profil.keresznev FROM Profil, Jelol FULL OUTER JOIN Jelol ON  Profil.email = Jelol.email WHERE Jelol.isFriend = 0 AND   ========= ezt is kigondolom még ";
+		List<Profil> ismSzulnap = new ArrayList<Profil>();
+		try(Connection conn = DriverManager.getConnection(DATABASE_FILE);
+				Statement st = conn.createStatement();)
+		{
+			ResultSet rs = st.executeQuery(List_ismerosSzulinap);
+
+			while (rs.next()) {
+				Profil u = new Profil();
+				u.setVezeteknev(rs.getString("vezeteknev"));
+				u.setKeresztnev(rs.getString("keresztnev"));
+				u.setBirthdate(rs.getDate("birthdate"));
+				ismSzulnap.add(u);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Nem sikerült kilistázni az ajánlott ismerősöket iskola alapján.");
+			e.printStackTrace();
+		}
+		return ismSzulnap;
+                
+                
+                }       
 }
 
 
