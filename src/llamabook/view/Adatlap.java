@@ -12,7 +12,12 @@ import javax.swing.ImageIcon;
  *
  * @author ShockWave
  */
+<<<<<<< Upstream, based on branch 'master' of https://github.com/zoltanvi/llamabook.git
 // alma
+=======
+// szeretem a csookit
+//szeretem a csookit
+>>>>>>> 527304f megbasztam mindenkit a gecibe, kommenteltem adatlap
 public class Adatlap {
 	
      private javax.swing.JPanel adatlap_belso;
@@ -76,13 +81,13 @@ public class Adatlap {
         profimage.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         lblname.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        lblname.setText("Név");
+        lblname.setText("NĂ©v");
 
         txtname.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         txtname.setText("Teszt Elek");
 
         lblszuletesnap.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        lblszuletesnap.setText("Születésnap");
+        lblszuletesnap.setText("SzĂĽletĂ©snap");
 
         txtdate.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         txtdate.setText("17- DEC - 02");
@@ -91,7 +96,7 @@ public class Adatlap {
         lblnem.setText("Nem");
 
         txtsex.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        txtsex.setText("férfi");
+        txtsex.setText("fĂ©rfi");
 
         lblmunkahely.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         lblmunkahely.setText("Munkahely");
@@ -103,7 +108,7 @@ public class Adatlap {
         txtjob.setText("Evosoft");
 
         txtschool.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        txtschool.setText("Szegedi Tudományegyetem");
+        txtschool.setText("Szegedi TudomĂˇnyegyetem");
 
         textPosztok.setColumns(20);
         textPosztok.setRows(5);
@@ -113,20 +118,20 @@ public class Adatlap {
         textBejegyzes.setRows(5);
         jScrollPane2.setViewportView(textBejegyzes);
 
-        btnsubmit.setText("Elküld");
+        btnsubmit.setText("ElkĂĽld");
 
         lblinivited.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        lblinivited.setText("Meghívottak száma");
+        lblinivited.setText("MeghĂ­vottak szĂˇma");
 
         lblmeghivottak.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         lblmeghivottak.setText("55");
 
-        ismerosadatlap.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Zoli", "Attila", "Ákos", "Teszt" }));
+        ismerosadatlap.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Zoli", "Attila", "Ă�kos", "Teszt" }));
 
-        jButton1.setText("Ugrás a profiljára!");
+        jButton1.setText("UgrĂˇs a profiljĂˇra!");
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        jLabel1.setText("Ismerősök száma");
+        jLabel1.setText("IsmerĹ‘sĂ¶k szĂˇma");
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         jLabel2.setText("over 9000");
