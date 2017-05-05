@@ -11,7 +11,7 @@ import llamabook.controller.PropertiesController;
  */
 public class LoginScreen extends javax.swing.JFrame implements ActionListener{
 
-	private PropertiesController props = new PropertiesController();
+	PropertiesController props = new PropertiesController();
 	/**
 	 * Creates new form LoginScreen
 	 */
