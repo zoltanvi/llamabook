@@ -5,6 +5,7 @@
  */
 package llamabook.view;
 
+import java.awt.Color;
 import javax.swing.ImageIcon;
 
 /**
@@ -71,7 +72,6 @@ public class Adatlap {
       
         adatlap_belso.setBackground(new java.awt.Color(255, 255, 255));
 
-        profimage.setBackground(new java.awt.Color(153, 255, 255));
         profimage.setText("Kep_placeholder");
         profimage.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -250,7 +250,7 @@ public class Adatlap {
                 .addContainerGap())
         );
 
-      
+      adatlap_belso.setBackground(new Color(214, 217, 223));
 
      profimage.setIcon(new ImageIcon(getClass().getResource("/llamabook/resources/dalaillama.jpg")));
 		

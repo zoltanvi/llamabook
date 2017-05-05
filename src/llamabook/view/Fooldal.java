@@ -245,8 +245,9 @@ public class Fooldal{
                     .addContainerGap()))
         );
 
-
-		
+		panel_fooldal.setBackground(new Color(214, 217, 223));
+		panelBejegyzes.setBackground(new Color(214, 217, 223));
+		panelKomment.setBackground(new Color(214, 217, 223));
 		
 	}              
 }

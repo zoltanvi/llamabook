@@ -254,6 +254,7 @@ public class Ismerosok {
                 .addContainerGap(41, Short.MAX_VALUE))
         );
 
+		panel_ismerosok.setBackground(new Color(214, 217, 223));
         
 	}
 	

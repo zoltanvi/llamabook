@@ -5,6 +5,8 @@
  */
 package llamabook.view;
 
+import java.awt.Color;
+
 
 /**
  *
@@ -223,7 +225,7 @@ public class Kepek {
                 .addGap(146, 146, 146))
         );
 
-     
+     panel_kepek.setBackground(new Color(214, 217, 223));
 
       
 	}
