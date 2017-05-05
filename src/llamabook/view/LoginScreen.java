@@ -145,7 +145,7 @@ public class LoginScreen extends javax.swing.JFrame implements ActionListener{
 		btnlogin.addActionListener(this);
 		btnregistration.addActionListener(this);
 		setResizable(false);
-        //pack();
+        pack();
     }// </editor-fold>                        
 
 
