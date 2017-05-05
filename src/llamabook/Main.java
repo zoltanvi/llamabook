@@ -7,9 +7,10 @@ import llamabook.view.LoginScreen;
  *
  */
 public class Main {
-// aaaa
+// aaaaaaa
     public static void main(String[] args) {
         // Login screen elindítása
+    	
         startApp();
 
     }
