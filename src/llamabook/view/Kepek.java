@@ -1,11 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package llamabook.view;
 
 import java.awt.Color;
+import llamabook.controller.PropertiesController;
 
 
 /**
@@ -38,9 +34,9 @@ public class Kepek {
     private javax.swing.JTextField txtfilesource;
     private javax.swing.JTextField txtgaleriacreate;
 	private javax.swing.JButton btnfeltoltes;
-	
+	PropertiesController props = new PropertiesController();
 	public Kepek(){
-	
+		
 		panel_kepek = new javax.swing.JPanel();
         btnsajatkepek = new javax.swing.JButton();
         btnismeroskepek = new javax.swing.JButton();
@@ -70,9 +66,9 @@ public class Kepek {
         panel_kepek.setBackground(new java.awt.Color(255, 255, 255));
         panel_kepek.setPreferredSize(new java.awt.Dimension(1110, 810));
 
-        btnsajatkepek.setText("Sajat kepeim");
+        btnsajatkepek.setText(props.irjad("sajatkep"));
 
-        btnismeroskepek.setText("Ismerosok kepei");
+        btnismeroskepek.setText(props.irjad("ismeroskep"));
 
         listsajatismeros.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -81,7 +77,7 @@ public class Kepek {
         });
         jScrollPane1.setViewportView(listsajatismeros);
 
-        btnmutasdsajatismeroskepek.setText("Mutasd!");
+        btnmutasdsajatismeroskepek.setText(props.irjad("mutasd"));
 
         lbl_image.setBackground(new java.awt.Color(204, 204, 255));
         lbl_image.setText("jLabel1");
@@ -97,9 +93,9 @@ public class Kepek {
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Galeria");
+        jLabel2.setText(props.irjad("galeria"));
 
-        btnkivalasztgaleria.setText("Kivalaszt");
+        btnkivalasztgaleria.setText(props.irjad("kivalaszt"));
 
         listgaleriabelikepek.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -108,30 +104,30 @@ public class Kepek {
         });
         jScrollPane3.setViewportView(listgaleriabelikepek);
 
-        btnmutasdgaleriabelikepek.setText("Mutasd!");
+        btnmutasdgaleriabelikepek.setText(props.irjad("mutasd"));
         
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("Kivalasztott galeria kepei");
+        jLabel3.setText(props.irjad("kivalasztottgaleria"));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("Kep feltoltese");
+        jLabel4.setText(props.irjad("kepfeltoltes"));
 
-        btntalloz.setText("Tallozas");
+        btntalloz.setText(props.irjad("tallozas"));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("Galeria letrehozasa");
+        jLabel5.setText(props.irjad("makegalery"));
 
-        btngalerialetrehoz.setText("Letrehoz");
+        btngalerialetrehoz.setText(props.irjad("letrehoz"));
 
         comboebbeagaleriaba.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jLabel6.setText("          Ebbe a galeriaba");
+        jLabel6.setText(props.irjad("ebbeagaleriaba"));
 
-        btnfeltoltes.setText("Feltoltes");
+        btnfeltoltes.setText(props.irjad("feltoltes"));
 
         javax.swing.GroupLayout panel_kepekLayout = new javax.swing.GroupLayout(panel_kepek);
         panel_kepek.setLayout(panel_kepekLayout);

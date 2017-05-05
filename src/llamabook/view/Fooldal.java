@@ -9,6 +9,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import llamabook.controller.PropertiesController;
 import llamabook.controller.MultiLineCellRenderer;
+import llamabook.controller.PropertiesController;
 /**
  *
  * @author ShockWave
@@ -36,7 +37,7 @@ public class Fooldal{
 	
 	
 	public Fooldal() {
-		
+		PropertiesController props = new PropertiesController();
 		
 		panel_fooldal = new javax.swing.JPanel();
         panelBejegyzes = new javax.swing.JPanel();
@@ -58,7 +59,7 @@ public class Fooldal{
     
 		panel_fooldal.setBackground(Color.WHITE);
         panelBejegyzes.setBackground(java.awt.Color.white);
-        panelBejegyzes.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Bejegyzesek", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
+        panelBejegyzes.setBorder(javax.swing.BorderFactory.createTitledBorder(null, props.irjad("bejegyzesek"), javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
         panelBejegyzes.setPreferredSize(new java.awt.Dimension(530, 500));
 
         // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -69,7 +70,7 @@ public class Fooldal{
 		};
 		
 		
-		
+		/// Ezt a tablat kell majd feltolteni a bejegyzesekkel!
 		  dm.setDataVector(new Object[][]
 				{
 					{"15", "Teszt Elek", "teszt szoveg 1"},
@@ -78,7 +79,7 @@ public class Fooldal{
 					{"1344", "Teszt Elek", "asd kek lol xd"}
 					
 				}, new Object[]
-				{"ID", "Név", "Bejegyzés"});
+				{props.irjad("tableID"), props.irjad("tableName"), props.irjad("tablePost")});
 
 		tablaBejegyzes.getTableHeader().setReorderingAllowed(false);
 
@@ -120,7 +121,7 @@ public class Fooldal{
         );
 
         panelKomment.setBackground(java.awt.Color.white);
-        panelKomment.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Kommentek", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
+        panelKomment.setBorder(javax.swing.BorderFactory.createTitledBorder(null, props.irjad("kommentek"), javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
         panelKomment.setPreferredSize(new java.awt.Dimension(530, 500));
 
         // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -140,7 +141,7 @@ public class Fooldal{
 					{"Teszt Elek", "asd kek lol xd\n ez egy szar\ntöbbsoros szöveg"}
 					
 				}, new Object[]
-				{"Név", "Hosszászólás"});
+				{props.irjad("tableName"), props.irjad("tableComment")});
 
 		tablaKomment.getTableHeader().setReorderingAllowed(false);
 
@@ -177,17 +178,17 @@ public class Fooldal{
                 .addContainerGap())
         );
 
-        btnbekuldbejegyzes.setText("bekuld!");
+        btnbekuldbejegyzes.setText(props.irjad("kuldes"));
 
-        btnbekuldkomment.setText("bekuld");
+        btnbekuldkomment.setText(props.irjad("kuldes"));
 
         lblid.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblid.setText("ID");
+        lblid.setText(props.irjad("id"));
 
-        lblkomment.setText("komment");
+        lblkomment.setText(props.irjad("kszoveg"));
 
         lblbejegyzes.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblbejegyzes.setText("bejegyzes szovege");
+        lblbejegyzes.setText(props.irjad("bszoveg"));
 
         javax.swing.GroupLayout panel_fooldalLayout = new javax.swing.GroupLayout(panel_fooldal);
         panel_fooldal.setLayout(panel_fooldalLayout);

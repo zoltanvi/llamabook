@@ -11,7 +11,7 @@ import java.util.logging.Logger;
  */
 public class PropertiesController {
 
-	public static String irjad(String kulcs) {
+	public String irjad(String kulcs) {
 
 		Properties props = new Properties();
 		try {

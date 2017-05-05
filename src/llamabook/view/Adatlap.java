@@ -1,23 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package llamabook.view;
 
 import java.awt.Color;
 import javax.swing.ImageIcon;
+import llamabook.controller.PropertiesController;
 
 /**
  *
  * @author ShockWave
  */
-<<<<<<< Upstream, based on branch 'master' of https://github.com/zoltanvi/llamabook.git
-// alma
-=======
-// szeretem a csookit
-//szeretem a csookit
->>>>>>> 527304f megbasztam mindenkit a gecibe, kommenteltem adatlap
+
 public class Adatlap {
 	
      private javax.swing.JPanel adatlap_belso;
@@ -44,12 +35,11 @@ public class Adatlap {
     private javax.swing.JLabel txtname;
     private javax.swing.JLabel txtschool;
     private javax.swing.JLabel txtsex;
+	PropertiesController props = new PropertiesController();
 	
 	public Adatlap(){
 		
-	
-		
-		 panel_adatlap = new javax.swing.JPanel();
+		panel_adatlap = new javax.swing.JPanel();
         adatlap_belso = new javax.swing.JPanel();
         profimage = new javax.swing.JLabel();
         lblname = new javax.swing.JLabel();
@@ -81,34 +71,34 @@ public class Adatlap {
         profimage.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         lblname.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        lblname.setText("NĂ©v");
+        lblname.setText(props.irjad("nev"));
 
         txtname.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        txtname.setText("Teszt Elek");
+      //  txtname.setText("Teszt Elek");	Lekerdezes!
 
         lblszuletesnap.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        lblszuletesnap.setText("SzĂĽletĂ©snap");
+        lblszuletesnap.setText(props.irjad("bdate"));
 
         txtdate.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        txtdate.setText("17- DEC - 02");
+        //txtdate.setText("17- DEC - 02");	Lekerdezes!
 
         lblnem.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        lblnem.setText("Nem");
+        lblnem.setText(props.irjad("sex"));
 
         txtsex.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        txtsex.setText("fĂ©rfi");
+        //txtsex.setText("fĂ©rfi"); 	Lekerdezes!
 
         lblmunkahely.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        lblmunkahely.setText("Munkahely");
+        lblmunkahely.setText(props.irjad("munkahely"));
 
         lbliskola.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        lbliskola.setText("Iskola");
+        lbliskola.setText(props.irjad("iskola"));
 
         txtjob.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        txtjob.setText("Evosoft");
+        //txtjob.setText("Evosoft");	Lekerdezes!
 
         txtschool.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        txtschool.setText("Szegedi TudomĂˇnyegyetem");
+        //txtschool.setText("Szegedi TudomĂˇnyegyetem");	Lekerdezes!
 
         textPosztok.setColumns(20);
         textPosztok.setRows(5);
@@ -118,23 +108,23 @@ public class Adatlap {
         textBejegyzes.setRows(5);
         jScrollPane2.setViewportView(textBejegyzes);
 
-        btnsubmit.setText("ElkĂĽld");
+        btnsubmit.setText(props.irjad("kuldes"));
 
         lblinivited.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        lblinivited.setText("MeghĂ­vottak szĂˇma");
+        lblinivited.setText(props.irjad("meghivottak"));
 
         lblmeghivottak.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        lblmeghivottak.setText("55");
+        //lblmeghivottak.setText("55");	     Lekerdezes!
 
         ismerosadatlap.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Zoli", "Attila", "Ă�kos", "Teszt" }));
 
-        jButton1.setText("UgrĂˇs a profiljĂˇra!");
+        jButton1.setText(props.irjad("megnyitas"));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        jLabel1.setText("IsmerĹ‘sĂ¶k szĂˇma");
+        jLabel1.setText(props.irjad("ismerosok"));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        jLabel2.setText("over 9000");
+        //jLabel2.setText("over 9000");		Lekerdezes!
 
         javax.swing.GroupLayout adatlap_belsoLayout = new javax.swing.GroupLayout(adatlap_belso);
         adatlap_belso.setLayout(adatlap_belsoLayout);

@@ -5,22 +5,7 @@
  */
 package llamabook.view;
 
-
-import javax.swing.JPanel;
-import java.awt.GridLayout;
-import java.awt.GridBagLayout;
-import javax.swing.JLabel;
-import java.awt.GridBagConstraints;
-import javax.swing.JComboBox;
-import java.awt.Insets;
-import javax.swing.JButton;
-import java.awt.Component;
-import javax.swing.Box;
-import javax.swing.JTextField;
-import javax.swing.UIManager;
-import java.awt.Color;
-import javax.swing.border.LineBorder;
-import java.awt.Font;
+import llamabook.controller.PropertiesController;
 
 /**
  *
@@ -56,6 +41,8 @@ public class Csoportok {
     private javax.swing.JList<String> listNeki;
     javax.swing.JPanel panel_csoportok;
     private javax.swing.JTextField txtCreateCsoport;
+	PropertiesController props = new PropertiesController();
+	
 	public Csoportok(){
 		
 		panel_csoportok = new javax.swing.JPanel();
@@ -90,8 +77,8 @@ public class Csoportok {
 
         lblCsoportokListaja.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblCsoportokListaja.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblCsoportokListaja.setText("Csoportok listaja");
-
+        lblCsoportokListaja.setText(props.irjad("csoplis"));
+		
         listCsoportokListaja.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
@@ -100,18 +87,18 @@ public class Csoportok {
         jScrollPane1.setViewportView(listCsoportokListaja);
 
         lblCsoportLetszam.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblCsoportLetszam.setText("A csoport letszama:");
+        lblCsoportLetszam.setText(props.irjad("csoplet"));
 
         lblLetszam.setForeground(new java.awt.Color(255, 102, 0));
-        lblLetszam.setText("letszam");
+        lblLetszam.setText("letszam");	// Lekerdezes!
 
-        btnKilepek.setText("Kilepek");
+        btnKilepek.setText(props.irjad("cckilep"));
 
-        btnBelepek.setText("Belepek");
+        btnBelepek.setText(props.irjad("ccbelep"));
 
         lblCsoportAjanlatok.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblCsoportAjanlatok.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblCsoportAjanlatok.setText("Csoport ajanlatok");
+        lblCsoportAjanlatok.setText(props.irjad("csopajan"));
 
         listAjanlatok.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };	// ide jön a lista...
@@ -120,11 +107,11 @@ public class Csoportok {
         });
         jScrollPane2.setViewportView(listAjanlatok);
 
-        btnBelepekCsoportAjanlat.setText("Belepek");
+        btnBelepekCsoportAjanlat.setText(props.irjad("ccbelep"));
 
         lblEztAjanlom.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblEztAjanlom.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblEztAjanlom.setText("Ezt a csoportot ajanlom");
+        lblEztAjanlom.setText(props.irjad("eztacsop"));
 
         listEztAjanlom.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -135,7 +122,7 @@ public class Csoportok {
 
         lblNeki.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblNeki.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblNeki.setText("Neki");
+        lblNeki.setText(props.irjad("neki"));
 
         listNeki.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };		// ide jön a lista 2 - teszt komment
@@ -144,17 +131,17 @@ public class Csoportok {
         });
         jScrollPane4.setViewportView(listNeki);
 
-        btnAjanlom.setText("Ajanlom");
+        btnAjanlom.setText(props.irjad("btnajanlaskuld"));
 
         lblCsoportLetrehozasa.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblCsoportLetrehozasa.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblCsoportLetrehozasa.setText("Csoport letrehozasa");
+        lblCsoportLetrehozasa.setText(props.irjad("makecsop"));
 
-        btnLetrehozas.setText("Letrehozas");
+        btnLetrehozas.setText(props.irjad("letrehoz"));
 
         lblCsoportjaim.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblCsoportjaim.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblCsoportjaim.setText("Csoportjaim");
+        lblCsoportjaim.setText(props.irjad("csop"));
 
         listCsoportjaim.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };

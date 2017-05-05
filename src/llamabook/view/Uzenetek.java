@@ -16,11 +16,11 @@ import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import llamabook.controller.PropertiesController;
 
 /**
  *
@@ -33,30 +33,28 @@ public class Uzenetek {
 	public Uzenetek(){
 		
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		
+		PropertiesController props = new PropertiesController();
 		panel_uzenetek.setLayout(new BorderLayout(0, 0));
 		
 		JPanel toppanel = new JPanel();
 		panel_uzenetek.add(toppanel, BorderLayout.NORTH);
 		toppanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		JRadioButton rdbtnBaratok = new JRadioButton("Uzenetek tole (ismerosok): ");
+		JRadioButton rdbtnBaratok = new JRadioButton(props.irjad("uzism"));
 		toppanel.add(rdbtnBaratok);
-		String feltolt[] = {"Zoli", "Attila", "Ákos", "Aztakurva", "JesszusMária"};
+		String feltolt[] = {"Zoli", "Attila", "Akos", "Aztakurva", "JesszusMaria"};
 		JComboBox<String> listFriends = new JComboBox<String>(feltolt);
 		listFriends.setBackground(Color.WHITE);
 		toppanel.add(listFriends);
 		
 		
-		JRadioButton rdbtnMindenki = new JRadioButton("\tUzenetek tole (mindenki): ");
+		JRadioButton rdbtnMindenki = new JRadioButton(props.irjad("uzmind"));
 		toppanel.add(rdbtnMindenki);
 		String feltolt2[] = {"Ismeretlen", "Egy masik ismeretlen", "Egy ismeros", "Nem tudni", "Koko Jambo"};
 		JComboBox<String> listAll = new JComboBox<String>(feltolt2);
 		listAll.setBackground(Color.WHITE);
 		toppanel.add(listAll);
 		JButton buttonSelect = new JButton(LabelsAndProperties.buttonselect);
-		JLabel placeholder = new JLabel("                         ");
-		toppanel.add(placeholder);
 		toppanel.add(buttonSelect);
 		
 		ButtonGroup bg = new ButtonGroup();
@@ -98,13 +96,13 @@ public class Uzenetek {
 		buttonSelect.addActionListener((ActionEvent e) -> {
 			if(e.getSource() == buttonSelect){
 				if(rdbtnBaratok.isSelected()){
-					txtUzenetszoveg.setText((String)(listFriends.getSelectedItem()) + " kijelölve");
+					txtUzenetszoveg.setText((String)(listFriends.getSelectedItem()) + " kijelolve");
 				}
 				else if(rdbtnMindenki.isSelected()){
-					txtUzenetszoveg.setText((String)(listAll.getSelectedItem()) + " kijelölve");
+					txtUzenetszoveg.setText((String)(listAll.getSelectedItem()) + " kijelolve");
 				}
 				else {
-					txtUzenetszoveg.setText("Kérlek jelöld ki valamelyiket! (ismerősök) (mindenki)");
+					txtUzenetszoveg.setText("Kerlek jelold ki valamelyiket! (ismerosök) (mindenki)");
 				}
 				
 			}

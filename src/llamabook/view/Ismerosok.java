@@ -1,25 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package llamabook.view;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
-import javax.swing.Box;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 
+import java.awt.Color;
+import llamabook.controller.PropertiesController;
 /**
  *
  * @author ShockWave
@@ -50,7 +33,7 @@ public class Ismerosok {
     private javax.swing.JList<String> listNeki;
     javax.swing.JPanel panel_ismerosok;
     private javax.swing.JLabel txtFelhasznaloJeloles;
-	
+	PropertiesController props = new PropertiesController();
 	
 	
 	
@@ -94,9 +77,9 @@ public class Ismerosok {
 
         txtFelhasznaloJeloles.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         txtFelhasznaloJeloles.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        txtFelhasznaloJeloles.setText("Felhasznalok jelolese");
+        txtFelhasznaloJeloles.setText(props.irjad("feljel"));
 
-        btnIsmerosnekJelolom.setText("Ismerosnek jelolom");
+        btnIsmerosnekJelolom.setText(props.irjad("btnjelol"));
 
         listJelolesekKezelese.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
         listJelolesekKezelese.setModel(new javax.swing.AbstractListModel<String>() {
@@ -108,11 +91,11 @@ public class Ismerosok {
 
         lblJelolesekKezelese.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblJelolesekKezelese.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblJelolesekKezelese.setText("Jelolesek kezelese");
+        lblJelolesekKezelese.setText(props.irjad("jelkez"));
 
-        btnVisszaigazolas.setText("Visszaigazolas");
+        btnVisszaigazolas.setText(props.irjad("btnvisszaig"));
 
-        btnJelolesTorlese.setText("Jeloles torlese");
+        btnJelolesTorlese.setText(props.irjad("btnjeltor"));
 
         jList3.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
         jList3.setModel(new javax.swing.AbstractListModel<String>() {
@@ -124,11 +107,11 @@ public class Ismerosok {
 
         lblIsmerosAjanlasa.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblIsmerosAjanlasa.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblIsmerosAjanlasa.setText("Ismeros ajanlasa");
+        lblIsmerosAjanlasa.setText(props.irjad("ismaj"));
 
         lblNeki.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblNeki.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblNeki.setText("Neki");
+        lblNeki.setText(props.irjad("neki"));
 
         listNeki.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
         listNeki.setModel(new javax.swing.AbstractListModel<String>() {
@@ -140,11 +123,11 @@ public class Ismerosok {
 
         comboBoxMialapjan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Kozos ismerosok alapjan", "Munkahely alapjan", "Iskola alapjan" }));
 
-        btnAjanlasKuldese.setText("Ajanlas kuldese");
+        btnAjanlasKuldese.setText(props.irjad("btnajanlaskuld"));
 
         lblIsmerosTorlese.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblIsmerosTorlese.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblIsmerosTorlese.setText("Ismeros torlese");
+        lblIsmerosTorlese.setText(props.irjad("ismtor"));
 
         listIsmerosTorles.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
         listIsmerosTorles.setModel(new javax.swing.AbstractListModel<String>() {
@@ -154,7 +137,7 @@ public class Ismerosok {
         });
         jScrollPane5.setViewportView(listIsmerosTorles);
 
-        btnTorles.setText("Torlom");
+        btnTorles.setText(props.irjad("btntorlom"));
 
         jSeparator3.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
