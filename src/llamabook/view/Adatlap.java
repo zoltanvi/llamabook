@@ -12,7 +12,7 @@ import javax.swing.ImageIcon;
  *
  * @author ShockWave
  */
-
+// alma
 public class Adatlap {
 	
      private javax.swing.JPanel adatlap_belso;
