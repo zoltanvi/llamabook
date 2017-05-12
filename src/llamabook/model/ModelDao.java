@@ -30,6 +30,35 @@ public class ModelDao {
 
 
 	public ModelDao(){
+            			Connection conn = null;
+			
+			try {
+				Class.forName("oracle.jdbc.driver.OracleDriver");
+				
+			} catch (ClassNotFoundException ex) {
+				System.out.println("Nem talalhato driver!");
+				System.exit(1);
+			}
+			
+			
+			try {
+				
+				String connectionStr = props.irjad("thin") + props.irjad("host") +  ":" + props.irjad("port") + ":" + props.irjad("sid");
+				
+				conn = DriverManager.getConnection(connectionStr, props.irjad("AttilaUsername"), props.irjad("AttilaPassword"));
+				
+				
+				if (conn != null) {
+					System.out.println("Sikeres kapcsolodas az adatbazishoz! :)");
+				}
+				
+			} catch (SQLException e) {
+				System.out.println("Nem sikerult kapcsolodnom az adatbazishoz! :( ");
+				System.exit(1);
+			}
+			
+			
+            
 		
 
 	}
