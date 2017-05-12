@@ -17,14 +17,13 @@ public class PropertiesController {
 		try {
 			props.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("props.properties"));
 
-			String visszaadom = props.getProperty(kulcs);
-			return visszaadom;
 
 		} catch (IOException ex) {
 			Logger.getLogger(PropertiesController.class.getName()).log(Level.SEVERE, null, ex);
 		}
 
-		return "ERROR";
+		String visszaadom = props.getProperty(kulcs);
+		return visszaadom;
 	}
 
 }

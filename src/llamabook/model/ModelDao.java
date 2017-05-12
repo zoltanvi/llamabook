@@ -27,11 +27,10 @@ public class ModelDao {
 	//private Properties pro =  new Properties("jdbc:oracle:thin:@","localhost","4000","kabinet");
 	private String DATABASE_FILE;
         private final PropertiesController props = new PropertiesController();
+        private Connection conn;
 
 
 	public ModelDao(){
-            			Connection conn = null;
-			
 			try {
 				Class.forName("oracle.jdbc.driver.OracleDriver");
 				
@@ -45,10 +44,10 @@ public class ModelDao {
 				
 				String connectionStr = props.irjad("thin") + props.irjad("host") +  ":" + props.irjad("port") + ":" + props.irjad("sid");
 				
-				conn = DriverManager.getConnection(connectionStr, props.irjad("AttilaUsername"), props.irjad("AttilaPassword"));
+				this.conn = DriverManager.getConnection(connectionStr, props.irjad("AttilaUsername"), props.irjad("AttilaPassword"));
 				
 				
-				if (conn != null) {
+				if (this.conn != null) {
 					System.out.println("Sikeres kapcsolodas az adatbazishoz! :)");
 				}
 				
@@ -68,22 +67,22 @@ public class ModelDao {
 	// felhasznalo regisztralasa az adatbazisba
 	public boolean userRegis(Profil user){
 		boolean successful = false;
-		String REGISZT_USER = "INSERT INTO Profil (email ,vezeteknev, keresztnev, nem, birthdate, jelszo, munkahely, iskola) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-		try(Connection conn = DriverManager.getConnection(DATABASE_FILE);
-				PreparedStatement pst = conn.prepareStatement(REGISZT_USER);
-				){
-                       
+		String REGISZT_USER = "INSERT INTO H670317.PROFIL(email ,vezeteknev, keresztnev, nem, birthdate, jelszo, munkahely, iskola) VALUES (?, ?, ?, ?, TO_DATE(?,'YYYY-MM-DD'), ?, ?, ?)";
+		try(PreparedStatement pst = this.conn.prepareStatement(REGISZT_USER)){
+                       // dao példányosítva van mielőtt a listener meghívja a reg. ablakot?
 			pst.setString(1, user.getEmail());
 			pst.setString(2, user.getVezeteknev());
 			pst.setString(3, user.getKeresztnev());
-			pst.setString(4, user.getNem());
-			pst.setDate(5, user.getBirthdate());
+			pst.setInt(4, user.getNem());
+			pst.setString(5, user.getBirthdate());
 			pst.setString(6, user.getJelszo());
 			pst.setString(7, user.getMunkahely());
 			pst.setString(8, user.getIskola());
 
 			successful = pst.executeUpdate() == 1;
-
+                        
+                        
+         
 		} catch (SQLException e){
 			System.out.println("A regisztráció sikertelen volt! :( ");
 			e.printStackTrace();
@@ -92,32 +91,43 @@ public class ModelDao {
 		return successful;
 	}
 
-	//user belep a profiljába
-	public boolean userLoggingIn(Profil user){
-		String ENT_USER = "SELECT COUNT(*) FROM Profil WHERE Profil.email = ? AND Profil.jelszo = ? ";
-		boolean successful = false;
 
-		try(Connection conn = DriverManager.getConnection(DATABASE_FILE);
-				PreparedStatement pst = conn.prepareStatement(ENT_USER);){
+        
+	//user belep a profiljába
+	public Profil userLoggingIn(Profil user){
+		String ENT_USER = "SELECT * FROM PROFIL WHERE PROFIL.EMAIL = ? AND PROFIL.JELSZO = ?";
+
+		try(PreparedStatement pst = this.conn.prepareStatement(ENT_USER);){
 
 			pst.setString(1, user.getEmail());
 			pst.setString(2, user.getJelszo());
 			ResultSet rs = pst.executeQuery();
-
-			// Ctrl+D
-			rs.next();
-
-			if(rs.getInt(1) == 0){
-
-			} else {
-				successful = true;
-			}
+                        
+                            rs.next();
+                            
+                     
+                            Profil p = new Profil();
+                            p.setEmail(user.getEmail()); // ugyanez itt is a helyzet
+                            p.setVezeteknev(rs.getString(2));
+                            p.setKeresztnev(rs.getString(3));
+                            p.setNem(rs.getInt(4));
+                            p.setBirthdate(rs.getDate(5).toString());
+                            p.setJelszo(user.getJelszo()); // van már egy objectünk amiben van jelszó
+                            p.setMunkahely(rs.getString(7));
+                            p.setIskola(rs.getString(8));
+                            
+                            return p;
+                            
+                     
+                                
+			
 		} catch(SQLException e){
 			System.out.println("Belépés sikertelen volt! :(");
-
+                        e.printStackTrace();
+                         return null;
 		}
 
-		return successful;
+	
 	}
 
 	//profil name
@@ -706,7 +716,7 @@ public class ModelDao {
 				Profil u = new Profil();
 				u.setVezeteknev(rs.getString("vezeteknev"));
 				u.setKeresztnev(rs.getString("keresztnev"));
-				u.setBirthdate(rs.getDate("birthdate"));
+				u.setBirthdate(rs.getDate("birthdate").toString());
 				szulnaposok.add(u);
 			}
 
@@ -777,7 +787,7 @@ public class ModelDao {
 				Profil u = new Profil();
 				u.setVezeteknev(rs.getString("vezeteknev"));
 				u.setKeresztnev(rs.getString("keresztnev"));
-				u.setBirthdate(rs.getDate("birthdate"));
+				u.setBirthdate(rs.getDate("birthdate").toString());
 				ismSzulnap.add(u);
 			}
 

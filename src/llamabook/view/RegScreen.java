@@ -2,12 +2,16 @@ package llamabook.view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import llamabook.controller.Controller;
 import llamabook.controller.PropertiesController;
 import llamabook.model.bean.Profil;
-
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author ShockWave
@@ -290,15 +294,13 @@ public class RegScreen extends javax.swing.JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == btnReg){
                     if(txtEmail.getText().isEmpty()){
-                            JOptionPane.showInputDialog(
-                                    this,
-                                    LabelsAndProperties.email_hiany_ERROR,
-                                        JOptionPane.ERROR_MESSAGE);
-                                    return;
+                            JOptionPane.showMessageDialog(this, "Üres ez a valami", "Hiba", JOptionPane.ERROR_MESSAGE);
                         } else {
                             // megvizsgálni h van e már ilyen email cím regisztrálva
                             // ehhez kell lekérdezés is
                         }
+                    // txtJelszo1.getPassword() <- char[]
+                    // String jelszo =String.valueOf(txtJelszo1.getPassword());
                     if(txtJelszo1.getText().isEmpty() ||  txtJelszo2.getText().isEmpty()){
                         JOptionPane.showInputDialog(
                                     this,
@@ -356,16 +358,19 @@ public class RegScreen extends javax.swing.JFrame implements ActionListener{
                         user.setKeresztnev(txtKeresztnev.getText());
                         user.setEmail(txtEmail.getText());
                         user.setJelszo(txtJelszo1.getText());
-                        if(radioFerfi.equals(1)){
-                            user.setNem("Férfi");    
+                        if(radioFerfi.isSelected()){
+                            user.setNem(1);    
                         } else {
-                            user.setNem("Nő");
+                            user.setNem(0);
                         }
+                    
+ 
                         
-                        //user.setBirthdate();
+                        
+                        user.setBirthdate(txtDatum.getText());
                         user.setIskola(txtIskola.getText());
                         user.setMunkahely(txtMunkahely.getText());
-                        if(gui.getConrller().userLoggingIn(user)){
+                        if(gui.getConrller().userRegis(user)){
                             setVisible(false);
                         }
                        

@@ -9,8 +9,8 @@ public class Profil {
 	private String email;
 	private String vezeteknev;
 	private String keresztnev;
-	private String nem;
-	private Date birthdate;
+	private int nem;
+	private String birthdate;
 	private String jelszo;
 	private String munkahely;
 	private String iskola;
@@ -39,19 +39,19 @@ public class Profil {
 		this.keresztnev = keresztnev;
 	}
 
-	public String getNem() {
+	public int getNem() {
 		return nem;
 	}
 
-	public void setNem(String nem) {
+	public void setNem(int nem) {
 		this.nem = nem;
 	}
 
-	public Date getBirthdate() {
+	public String getBirthdate() {
 		return birthdate;
 	}
 
-	public void setBirthdate(Date birthdate) {
+	public void setBirthdate(String birthdate) {
 		this.birthdate = birthdate;
 	}
 
@@ -80,6 +80,6 @@ public class Profil {
 	}
 
  
-
+        
 
 }

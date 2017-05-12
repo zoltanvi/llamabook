@@ -170,7 +170,9 @@ public class LoginScreen extends javax.swing.JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == btnlogin){
 			//valtoz
-                        if(txtemail.getText().isEmpty() || txtpassword.getText().isEmpty()){
+                        String email = txtemail.getText();
+                        String password = String.valueOf(txtpassword.getPassword());
+                        if(email.isEmpty() || password.isEmpty()){
                             JOptionPane.showInputDialog(
                                     this,
                                     LabelsAndProperties.bejelent_hiany_ERROR,
@@ -179,7 +181,18 @@ public class LoginScreen extends javax.swing.JFrame implements ActionListener{
                         }
                         
                         Profil user = new Profil();
-                            // gondolkozik 
+                        user.setEmail(email); // kéne csinálni egy teljes objectet mert különben mindig le kell kérdezni mindenét
+                        user.setJelszo(password);
+                       Profil fullUser =  this.controller.getDao().userLoggingIn(user);
+                        if(null != fullUser){
+                                System.out.println("Sikeres belépés köcsög");
+                                new LlamabookGUI(this.controller, fullUser);
+                                this.setVisible(false);
+                        }else{
+                            // sout + tab
+                            System.out.println("Nem található");
+                        }
+                             
                         
 			
 		}

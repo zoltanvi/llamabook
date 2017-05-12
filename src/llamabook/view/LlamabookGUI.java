@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import llamabook.controller.Controller;
 import llamabook.controller.PropertiesController;
+import llamabook.model.bean.Profil;
 /**
  *
  * @author ShockWave
@@ -14,7 +15,8 @@ import llamabook.controller.PropertiesController;
 
 public class LlamabookGUI extends JFrame implements ActionListener{
     
-        private Controller controller = new Controller(); 
+        private Controller controller;
+        private Profil profil;
 
 	private PropertiesController props = new PropertiesController();
 	private final Color hover = new Color(92, 148, 189);
@@ -54,8 +56,11 @@ public class LlamabookGUI extends JFrame implements ActionListener{
 	
 
 	// konstruktor
-    public LlamabookGUI() {
-			initComponents();
+    public LlamabookGUI(Controller controller, Profil prof) {
+        this.controller = controller;
+        this.profil = prof;
+        
+	initComponents();
     }
 
     private void initComponents(){
@@ -98,19 +103,7 @@ public class LlamabookGUI extends JFrame implements ActionListener{
 			
 			panel_main.setBackground(Color.WHITE);
 			panel_main.setLayout(new BorderLayout());
-		//	panel_main.add(panel_bal, BorderLayout.WEST);
 			panel_main.add(panel_cardcontainer, BorderLayout.CENTER);
-			
-		//	panel_bal.setBackground(szurke);
-			
-		//	panel_bal.setPreferredSize(new Dimension(250,870));
-		//	panel_bal.setLayout(new FlowLayout());
-			
-		//	panel_bal.add(new JLabel("Bejelentkezve mint:"));
-		//	panel_bal.add(new JLabel("Dalai Llama"));
-			
-			
-
 			
 			button_fooldal.setMargin(new Insets(5, WIDTH, 5, HEIGHT));
 			button_adatlap.setMargin(new Insets(5, WIDTH, 5, HEIGHT));
@@ -130,7 +123,7 @@ public class LlamabookGUI extends JFrame implements ActionListener{
 			button_fooldal.addActionListener(this);
 			
 			//////////////////////////////// HEY BOSS, I HAVE A CANCER PLES \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-			
+			// karesz is azt kapott ennek a kódnak a láttán
 			menutitle.setIcon(new ImageIcon(getClass().getResource("/llamabook/resources/icon.png")));
 			
 			
@@ -140,16 +133,10 @@ public class LlamabookGUI extends JFrame implements ActionListener{
 			// Példányosítom a főoldalt, úgyis az a kezdő oldal ami betölt. Aztán a menü hatására a többi is létrejöhet.
 			Fooldal fooldal = new Fooldal();
 			panel_cardcontainer.add(fooldal.panel_fooldal, BorderLayout.CENTER);
-			
+			     setVisible(true);
 
 	}	
 	
-	//private int szamlalo = 0;
-	
-    public void run() {
-			new LlamabookGUI().setVisible(true);
-    }
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == button_adatlap){
@@ -159,22 +146,7 @@ public class LlamabookGUI extends JFrame implements ActionListener{
 			panel_cardcontainer.add(adatlap.panel_adatlap, BorderLayout.CENTER);
 			panel_cardcontainer.repaint();
 			panel_cardcontainer.revalidate();
-			
-			/* 
-			
-			if(szamlalo == 10 || szamlalo == 15){
-				Memes memes = new Memes();
-				panel_cardcontainer.removeAll();
-				panel_cardcontainer.add(memes.panel_memes, BorderLayout.CENTER);
-				panel_cardcontainer.repaint();
-				panel_cardcontainer.revalidate();
-			}
-			
-			System.out.println("szamlalo: " + szamlalo);
-			szamlalo++;
-			*/
-			
-			
+				
 		}
 		if(e.getSource() == button_kepek){
 			Kepek kepek = new Kepek();

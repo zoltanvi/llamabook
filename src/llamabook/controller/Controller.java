@@ -16,20 +16,22 @@ import llamabook.view.LoginScreen;
 
 public class Controller {
 
-	ModelDao model = new ModelDao();
+	private ModelDao model = new ModelDao();
 
 	public void startDesktop(){
 		new LoginScreen(this);
 	
 	}
 		
-	
-
+        public ModelDao getDao(){
+            return this.model;
+        }
+        
 	public boolean userRegis(Profil user){	
 		return model.userRegis(user);
 	}
 
-	public boolean userLoggingIn(Profil user){
+	public Profil userLoggingIn(Profil user){
 		return model.userLoggingIn(user);
 	}
 	
