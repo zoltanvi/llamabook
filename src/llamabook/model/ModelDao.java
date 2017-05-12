@@ -55,11 +55,6 @@ public class ModelDao {
 				System.out.println("Nem sikerult kapcsolodnom az adatbazishoz! :( ");
 				System.exit(1);
 			}
-			
-			
-            
-		
-
 	}
 
 	/*-----------------------------------------------------------------------------------------------------------------------*/
@@ -67,9 +62,9 @@ public class ModelDao {
 	// felhasznalo regisztralasa az adatbazisba
 	public boolean userRegis(Profil user){
 		boolean successful = false;
-		String REGISZT_USER = "INSERT INTO H670317.PROFIL(email ,vezeteknev, keresztnev, nem, birthdate, jelszo, munkahely, iskola) VALUES (?, ?, ?, ?, TO_DATE(?,'YYYY-MM-DD'), ?, ?, ?)";
+		String REGISZT_USER = "INSERT INTO PROFIL(email ,vezeteknev, keresztnev, nem, birthdate, jelszo, munkahely, iskola) VALUES (?, ?, ?, ?, TO_DATE(?,'YYYY-MM-DD'), ?, ?, ?)";
 		try(PreparedStatement pst = this.conn.prepareStatement(REGISZT_USER)){
-                       // dao példányosítva van mielőtt a listener meghívja a reg. ablakot?
+              
 			pst.setString(1, user.getEmail());
 			pst.setString(2, user.getVezeteknev());
 			pst.setString(3, user.getKeresztnev());
@@ -127,7 +122,6 @@ public class ModelDao {
                          return null;
 		}
 
-	
 	}
 
 	//profil name
@@ -798,7 +792,32 @@ public class ModelDao {
 		return ismSzulnap;
                 
                 
-                }       
+                }      
+                
+                
+                
+                
+                
+                public boolean regYetUser(String email){
+                    boolean successful =false;
+                    String REGYETUSER = "SELECT COUNT(*) FROM PROFIL WHERE PROFIL.EMAIL = ? ";
+                    try(PreparedStatement pst = this.conn.prepareStatement(REGYETUSER)){
+                        
+                        
+                        pst.setString(1,email);
+                        ResultSet rs = pst.executeQuery();
+                        rs.next();
+                        if(rs.getInt(1) == 0){
+                            successful = pst.executeUpdate() == 1;
+                        }
+                        
+                        
+                    } catch (Exception e) {
+                        System.out.println("Email cím foglalt! :( ");
+			e.printStackTrace();
+                    }
+                    return successful;
+                }   
 }
 
 

@@ -130,5 +130,12 @@ public class Controller {
 	public List<Kommentel> listComment(Kommentel comment){
 		return model.listComment(comment);
 	}
+        
+        
+        
+        
+        public boolean regYetUser(String email){
+            return model.regYetUser(email);
+        }
 
 }

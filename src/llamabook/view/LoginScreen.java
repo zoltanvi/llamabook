@@ -203,7 +203,7 @@ public class LoginScreen extends javax.swing.JFrame implements ActionListener{
 		}
 	}
         
-        public Controller getConrller(){
+        public Controller getController(){
             return controller;
         }
 }

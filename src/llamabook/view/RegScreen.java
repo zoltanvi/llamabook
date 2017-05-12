@@ -1,5 +1,6 @@
 package llamabook.view;
 
+import com.sun.jndi.toolkit.ctx.Continuation;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
@@ -294,25 +295,29 @@ public class RegScreen extends javax.swing.JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == btnReg){
                     if(txtEmail.getText().isEmpty()){
-                            JOptionPane.showMessageDialog(this, "Üres ez a valami", "Hiba", JOptionPane.ERROR_MESSAGE);
-                        } else {
-                            // megvizsgálni h van e már ilyen email cím regisztrálva
-                            // ehhez kell lekérdezés is
+                            JOptionPane.showMessageDialog(this, LabelsAndProperties.email_hiany_ERROR, "Hiba", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        } else{
+                            boolean ellenorEmail = gui.getController().regYetUser(txtEmail.getText());
+                            if(ellenorEmail == false){ 
+                                JOptionPane.showMessageDialog(this, LabelsAndProperties.email_foglalt_ERROR, "Hiba", JOptionPane.ERROR_MESSAGE);
+                                return;
+                                 
+                            }
+                            
                         }
                     // txtJelszo1.getPassword() <- char[]
-                    // String jelszo =String.valueOf(txtJelszo1.getPassword());
-                    if(txtJelszo1.getText().isEmpty() ||  txtJelszo2.getText().isEmpty()){
-                        JOptionPane.showInputDialog(
-                                    this,
-                                    LabelsAndProperties.jelszo_hiany_ERROR,
-                                    JOptionPane.ERROR_MESSAGE);
+                    String jelszo1 = String.valueOf(txtJelszo1.getPassword());
+                    String jelszo2 = String.valueOf(txtJelszo2.getPassword());
+                    if(jelszo1.isEmpty() ||  jelszo2.isEmpty()){
+                                    JOptionPane.showMessageDialog(this, LabelsAndProperties.jelszo_hiany_ERROR,"Hiba",JOptionPane.ERROR_MESSAGE);
                                     return;
                     } else {
                         if(txtJelszo1.getText().equals(txtJelszo2.getText())){
                         } else{
-                            JOptionPane.showInputDialog(
+                            JOptionPane.showMessageDialog(
                                     this,
-                                    LabelsAndProperties.jelszo_egyez_ERROR,
+                                    LabelsAndProperties.jelszo_egyez_ERROR,"Hiba",
                                     JOptionPane.ERROR_MESSAGE);
                                     return;
                         
@@ -320,25 +325,25 @@ public class RegScreen extends javax.swing.JFrame implements ActionListener{
                     }
                     
                     if(txtVezeteknev.getText().isEmpty()){
-                        JOptionPane.showInputDialog(
+                        JOptionPane.showMessageDialog(
                                     this,
-                                    LabelsAndProperties.veznev_hiany_ERROR,
+                                    LabelsAndProperties.veznev_hiany_ERROR,"Hiba",
                                     JOptionPane.ERROR_MESSAGE);
                                     return; 
                     }
                     
                     if(txtKeresztnev.getText().isEmpty()){
-                        JOptionPane.showInputDialog(
+                        JOptionPane.showMessageDialog(
                                     this,
-                                    LabelsAndProperties.keresztnev_hiany_ERROR,
+                                    LabelsAndProperties.keresztnev_hiany_ERROR,"Hiba",
                                     JOptionPane.ERROR_MESSAGE);
                                     return; 
                     }
                     
                     if(txtDatum.getText().isEmpty()){
-                        JOptionPane.showInputDialog(
+                        JOptionPane.showMessageDialog(
                                     this,
-                                    LabelsAndProperties.szuletesid_hiany_ERROR,
+                                    LabelsAndProperties.szuletesid_hiany_ERROR,"Hiba",
                                     JOptionPane.ERROR_MESSAGE);
                                     return; 
                     } // itt még lekellene kezelni ha nem helyes  a formatum 
@@ -346,13 +351,11 @@ public class RegScreen extends javax.swing.JFrame implements ActionListener{
                     if((radioFerfi.equals(0)) && radioNo.equals(0)){
                          JOptionPane.showInputDialog(
                                     this,
-                                    LabelsAndProperties.nem_hiany_ERROR,
+                                    LabelsAndProperties.nem_hiany_ERROR,"Hiba",
                                     JOptionPane.ERROR_MESSAGE);
                                     return; 
                     }   
-                    
-                     
-                    
+ 
                     Profil user = new Profil();
                         user.setVezeteknev(txtVezeteknev.getText());
                         user.setKeresztnev(txtKeresztnev.getText());
@@ -370,7 +373,7 @@ public class RegScreen extends javax.swing.JFrame implements ActionListener{
                         user.setBirthdate(txtDatum.getText());
                         user.setIskola(txtIskola.getText());
                         user.setMunkahely(txtMunkahely.getText());
-                        if(gui.getConrller().userRegis(user)){
+                        if(gui.getController().userRegis(user)){
                             setVisible(false);
                         }
                        

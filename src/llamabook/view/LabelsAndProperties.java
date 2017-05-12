@@ -38,7 +38,7 @@ public class LabelsAndProperties {
     
     //regisztrálás
     public static String email_hiany_ERROR = "Email megadása kötelező!";
-    public static String email_foglalt_ERROR = "Ezzel az email címmel már regisztrálva van egy felhasználó!";
+    public static String email_foglalt_ERROR = "Ezzel az email címmel már regisztrálva van valaki!";
     public static String veznev_hiany_ERROR = "Vezeteknev megadása kötelező!";
     public static String keresztnev_hiany_ERROR = "Keresztnev megadása kötelező!";
     public static String jelszo_hiany_ERROR = "Jelszo megadása kötelező!";
