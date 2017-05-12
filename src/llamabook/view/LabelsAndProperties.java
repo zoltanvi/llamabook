@@ -32,7 +32,22 @@ public class LabelsAndProperties {
 	public static String buttonselect = "Kiválaszt!";
 	public static String bejelentkezvemint = "              Bejelentkezve mint ";
     
-	
+    // bovit ATTILA
+    //belepes
+    public static String bejelent_hiany_ERROR = "Email és a jelszó mező nem lehet üres!";
+    
+    //regisztrálás
+    public static String email_hiany_ERROR = "Email megadása kötelező!";
+    public static String email_foglalt_ERROR = "Ezzel az email címmel már regisztrálva van egy felhasználó!";
+    public static String veznev_hiany_ERROR = "Vezeteknev megadása kötelező!";
+    public static String keresztnev_hiany_ERROR = "Keresztnev megadása kötelező!";
+    public static String jelszo_hiany_ERROR = "Jelszo megadása kötelező!";
+    public static String jelszo_egyez_ERROR = "A két jelszó nem egyezik!";
+    public static String nem_hiany_ERROR = "Nem választása kötelező!";
+    public static String szuletesid_hiany_ERROR = "Születési dátum megadása kötelező!";
+    
+    //
+    
 	/* 
 		 private JButton button_profil = new JButton(LabelsAndProperties.profil);
 	 private JButton button_groups = new JButton(LabelsAndProperties.groups);

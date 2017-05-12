@@ -3,7 +3,10 @@ package llamabook.view;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import llamabook.controller.Controller;
 import llamabook.controller.PropertiesController;
+import llamabook.model.bean.Profil;
 
 /**
  *
@@ -11,6 +14,7 @@ import llamabook.controller.PropertiesController;
  */
 public class LoginScreen extends javax.swing.JFrame implements ActionListener{
 
+        private Controller controller = new Controller();
 	PropertiesController props = new PropertiesController();
 	/**
 	 * Creates new form LoginScreen
@@ -166,10 +170,18 @@ public class LoginScreen extends javax.swing.JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == btnlogin){
-			LlamabookGUI gui = new LlamabookGUI();
-			gui.run();
-			System.out.println("Bejelentkezes...");
-			dispose();
+			//valtoz
+                        if(txtemail.getText().isEmpty() || txtpassword.getText().isEmpty()){
+                            JOptionPane.showInputDialog(
+                                    this,
+                                    LabelsAndProperties.bejelent_hiany_ERROR,
+                                    JOptionPane.ERROR_MESSAGE);
+                                    return;
+                        }
+                        
+                        Profil user = new Profil();
+                            // gondolkozik 
+                        
 			
 		}
 		if(e.getSource() == btnregistration){

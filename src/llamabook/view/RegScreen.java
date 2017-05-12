@@ -3,14 +3,18 @@ package llamabook.view;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import llamabook.controller.PropertiesController;
+import llamabook.model.bean.Profil;
 
 /**
  *
  * @author ShockWave
  */
 public class RegScreen extends javax.swing.JFrame implements ActionListener{
-
+        
+         private LoginScreen gui = new LoginScreen();
+         
 	/**
 	 * Creates new form RegScreen
 	 */
@@ -280,6 +284,86 @@ public class RegScreen extends javax.swing.JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == btnReg){
+                    if(txtEmail.getText().isEmpty()){
+                            JOptionPane.showInputDialog(
+                                    this,
+                                    LabelsAndProperties.bejelent_hiany_ERROR,
+                                        JOptionPane.ERROR_MESSAGE);
+                                    return;
+                        } else {
+                            // megvizsgálni h van e már ilyen email cím regisztrálva
+                            // ehhez kell lekérdezés is
+                        }
+                    if(txtJelszo1.getText().isEmpty() ||  txtJelszo2.getText().isEmpty()){
+                        JOptionPane.showInputDialog(
+                                    this,
+                                    LabelsAndProperties.jelszo_hiany_ERROR,
+                                    JOptionPane.ERROR_MESSAGE);
+                                    return;
+                    } else {
+                        if(txtJelszo1.getText().equals(txtJelszo2.getText())){
+                        } else{
+                            JOptionPane.showInputDialog(
+                                    this,
+                                    LabelsAndProperties.jelszo_egyez_ERROR,
+                                    JOptionPane.ERROR_MESSAGE);
+                                    return;
+                        
+                        }
+                    }
+                    
+                    if(txtVezeteknev.getText().isEmpty()){
+                        JOptionPane.showInputDialog(
+                                    this,
+                                    LabelsAndProperties.veznev_hiany_ERROR,
+                                    JOptionPane.ERROR_MESSAGE);
+                                    return; 
+                    }
+                    
+                    if(txtKeresztnev.getText().isEmpty()){
+                        JOptionPane.showInputDialog(
+                                    this,
+                                    LabelsAndProperties.keresztnev_hiany_ERROR,
+                                    JOptionPane.ERROR_MESSAGE);
+                                    return; 
+                    }
+                    
+                    if(txtDatum.getText().isEmpty()){
+                        JOptionPane.showInputDialog(
+                                    this,
+                                    LabelsAndProperties.szuletesid_hiany_ERROR,
+                                    JOptionPane.ERROR_MESSAGE);
+                                    return; 
+                    } // itt még lekellene kezelni ha nem helyes  a formatum 
+                    
+                    if((radioFerfi.equals(0)) && radioNo.equals(0)){
+                         JOptionPane.showInputDialog(
+                                    this,
+                                    LabelsAndProperties.nem_hiany_ERROR,
+                                    JOptionPane.ERROR_MESSAGE);
+                                    return; 
+                    }   
+                    
+                     
+                    
+                    Profil user = new Profil();
+                        user.setVezeteknev(txtVezeteknev.getText());
+                        user.setKeresztnev(txtKeresztnev.getText());
+                        user.setEmail(txtEmail.getText());
+                        user.setJelszo(txtJelszo1.getText());
+                        if(radioFerfi.equals(1)){
+                            user.setNem("Férfi");    
+                        } else {
+                            user.setNem("Nő");
+                        }
+                        // problem strig convert date
+                        user.getBirthdate();
+                        user.setIskola(txtIskola.getText());
+                        user.setMunkahely(txtMunkahely.getText());
+                    
+                    
+                    
+                        // nem tudom mi ez, de nem törlöm 
 			RegisztracioSikerult reg = new RegisztracioSikerult(this, rootPaneCheckingEnabled);
 			reg.setVisible(true);
 			dispose();
