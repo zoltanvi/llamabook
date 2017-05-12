@@ -43,7 +43,7 @@ public class Uzenetek {
 		JRadioButton rdbtnBaratok = new JRadioButton(props.irjad("uzism"));
 		toppanel.add(rdbtnBaratok);
 		String feltolt[] = {"Zoli", "Attila", "Akos", "Aztakurva", "JesszusMaria"};
-		JComboBox<String> listFriends = new JComboBox<String>(feltolt);
+		JComboBox<String> listFriends = new JComboBox<>(feltolt);
 		listFriends.setBackground(Color.WHITE);
 		toppanel.add(listFriends);
 		
@@ -51,7 +51,7 @@ public class Uzenetek {
 		JRadioButton rdbtnMindenki = new JRadioButton(props.irjad("uzmind"));
 		toppanel.add(rdbtnMindenki);
 		String feltolt2[] = {"Ismeretlen", "Egy masik ismeretlen", "Egy ismeros", "Nem tudni", "Koko Jambo"};
-		JComboBox<String> listAll = new JComboBox<String>(feltolt2);
+		JComboBox<String> listAll = new JComboBox<>(feltolt2);
 		listAll.setBackground(Color.WHITE);
 		toppanel.add(listAll);
 		JButton buttonSelect = new JButton(LabelsAndProperties.buttonselect);
