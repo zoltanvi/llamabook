@@ -5,7 +5,7 @@ import java.sql.Date;
 
 
 public class Profil {
-
+    
 	private String email;
 	private String vezeteknev;
 	private String keresztnev;
@@ -79,7 +79,7 @@ public class Profil {
 		this.iskola = iskola;
 	}
 
-
+ 
 
 
 }

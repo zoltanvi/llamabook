@@ -45,6 +45,7 @@ public class LabelsAndProperties {
     public static String jelszo_egyez_ERROR = "A két jelszó nem egyezik!";
     public static String nem_hiany_ERROR = "Nem választása kötelező!";
     public static String szuletesid_hiany_ERROR = "Születési dátum megadása kötelező!";
+    public static String regisztalt_ERROR = "Ez a felhasználó már regisztrálva van!";
     
     //
     

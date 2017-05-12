@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import llamabook.controller.PropertiesController;
 import llamabook.model.bean.Csatlakozik;
 import llamabook.model.bean.Group;
 import llamabook.model.bean.Jelol;
@@ -25,11 +26,11 @@ public class ModelDao {
 
 	//private Properties pro =  new Properties("jdbc:oracle:thin:@","localhost","4000","kabinet");
 	private String DATABASE_FILE;
-
+        private final PropertiesController props = new PropertiesController();
 
 
 	public ModelDao(){
-		// szeretem csokit
+		
 
 	}
 
@@ -42,7 +43,7 @@ public class ModelDao {
 		try(Connection conn = DriverManager.getConnection(DATABASE_FILE);
 				PreparedStatement pst = conn.prepareStatement(REGISZT_USER);
 				){
-
+                       
 			pst.setString(1, user.getEmail());
 			pst.setString(2, user.getVezeteknev());
 			pst.setString(3, user.getKeresztnev());

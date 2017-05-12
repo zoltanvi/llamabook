@@ -189,4 +189,8 @@ public class LoginScreen extends javax.swing.JFrame implements ActionListener{
 			dispose();
 		}
 	}
+        
+        public Controller getConrller(){
+            return controller;
+        }
 }

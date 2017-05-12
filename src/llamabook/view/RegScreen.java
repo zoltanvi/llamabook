@@ -20,11 +20,12 @@ public class RegScreen extends javax.swing.JFrame implements ActionListener{
 	/**
 	 * Creates new form RegScreen
 	 */
-	public RegScreen(LoginScreen gui) {
+	public RegScreen(LoginScreen gui){
                 
                 this.gui = gui;
 		initComponents(gui);
 	}
+
 
 	/**
 	 * This method is called from within the constructor to initialize the form.
@@ -360,14 +361,14 @@ public class RegScreen extends javax.swing.JFrame implements ActionListener{
                         } else {
                             user.setNem("Nő");
                         }
-                        // problem strig convert date
-                        user.getBirthdate();
+                        
+                        //user.setBirthdate();
                         user.setIskola(txtIskola.getText());
                         user.setMunkahely(txtMunkahely.getText());
-                    
-                    
-                    
-                        // nem tudom mi ez, de nem törlöm 
+                        if(gui.getConrller().userLoggingIn(user)){
+                            setVisible(false);
+                        }
+                       
 			RegisztracioSikerult reg = new RegisztracioSikerult(this, rootPaneCheckingEnabled);
 			reg.setVisible(true);
 			dispose();
