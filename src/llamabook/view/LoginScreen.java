@@ -14,14 +14,13 @@ import llamabook.model.bean.Profil;
  */
 public class LoginScreen extends javax.swing.JFrame implements ActionListener{
 
-        private Controller controller = new Controller();
-	PropertiesController props = new PropertiesController();
-	/**
-	 * Creates new form LoginScreen
-	 */
-	public LoginScreen() {
-		initComponents();
-	}
+    private Controller controller = new Controller();
+    PropertiesController props = new PropertiesController();
+
+    public LoginScreen(Controller controller) {
+        this.controller = controller;
+        initComponents();
+    }
 
 	/**
 	 * This method is called from within the constructor to initialize the form.
@@ -185,7 +184,7 @@ public class LoginScreen extends javax.swing.JFrame implements ActionListener{
 			
 		}
 		if(e.getSource() == btnregistration){
-			RegScreen regisztracio = new RegScreen();
+			RegScreen regisztracio = new RegScreen(this);
 			System.out.println("Regisztracio...");
 			dispose();
 		}

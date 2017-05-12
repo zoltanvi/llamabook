@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import llamabook.controller.Controller;
 import llamabook.controller.PropertiesController;
 import llamabook.model.bean.Profil;
 
@@ -13,13 +14,16 @@ import llamabook.model.bean.Profil;
  */
 public class RegScreen extends javax.swing.JFrame implements ActionListener{
         
-         private LoginScreen gui = new LoginScreen();
+        private LoginScreen gui ;
+        private Controller controller = new Controller();
          
 	/**
 	 * Creates new form RegScreen
 	 */
-	public RegScreen() {
-		initComponents();
+	public RegScreen(LoginScreen gui) {
+                
+                this.gui = gui;
+		initComponents(gui);
 	}
 
 	/**
@@ -29,7 +33,7 @@ public class RegScreen extends javax.swing.JFrame implements ActionListener{
 	 */
 	@SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
-    private void initComponents() {
+    private void initComponents(LoginScreen gui) {
 
         jPanel1 = new javax.swing.JPanel();
         lblRegIcon = new javax.swing.JLabel();
@@ -287,7 +291,7 @@ public class RegScreen extends javax.swing.JFrame implements ActionListener{
                     if(txtEmail.getText().isEmpty()){
                             JOptionPane.showInputDialog(
                                     this,
-                                    LabelsAndProperties.bejelent_hiany_ERROR,
+                                    LabelsAndProperties.email_hiany_ERROR,
                                         JOptionPane.ERROR_MESSAGE);
                                     return;
                         } else {
@@ -369,7 +373,7 @@ public class RegScreen extends javax.swing.JFrame implements ActionListener{
 			dispose();
 		}
 		if(e.getSource() == btnBack){
-			LoginScreen login = new LoginScreen();
+			LoginScreen login = new LoginScreen(controller);
 			dispose();
 		}
 		

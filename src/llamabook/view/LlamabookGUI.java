@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import llamabook.controller.Controller;
 import llamabook.controller.PropertiesController;
 /**
  *
@@ -12,6 +13,8 @@ import llamabook.controller.PropertiesController;
  */
 
 public class LlamabookGUI extends JFrame implements ActionListener{
+    
+        private Controller controller = new Controller(); 
 
 	private PropertiesController props = new PropertiesController();
 	private final Color hover = new Color(92, 148, 189);
@@ -215,7 +218,7 @@ public class LlamabookGUI extends JFrame implements ActionListener{
 		}
 		if(e.getSource() == button_logout){
 			System.out.println("Kijelentkezés...");
-			LoginScreen login = new LoginScreen();
+			LoginScreen login = new LoginScreen(controller);
 			dispose();
 			
 		}

@@ -11,6 +11,7 @@ import llamabook.model.bean.Kommentel;
 import llamabook.model.bean.Poszt;
 import llamabook.model.bean.Profil;
 import llamabook.model.bean.Uzen;
+import llamabook.view.LoginScreen;
 
 
 public class Controller {
@@ -18,7 +19,7 @@ public class Controller {
 	ModelDao model = new ModelDao();
 
 	public void startDesktop(){
-		
+		new LoginScreen(this);
 	
 	}
 		

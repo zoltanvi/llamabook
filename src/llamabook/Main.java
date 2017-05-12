@@ -1,5 +1,6 @@
 package llamabook;
 
+import llamabook.controller.Controller;
 import llamabook.view.LoginScreen;
 /**
  *
@@ -7,7 +8,6 @@ import llamabook.view.LoginScreen;
  *
  */
 public class Main {
-// aaaaaaa
     public static void main(String[] args) {
         // Login screen elindítása
     	
@@ -16,9 +16,8 @@ public class Main {
     }
 
     private static void startApp() {
-        
-			LoginScreen bejelentkezes = new LoginScreen();
-			
+        Controller controller = new Controller();
+	controller.startDesktop();
     }
 
 }

@@ -3,6 +3,7 @@ package llamabook.view;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import llamabook.controller.Controller;
 import llamabook.controller.PropertiesController;
 
 
@@ -13,9 +14,7 @@ import llamabook.controller.PropertiesController;
  */
 public class RegisztracioSikerult extends javax.swing.JDialog implements ActionListener{
 
-	/**
-	 * Creates new form RegisztracioSikerult
-	 */
+        private Controller controller = new Controller();
 	public RegisztracioSikerult(java.awt.Frame parent, boolean modal) {
 		super(parent, modal);
 		initComponents();
@@ -116,13 +115,13 @@ public class RegisztracioSikerult extends javax.swing.JDialog implements ActionL
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
-	private PropertiesController props = new PropertiesController();
+    private PropertiesController props = new PropertiesController();
     // End of variables declaration                   
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == jButton1){
-			LoginScreen login = new LoginScreen();
+			LoginScreen login = new LoginScreen(controller) ;
 			dispose();
 		}
 	
