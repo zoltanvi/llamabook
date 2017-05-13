@@ -2,6 +2,10 @@ package llamabook.view;
 
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import javax.swing.DefaultListModel;
 import llamabook.controller.PropertiesController;
 /**
  *
@@ -68,11 +72,17 @@ public class Ismerosok {
         panel_ismerosok.setBackground(java.awt.Color.white);
 
         listFelhasznaloJeloles.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
-        listFelhasznaloJeloles.setModel(new javax.swing.AbstractListModel<String>() {
+       
+		
+		/* ez nem kell....
+		
+		listFelhasznaloJeloles.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
-        });
+        });*/
+	   
+	   
         jScrollPane1.setViewportView(listFelhasznaloJeloles);
 
         txtFelhasznaloJeloles.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -80,13 +90,43 @@ public class Ismerosok {
         txtFelhasznaloJeloles.setText(props.irjad("feljel"));
 
         btnIsmerosnekJelolom.setText(props.irjad("btnjelol"));
-
+		
+		DefaultListModel dlm = new DefaultListModel();
+		
+		listFelhasznaloJeloles.setModel(dlm);
+		
+		
+		// Itt lokálisan létrehoztam egy arraylistet, csak próba gyanánt
+		 ArrayList<String> obj = new ArrayList<String>();
+			obj.add("Attila");
+			obj.add("Zoli");
+			obj.add("Ákos");
+			obj.add("Karesz");
+			obj.add("GOD");
+	  
+		btnIsmerosnekJelolom.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				// itt megkapod a kijelöltet
+				System.out.println(listFelhasznaloJeloles.getSelectedValue() + " kijelölve! ");
+				
+				dlm.removeAllElements();
+				// biztos van szakszerűbb módja, én a favágó módszerrel dolgozok most
+				for(String asd : obj){	
+					dlm.addElement(asd);
+				}
+			}
+		});
+		
+		 
         listJelolesekKezelese.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
         listJelolesekKezelese.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
-        });
+        }); 
         jScrollPane2.setViewportView(listJelolesekKezelese);
 
         lblJelolesekKezelese.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
