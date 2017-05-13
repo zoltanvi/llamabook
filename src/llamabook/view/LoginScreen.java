@@ -144,9 +144,12 @@ public class LoginScreen extends javax.swing.JFrame implements ActionListener{
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
+		txtemail.requestFocus();
 		lblloginicon.setIcon(new ImageIcon(getClass().getResource("/llamabook/resources/loginiconimage2_1.png")));
 		btnlogin.addActionListener(this);
 		btnregistration.addActionListener(this);
+		txtpassword.addActionListener(this);
+		txtemail.addActionListener(this);
 		setResizable(false);
         pack();
     }// </editor-fold>                        
@@ -168,7 +171,7 @@ public class LoginScreen extends javax.swing.JFrame implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == btnlogin){
+		if(e.getSource() == btnlogin || e.getSource() == txtpassword || e.getSource() == txtemail){
 			//valtoz
                         String email = txtemail.getText();
                         String password = String.valueOf(txtpassword.getPassword());
@@ -200,7 +203,7 @@ public class LoginScreen extends javax.swing.JFrame implements ActionListener{
 			RegScreen regisztracio = new RegScreen(this);
 			System.out.println("Regisztracio...");
 			dispose();
-		}
+		}	
 	}
         
         public Controller getController(){
