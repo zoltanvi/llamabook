@@ -10,10 +10,10 @@ import java.util.logging.Logger;
  * @author ShockWave
  */
 public class PropertiesController {
-
-	public String irjad(String kulcs) {
-
-		Properties props = new Properties();
+        Properties props;
+        
+        public PropertiesController(){
+            this.props = new Properties();
 		try {
 			props.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("props.properties"));
 
@@ -21,8 +21,10 @@ public class PropertiesController {
 		} catch (IOException ex) {
 			Logger.getLogger(PropertiesController.class.getName()).log(Level.SEVERE, null, ex);
 		}
+        }
 
-		String visszaadom = props.getProperty(kulcs);
+	public String irjad(String kulcs) {
+		String visszaadom = this.props.getProperty(kulcs);
 		return visszaadom;
 	}
 

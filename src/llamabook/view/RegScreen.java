@@ -371,8 +371,18 @@ public class RegScreen extends javax.swing.JFrame implements ActionListener{
                         
                         
                         user.setBirthdate(txtDatum.getText());
-                        user.setIskola(txtIskola.getText());
-                        user.setMunkahely(txtMunkahely.getText());
+                        if(txtIskola.getText().isEmpty()){
+                            user.setIskola("NONE");
+                        }else{
+                             user.setIskola(txtIskola.getText());
+                        }
+                        
+                        if(txtMunkahely.getText().isEmpty()){
+                            user.setMunkahely("NONE");
+                        }else{
+                            user.setMunkahely(txtMunkahely.getText());
+                        }
+                        
                         if(gui.getController().userRegis(user)){
                             setVisible(false);
                         }

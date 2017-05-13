@@ -11,6 +11,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import llamabook.controller.PropertiesController;
 import llamabook.model.bean.Csatlakozik;
 import llamabook.model.bean.Group;
@@ -27,8 +29,19 @@ public class ModelDao {
 	//private Properties pro =  new Properties("jdbc:oracle:thin:@","localhost","4000","kabinet");
 	private String DATABASE_FILE;
         private final PropertiesController props = new PropertiesController();
-        private Connection conn;
-
+        private static Connection conn;
+        
+        
+        public static void closeConnection(){
+            try {
+                conn.close();
+                if(conn.isClosed()){
+                    System.out.println("Sikeres db kapcsolat lezárás");
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(ModelDao.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
 
 	public ModelDao(){
 			try {
@@ -62,8 +75,8 @@ public class ModelDao {
 	// felhasznalo regisztralasa az adatbazisba
 	public boolean userRegis(Profil user){
 		boolean successful = false;
-		String REGISZT_USER = "INSERT INTO PROFIL(email ,vezeteknev, keresztnev, nem, birthdate, jelszo, munkahely, iskola) VALUES (?, ?, ?, ?, TO_DATE(?,'YYYY-MM-DD'), ?, ?, ?)";
-		try(PreparedStatement pst = this.conn.prepareStatement(REGISZT_USER)){
+		String regiszUser = "INSERT INTO PROFIL(email ,vezeteknev, keresztnev, nem, birthdate, jelszo, munkahely, iskola) VALUES (?, ?, ?, ?, TO_DATE(?,'YYYY-MM-DD'), ?, ?, ?)";
+		try(PreparedStatement pst = this.conn.prepareStatement(regiszUser)){
               
 			pst.setString(1, user.getEmail());
 			pst.setString(2, user.getVezeteknev());
@@ -90,9 +103,9 @@ public class ModelDao {
         
 	//user belep a profiljába
 	public Profil userLoggingIn(Profil user){
-		String ENT_USER = "SELECT * FROM PROFIL WHERE PROFIL.EMAIL = ? AND PROFIL.JELSZO = ?";
+		String EnterUser = "SELECT * FROM PROFIL WHERE PROFIL.EMAIL = ? AND PROFIL.JELSZO = ?";
 
-		try(PreparedStatement pst = this.conn.prepareStatement(ENT_USER);){
+		try(PreparedStatement pst = this.conn.prepareStatement(EnterUser);){
 
 			pst.setString(1, user.getEmail());
 			pst.setString(2, user.getJelszo());
@@ -100,7 +113,7 @@ public class ModelDao {
                         
                             rs.next();
                             
-                     
+                            
                             Profil p = new Profil();
                             p.setEmail(user.getEmail()); // ugyanez itt is a helyzet
                             p.setVezeteknev(rs.getString(2));
@@ -110,6 +123,8 @@ public class ModelDao {
                             p.setJelszo(user.getJelszo()); // van már egy objectünk amiben van jelszó
                             p.setMunkahely(rs.getString(7));
                             p.setIskola(rs.getString(8));
+                           
+                           
                             
                             return p;
                             
@@ -129,8 +144,7 @@ public class ModelDao {
 		String profilName = "SELECT Profil.vezeteknev, Profil.keresztnev FROM Profil WHERE Profil.email = ? ";
 		boolean successful = false;
 
-		try(Connection conn = DriverManager.getConnection(DATABASE_FILE);
-				PreparedStatement pst = conn.prepareStatement(profilName);){
+		try(PreparedStatement pst = this.conn.prepareStatement(profilName);){
 
 			pst.setString(1, user.getEmail());
 			
@@ -151,8 +165,7 @@ public class ModelDao {
 		String profilBirthdate = "SELECT Profil.birthdate FROM Profil WHERE Profil.email = ? ";
 		boolean successful = false;
 
-		try(Connection conn = DriverManager.getConnection(DATABASE_FILE);
-				PreparedStatement pst = conn.prepareStatement(profilBirthdate);){
+		try(PreparedStatement pst = this.conn.prepareStatement(profilBirthdate);){
 
 			pst.setString(1, user.getEmail());
 			ResultSet rs = pst.executeQuery();
@@ -166,12 +179,12 @@ public class ModelDao {
 
 		return successful;
 	}
+        
 	// profil mennyi csoportba van benne
 	public boolean userGroupNumber(Csatlakozik join){
 		boolean successful = false;
 		String profilGNumber = "SELECT count(email) FROM Csatlakozik WHERE email = ?";
-		try(Connection conn = DriverManager.getConnection(DATABASE_FILE);
-				PreparedStatement pst = conn.prepareStatement(profilGNumber);){
+		try(PreparedStatement pst = this.conn.prepareStatement(profilGNumber);){
 
 			pst.setString(1, join.getEmail());// saját emailjet kell megadnia
 			ResultSet rs = pst.executeQuery();
@@ -188,9 +201,8 @@ public class ModelDao {
 	//profil munkahelye
 	public boolean userJob(Profil user){
 		boolean successful = false;
-		String gfdhd = "SELECT Profil.munkahely FROM Profil WHERE Profil.email = ? "; //rename
-		try(Connection conn = DriverManager.getConnection(DATABASE_FILE);
-				PreparedStatement pst = conn.prepareStatement(gfdhd);){
+		String job = "SELECT Profil.munkahely FROM Profil WHERE Profil.email = ? "; //rename
+		try(PreparedStatement pst = this.conn.prepareStatement(job);){
 
 			pst.setString(1, user.getEmail());// saját emailjet kell megadnia
 			ResultSet rs = pst.executeQuery();
@@ -208,8 +220,7 @@ public class ModelDao {
 	public boolean userSchool(Profil user){
 		boolean successful = false;
 		String profilSchool = "SELECT Profil.iskola FROM Profil WHERE Profil.email = ? "; 
-		try(Connection conn = DriverManager.getConnection(DATABASE_FILE);
-				PreparedStatement pst = conn.prepareStatement(profilSchool);){
+		try(PreparedStatement pst = this.conn.prepareStatement(profilSchool);){
 
 			pst.setString(1, user.getEmail());// saját emailjet kell megadnia
 			ResultSet rs = pst.executeQuery();
@@ -227,8 +238,7 @@ public class ModelDao {
 	public boolean userFriendsnumber(Jelol sign){
 		boolean successful = false;
 		String profilFriendNumber = "SELECT Count(*) FROM Jelol WHERE isFirend = 1 AND email = ?";
-		try(Connection conn = DriverManager.getConnection(DATABASE_FILE);
-				PreparedStatement pst = conn.prepareStatement(profilFriendNumber);){
+		try(PreparedStatement pst = this.conn.prepareStatement(profilFriendNumber);){
 
 			pst.setString(1, sign.getEmail());// 
 			ResultSet rs = pst.executeQuery();
@@ -246,11 +256,10 @@ public class ModelDao {
 	
 	// felhasználó ismerősei kiíratása
 	public List<Profil> userFriends(Profil user){
-		String List_Ismer = "SELECT Profil.vezeteknev, Profil.keresztnev, Profil.email FROM Profil, Jelol WHERE Profil.email = ? AND Profil.email = Jelol.email  AND Jelol.isFriend = 1 ";
+		String listismer= "SELECT Profil.vezeteknev, Profil.keresztnev, Profil.email FROM Profil, Jelol WHERE Profil.email = ? AND Profil.email = Jelol.email  AND Jelol.isFriend = 1 ";
 		List<Profil> ismer_profil = new ArrayList();
 
-		try(Connection conn = DriverManager.getConnection(DATABASE_FILE);
-				PreparedStatement pst = conn.prepareStatement(List_Ismer);){
+		try(PreparedStatement pst = this.conn.prepareStatement(listismer);){
 
 			pst.setString(1, user.getEmail());
 			ResultSet rs = pst.executeQuery();
@@ -273,12 +282,10 @@ public class ModelDao {
 	
 	// ismeros kereses 1. 2. paraméterrel
 	public List<Profil> userSeek(Profil user){
-		String Keres_Ismeros = "SELECT Profil(*) FROM Profil WHERE Profil.vezeteknev = ? AND Profil.keresztnev = ? ";
+		String keresismeros = "SELECT Profil(*) FROM Profil WHERE Profil.vezeteknev = ? AND Profil.keresztnev = ? ";
 		List<Profil> profil_lista = new ArrayList();
 
-		try(Connection conn = DriverManager.getConnection(DATABASE_FILE);
-				PreparedStatement pst = conn.prepareStatement(Keres_Ismeros);
-				){
+		try(PreparedStatement pst = this.conn.prepareStatement(keresismeros);){
 			pst.setString(1, user.getVezeteknev());
 			pst.setString(2, user.getKeresztnev());
 			ResultSet rs = pst.executeQuery();
@@ -301,12 +308,10 @@ public class ModelDao {
 
 	// ismeros kereses 1. paraméterrel (csak vezeteknev)
 	public List<Profil> userseekFirst(Profil user){
-		String Keres_Ismeros = "SELECT Profil(*) FROM Profil WHERE Profil.vezeteknev = ?";
+		String keresismeros1 = "SELECT Profil(*) FROM Profil WHERE Profil.vezeteknev = ?";
 		List<Profil> profil_lista = new ArrayList();
 
-		try(Connection conn = DriverManager.getConnection(DATABASE_FILE);
-				PreparedStatement pst = conn.prepareStatement(Keres_Ismeros);
-				){
+		try(PreparedStatement pst = this.conn.prepareStatement(keresismeros1);){
 			pst.setString(1, user.getVezeteknev());
 			ResultSet rs = pst.executeQuery();
 
@@ -328,12 +333,10 @@ public class ModelDao {
 
 	// ismeros kereses 2. paraméterrel (csak keresztnev)
 	public List<Profil> userseekSecond(Profil user){
-		String Keres_Ismeros = "SELECT Profil(*) FROM Profil WHERE Profil.keresztnev = ?";
+		String keresismeros2 = "SELECT Profil(*) FROM Profil WHERE Profil.keresztnev = ?";
 		List<Profil> profil_lista = new ArrayList();
 
-		try(Connection conn = DriverManager.getConnection(DATABASE_FILE);
-				PreparedStatement pst = conn.prepareStatement(Keres_Ismeros);
-				){
+		try(PreparedStatement pst = this.conn.prepareStatement(keresismeros2);){
 			pst.setString(1, user.getKeresztnev());
 			ResultSet rs = pst.executeQuery();
 
@@ -358,10 +361,8 @@ public class ModelDao {
 	// jeloles elküldése
 	public boolean friendSign(Jelol jelol){
 		boolean successful = false;
-		String SEND_JELOL = "INSERT INTO Jelol (email ,kit_email, isFriend) VALUES (?, ?, ?)";
-		try(Connection conn = DriverManager.getConnection(DATABASE_FILE);
-				PreparedStatement pst = conn.prepareStatement(SEND_JELOL);
-				){
+		String Jeloles_LIST = "INSERT INTO Jelol (email ,kit_email, isFriend) VALUES (?, ?, ?)";
+		try(PreparedStatement pst = this.conn.prepareStatement(Jeloles_LIST);){
 
 			pst.setString(1, jelol.getEmail());
 			pst.setString(2, jelol.getKit_email());
@@ -768,7 +769,7 @@ public class ModelDao {
 		return ismSuli;
 		
 	}
-
+     
                 public List<Profil> ismerosSzulinap_list(Profil user){
 		String List_ismerosSzulinap = "SELECT Profil.vezeteknev, Profil.keresznev FROM Profil, Jelol FULL OUTER JOIN Jelol ON  Profil.email = Jelol.email WHERE Jelol.isFriend = 0 AND   ========= ezt is kigondolom még ";
 		List<Profil> ismSzulnap = new ArrayList<Profil>();
@@ -793,10 +794,6 @@ public class ModelDao {
                 
                 
                 }      
-                
-                
-                
-                
                 
                 public boolean regYetUser(String email){
                     boolean successful =false;

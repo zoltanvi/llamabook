@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import llamabook.controller.Controller;
 import llamabook.controller.PropertiesController;
+import llamabook.model.ModelDao;
 import llamabook.model.bean.Profil;
 /**
  *
@@ -17,6 +18,7 @@ public class LlamabookGUI extends JFrame implements ActionListener{
     
         private Controller controller;
         private Profil profil;
+        
 
 	private PropertiesController props = new PropertiesController();
 	private final Color hover = new Color(92, 148, 189);
@@ -34,35 +36,43 @@ public class LlamabookGUI extends JFrame implements ActionListener{
     private final JPanel panel_menu_jobb = new JPanel();
    
 	// fix, mindig a bejelentkezett felhasználó adataival töltjük fel!
-	private JTextPane adatok = new JTextPane();
+	private final JTextPane adatok = new JTextPane();
 	
 	//menü gombok
     private final JButton button_logout = new JButton(props.irjad("logout"));
-	private final JButton button_uzenetek = new JButton(props.irjad("messages"));
-	private final JButton button_adatlap = new JButton(props.irjad("profil"));
-	private final JButton button_csoportok = new JButton(props.irjad("groups"));
-	private final JButton button_kepek = new JButton(props.irjad("images"));
-	private final JButton button_ismerosok = new JButton(props.irjad("friends"));
-	private final JButton button_fooldal = new JButton(props.irjad("index"));
+    private final JButton button_uzenetek = new JButton(props.irjad("messages"));
+    private final JButton button_adatlap = new JButton(props.irjad("profil"));
+    private final JButton button_csoportok = new JButton(props.irjad("groups"));
+    private final JButton button_kepek = new JButton(props.irjad("images"));
+    private final JButton button_ismerosok = new JButton(props.irjad("friends"));
+    private final JButton button_fooldal = new JButton(props.irjad("index"));
 
 	// menü ikonja (llamabook felirat)
-    private JLabel menutitle = new JLabel(); 
-    private JLabel lblbejelentkezve = new JLabel(props.irjad("loggedIn"));
-    private JLabel lblmint = new JLabel("Dalai Llama");
-	// TODO lblmint-et lekérni az adatbázisból
-	
-    // baloldali profil részt ezekkel töltjük fel, adatok tárolója az adatbázisból
-	
-	
+    private final JLabel menutitle = new JLabel(); 
+    private final JLabel lblbejelentkezve = new JLabel(props.irjad("loggedIn"));
+    
+    private String nev;
+    private JLabel lblmint;
+    
 
-	// konstruktor
-    public LlamabookGUI(Controller controller, Profil prof) {
-        this.controller = controller;
-        this.profil = prof;
-        
-	initComponents();
+    public void addShutdownHook(){
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            ModelDao.closeConnection();
+        }));
     }
 
+	// konstruktor
+    public LlamabookGUI(Controller controller, Profil profil) {
+        this.controller = controller;
+        this.profil = profil;
+        this.nev  = profil.getKeresztnev();
+        this.lblmint = new JLabel(this.nev);
+        this.addShutdownHook();
+	initComponents();
+    }
+    
+    
+  
     private void initComponents(){
 			setDefaultCloseOperation(EXIT_ON_CLOSE);
 			setSize(new Dimension(1140, 900));
@@ -190,7 +200,7 @@ public class LlamabookGUI extends JFrame implements ActionListener{
 		}
 		if(e.getSource() == button_logout){
 			System.out.println("Kijelentkezés...");
-			LoginScreen login = new LoginScreen(controller);
+			System.exit(0);
 			dispose();
 			
 		}

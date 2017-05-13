@@ -15,6 +15,22 @@ public class Profil {
 	private String munkahely;
 	private String iskola;
 
+    public Profil(String email, String vezeteknev, String keresztnev, int nem, String birthdate, String jelszo, String munkahely, String iskola) {
+        this.email = email;
+        this.vezeteknev = vezeteknev;
+        this.keresztnev = keresztnev;
+        this.nem = nem;
+        this.birthdate = birthdate;
+        this.jelszo = jelszo;
+        this.munkahely = munkahely;
+        this.iskola = iskola;
+    }
+
+    public Profil() {
+    }
+
+    
+        
 	public String getEmail() {
 		return email;
 	}
