@@ -35,27 +35,13 @@ public class Controller {
 		return model.userLoggingIn(user);
 	}
 	
-	public boolean userName(Profil user){
-		return model.userName(user);
-	}
 	
-	public boolean userBirthdate (Profil user){
-		return model.userBirthdate(user);
-	}
-	
-	public boolean userGroupNumber(Csatlakozik join){
+	public int userGroupNumber(Csatlakozik join){
 		return model.userGroupNumber(join);
 	}
 	
-	public boolean userJob(Profil user){
-		return model.userJob(user);
-	}	
 	
-	public boolean userSchool(Profil user){
-		return model.userSchool(user);
-	}
-	
-	public boolean userFriendsnumber(Jelol sign){
+	public int userFriendsnumber(Jelol sign){
 		return model.userFriendsnumber(sign);
 	}
 

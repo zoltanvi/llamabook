@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
 import llamabook.controller.Controller;
 import llamabook.controller.PropertiesController;
 import llamabook.model.ModelDao;
@@ -16,14 +17,14 @@ import llamabook.model.bean.Profil;
 
 public class LlamabookGUI extends JFrame implements ActionListener{
     
-        private Controller controller;
-        private Profil profil;
-        
+    private Controller controller;
+    private Profil profil;
 
-	private PropertiesController props = new PropertiesController();
-	private final Color hover = new Color(92, 148, 189);
-	private final Color theme = new Color(32, 107, 162);
-	private final Color szurke = new Color(197, 198, 199);
+        
+    private PropertiesController props = new PropertiesController();
+    private final Color hover = new Color(92, 148, 189);
+    private final Color theme = new Color(32, 107, 162);
+    private final Color szurke = new Color(197, 198, 199);
 	
 	// main GUI-nak az inicializálása
     private final JPanel panel_full = new JPanel();
@@ -51,7 +52,14 @@ public class LlamabookGUI extends JFrame implements ActionListener{
     private final JLabel menutitle = new JLabel(); 
     private final JLabel lblbejelentkezve = new JLabel(props.irjad("loggedIn"));
     
-    private String nev;
+    private String knev;
+    private String vnev;
+    private String email;
+    private String date;
+    private String iskola;
+    private String munkahely;
+    private int nem;
+    
     private JLabel lblmint;
     
 
@@ -65,8 +73,16 @@ public class LlamabookGUI extends JFrame implements ActionListener{
     public LlamabookGUI(Controller controller, Profil profil) {
         this.controller = controller;
         this.profil = profil;
-        this.nev  = profil.getKeresztnev();
-        this.lblmint = new JLabel(this.nev);
+        
+        this.vnev = profil.getVezeteknev();
+        this.knev  = profil.getKeresztnev();
+        this.email = profil.getEmail();
+        this.date = profil.getBirthdate();
+        this.nem = profil.getNem();
+        this.iskola = profil.getIskola();
+        this.munkahely = profil.getMunkahely();
+        
+        this.lblmint = new JLabel(this.vnev + " " + this.knev);
         this.addShutdownHook();
 	initComponents();
     }
@@ -150,7 +166,7 @@ public class LlamabookGUI extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == button_adatlap){
-			Adatlap adatlap = new Adatlap();
+			Adatlap adatlap = new Adatlap(this);
 			System.out.println("adatlap MENÜ");
 			panel_cardcontainer.removeAll();
 			panel_cardcontainer.add(adatlap.panel_adatlap, BorderLayout.CENTER);
@@ -208,5 +224,36 @@ public class LlamabookGUI extends JFrame implements ActionListener{
 		
 		
 	}
+        
+        public String ProfilVezeteknev(){
+            return this.vnev;
+        }
+        public String ProfilKeresztnev(){
+            return this.knev;
+        }
+        public String ProfilEmail(){
+            return this.email;
+        }
+        
+        public String ProfilDate(){
+            return this.date;
+        }
+        
+        public int ProfilNem(){
+            return this.nem;
+        }
+        
+        public String ProfilIskola(){
+            return this.iskola;
+        }
+        
+        public String ProfilMunkahely(){
+            return this.munkahely;
+        }
+        
+        public Controller getController(){
+            return this.controller;
+        }
+       
 
 }

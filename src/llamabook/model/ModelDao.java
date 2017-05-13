@@ -72,7 +72,7 @@ public class ModelDao {
 
 	/*-----------------------------------------------------------------------------------------------------------------------*/
 
-	// felhasznalo regisztralasa az adatbazisba
+	// felhasznalo regisztralasa az adatbazisba 0
 	public boolean userRegis(Profil user){
 		boolean successful = false;
 		String regiszUser = "INSERT INTO PROFIL(email ,vezeteknev, keresztnev, nem, birthdate, jelszo, munkahely, iskola) VALUES (?, ?, ?, ?, TO_DATE(?,'YYYY-MM-DD'), ?, ?, ?)";
@@ -101,7 +101,7 @@ public class ModelDao {
 
 
         
-	//user belep a profiljába
+	//user belep a profiljába 0
 	public Profil userLoggingIn(Profil user){
 		String EnterUser = "SELECT * FROM PROFIL WHERE PROFIL.EMAIL = ? AND PROFIL.JELSZO = ?";
 
@@ -139,117 +139,42 @@ public class ModelDao {
 
 	}
 
-	//profil name
-	public boolean userName(Profil user){
-		String profilName = "SELECT Profil.vezeteknev, Profil.keresztnev FROM Profil WHERE Profil.email = ? ";
-		boolean successful = false;
 
-		try(PreparedStatement pst = this.conn.prepareStatement(profilName);){
-
-			pst.setString(1, user.getEmail());
-			
-			ResultSet rs = pst.executeQuery();
-			rs.next();
-			successful = pst.executeUpdate() == 1;
-
-		} catch(SQLException e){
-			System.out.println("Név kiadás sikertelen volt! :(");
-
-		}
-
-		return successful;
-	}
-
-	//profil birthdate
-	public boolean userBirthdate (Profil user){
-		String profilBirthdate = "SELECT Profil.birthdate FROM Profil WHERE Profil.email = ? ";
-		boolean successful = false;
-
-		try(PreparedStatement pst = this.conn.prepareStatement(profilBirthdate);){
-
-			pst.setString(1, user.getEmail());
-			ResultSet rs = pst.executeQuery();
-			rs.next();
-			successful = pst.executeUpdate() == 1;
-
-		} catch(SQLException e){
-			System.out.println("Születésidátum kiadás sikertelen volt! :(");
-
-		}
-
-		return successful;
-	}
         
-	// profil mennyi csoportba van benne
-	public boolean userGroupNumber(Csatlakozik join){
-		boolean successful = false;
+	// profil mennyi csoportba van benne 0?
+	public int userGroupNumber(Csatlakozik join){
+		int csoportokszama = 0;
 		String profilGNumber = "SELECT count(email) FROM Csatlakozik WHERE email = ?";
 		try(PreparedStatement pst = this.conn.prepareStatement(profilGNumber);){
 
 			pst.setString(1, join.getEmail());// saját emailjet kell megadnia
 			ResultSet rs = pst.executeQuery();
 			rs.next();//0. ról 1. re
-			successful = pst.executeUpdate() == 1;
+			csoportokszama = rs.getInt(1); // 1 cella, count() érték
 
 		} catch(SQLException e){
 			System.out.println("Csoportok száma amiben benne van sikertelen volt! :(");
 
 		}
-		return successful;
-	}
-	
-	//profil munkahelye
-	public boolean userJob(Profil user){
-		boolean successful = false;
-		String job = "SELECT Profil.munkahely FROM Profil WHERE Profil.email = ? "; //rename
-		try(PreparedStatement pst = this.conn.prepareStatement(job);){
-
-			pst.setString(1, user.getEmail());// saját emailjet kell megadnia
-			ResultSet rs = pst.executeQuery();
-			rs.next();
-			successful = pst.executeUpdate() == 1;
-
-		} catch(SQLException e){
-			System.out.println("Munkahely kiadás sikertelen volt! :(");
-
-		}
-		return successful;
-	}
-	
-	//profil iskolaja
-	public boolean userSchool(Profil user){
-		boolean successful = false;
-		String profilSchool = "SELECT Profil.iskola FROM Profil WHERE Profil.email = ? "; 
-		try(PreparedStatement pst = this.conn.prepareStatement(profilSchool);){
-
-			pst.setString(1, user.getEmail());// saját emailjet kell megadnia
-			ResultSet rs = pst.executeQuery();
-				
-			rs.next();
-			successful = pst.executeUpdate() == 1;
-
-		} catch(SQLException e){
-			System.out.println("Iskola kiadás sikertelen volt! :(");
-		}
-		return successful;
+		return csoportokszama;
 	}
 		
-	// Elméletileg jó viszsa adka az ismerösök számát
-	public boolean userFriendsnumber(Jelol sign){
-		boolean successful = false;
-		String profilFriendNumber = "SELECT Count(*) FROM Jelol WHERE isFirend = 1 AND email = ?";
+	// Elméletileg jó viszsa adka az ismerösök számát 0?
+	public int userFriendsnumber(Jelol sign){
+		int ismerosok = 0;
+		String profilFriendNumber = "SELECT Count(*) FROM Jelol WHERE isFriend = 1 AND email = ?";
 		try(PreparedStatement pst = this.conn.prepareStatement(profilFriendNumber);){
 
 			pst.setString(1, sign.getEmail());// 
 			ResultSet rs = pst.executeQuery();
 				
 			rs.next();// 0. ról ami üres 1. sorra lépteti  
-			successful = pst.executeUpdate() == 1;
+			ismerosok = rs.getInt(1);
 
 		} catch(SQLException e){
 			System.out.println("Ismerösök száma kiadás sikertelen volt! :(");
 		}
-		return successful;
+		return ismerosok;
 	}
 
 	/*-----------------------------------------------------------------------------------------------------------------------*/
