@@ -40,17 +40,17 @@ public class LlamabookGUI extends JFrame implements ActionListener{
 	private final JTextPane adatok = new JTextPane();
 	
 	//menü gombok
-    private final JButton button_logout = new JButton(props.irjad("logout"));
-    private final JButton button_uzenetek = new JButton(props.irjad("messages"));
-    private final JButton button_adatlap = new JButton(props.irjad("profil"));
-    private final JButton button_csoportok = new JButton(props.irjad("groups"));
-    private final JButton button_kepek = new JButton(props.irjad("images"));
-    private final JButton button_ismerosok = new JButton(props.irjad("friends"));
-    private final JButton button_fooldal = new JButton(props.irjad("index"));
+    private final JButton button_logout = new JButton(props.getProperty("logout"));
+    private final JButton button_uzenetek = new JButton(props.getProperty("messages"));
+    private final JButton button_adatlap = new JButton(props.getProperty("profil"));
+    private final JButton button_csoportok = new JButton(props.getProperty("groups"));
+    private final JButton button_kepek = new JButton(props.getProperty("images"));
+    private final JButton button_ismerosok = new JButton(props.getProperty("friends"));
+    private final JButton button_fooldal = new JButton(props.getProperty("index"));
 
 	// menü ikonja (llamabook felirat)
     private final JLabel menutitle = new JLabel(); 
-    private final JLabel lblbejelentkezve = new JLabel(props.irjad("loggedIn"));
+    private final JLabel lblbejelentkezve = new JLabel(props.getProperty("loggedIn"));
     
     private String knev;
     private String vnev;
@@ -92,7 +92,7 @@ public class LlamabookGUI extends JFrame implements ActionListener{
     private void initComponents(){
 			setDefaultCloseOperation(EXIT_ON_CLOSE);
 			setSize(new Dimension(1140, 900));
-			setTitle(props.irjad("ablakcim"));
+			setTitle(props.getProperty("ablakcim"));
 			add(panel_full);
 			
 			panel_full.setBackground(Color.white);
@@ -183,7 +183,7 @@ public class LlamabookGUI extends JFrame implements ActionListener{
 			panel_cardcontainer.revalidate();
 		}
 		if(e.getSource() == button_ismerosok){
-			Ismerosok ismerosok = new Ismerosok();
+			Ismerosok ismerosok = new Ismerosok(this.profil, this);
 			System.out.println("ismerősök MENÜ");
 			panel_cardcontainer.removeAll();
 			panel_cardcontainer.add(ismerosok.panel_ismerosok, BorderLayout.CENTER);

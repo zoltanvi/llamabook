@@ -66,9 +66,9 @@ public class Kepek {
         panel_kepek.setBackground(new java.awt.Color(255, 255, 255));
         panel_kepek.setPreferredSize(new java.awt.Dimension(1110, 810));
 
-        btnsajatkepek.setText(props.irjad("sajatkep"));
+        btnsajatkepek.setText(props.getProperty("sajatkep"));
 
-        btnismeroskepek.setText(props.irjad("ismeroskep"));
+        btnismeroskepek.setText(props.getProperty("ismeroskep"));
 
         listsajatismeros.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -77,7 +77,7 @@ public class Kepek {
         });
         jScrollPane1.setViewportView(listsajatismeros);
 
-        btnmutasdsajatismeroskepek.setText(props.irjad("mutasd"));
+        btnmutasdsajatismeroskepek.setText(props.getProperty("mutasd"));
 
         lbl_image.setBackground(new java.awt.Color(204, 204, 255));
         lbl_image.setText("jLabel1");
@@ -93,9 +93,9 @@ public class Kepek {
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText(props.irjad("galeria"));
+        jLabel2.setText(props.getProperty("galeria"));
 
-        btnkivalasztgaleria.setText(props.irjad("kivalaszt"));
+        btnkivalasztgaleria.setText(props.getProperty("kivalaszt"));
 
         listgaleriabelikepek.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -104,30 +104,30 @@ public class Kepek {
         });
         jScrollPane3.setViewportView(listgaleriabelikepek);
 
-        btnmutasdgaleriabelikepek.setText(props.irjad("mutasd"));
+        btnmutasdgaleriabelikepek.setText(props.getProperty("mutasd"));
         
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText(props.irjad("kivalasztottgaleria"));
+        jLabel3.setText(props.getProperty("kivalasztottgaleria"));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText(props.irjad("kepfeltoltes"));
+        jLabel4.setText(props.getProperty("kepfeltoltes"));
 
-        btntalloz.setText(props.irjad("tallozas"));
+        btntalloz.setText(props.getProperty("tallozas"));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText(props.irjad("makegalery"));
+        jLabel5.setText(props.getProperty("makegalery"));
 
-        btngalerialetrehoz.setText(props.irjad("letrehoz"));
+        btngalerialetrehoz.setText(props.getProperty("letrehoz"));
 
         comboebbeagaleriaba.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jLabel6.setText(props.irjad("ebbeagaleriaba"));
+        jLabel6.setText(props.getProperty("ebbeagaleriaba"));
 
-        btnfeltoltes.setText(props.irjad("feltoltes"));
+        btnfeltoltes.setText(props.getProperty("feltoltes"));
 
         javax.swing.GroupLayout panel_kepekLayout = new javax.swing.GroupLayout(panel_kepek);
         panel_kepek.setLayout(panel_kepekLayout);

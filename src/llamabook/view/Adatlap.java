@@ -109,19 +109,19 @@ public class Adatlap {
             profimage.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
             lblname.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-            lblname.setText(props.irjad("nev"));
+            lblname.setText(props.getProperty("nev"));
 
             txtname.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
             txtname.setText(vnev + " " + knev);
 
             lblszuletesnap.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-            lblszuletesnap.setText(props.irjad("bdate"));
+            lblszuletesnap.setText(props.getProperty("bdate"));
 
             txtdate.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
             txtdate.setText(date);	
 
             lblnem.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-            lblnem.setText(props.irjad("sex"));
+            lblnem.setText(props.getProperty("sex"));
 
             txtsex.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
             
@@ -132,10 +132,10 @@ public class Adatlap {
             }
             
             lblmunkahely.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-            lblmunkahely.setText(props.irjad("munkahely"));
+            lblmunkahely.setText(props.getProperty("munkahely"));
 
             lbliskola.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-            lbliskola.setText(props.irjad("iskola"));
+            lbliskola.setText(props.getProperty("iskola"));
 
             txtjob.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
             txtjob.setText(munkahely);
@@ -151,20 +151,20 @@ public class Adatlap {
             textBejegyzes.setRows(5);
             jScrollPane2.setViewportView(textBejegyzes);
 
-            btnsubmit.setText(props.irjad("kuldes"));
+            btnsubmit.setText(props.getProperty("kuldes"));
 
             lblinivited.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-            lblinivited.setText(props.irjad("meghivottak"));//ZOLI IRD AT CSOPORTOK SZAMARA THX GL BITCH
+            lblinivited.setText(props.getProperty("csoportoksz"));
 
             lblmeghivottak.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
             lblmeghivottak.setText(Integer.toString(csoportagsag));
 
             ismerosadatlap.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Zoli", "Attila", "Ă�kos", "Teszt" }));
 
-            jButton1.setText(props.irjad("megnyitas"));
+            jButton1.setText(props.getProperty("megnyitas"));
 
             jLabel1.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-            jLabel1.setText(props.irjad("ismerosok"));
+            jLabel1.setText(props.getProperty("ismerosok"));
 
             jLabel2.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
             jLabel2.setText(Integer.toString(ismerosokszama));

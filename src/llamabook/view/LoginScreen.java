@@ -67,22 +67,22 @@ public class LoginScreen extends javax.swing.JFrame implements ActionListener{
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText(props.irjad("login"));
+        jLabel1.setText(props.getProperty("login"));
 
-        btnlogin.setText(props.irjad("login"));
+        btnlogin.setText(props.getProperty("login"));
 
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText(props.irjad("email"));
+        jLabel2.setText(props.getProperty("email"));
 
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText(props.irjad("jelszo"));
+        jLabel3.setText(props.getProperty("jelszo"));
 
-        btnregistration.setText(props.irjad("regisztracio"));
+        btnregistration.setText(props.getProperty("regisztracio"));
 
         jLabel4.setForeground(new java.awt.Color(204, 255, 153));
-        jLabel4.setText(props.irjad("nincsfiok"));
+        jLabel4.setText(props.getProperty("nincsfiok"));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

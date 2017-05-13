@@ -77,65 +77,65 @@ public class RegScreen extends javax.swing.JFrame implements ActionListener{
         lblReg.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         lblReg.setForeground(new java.awt.Color(255, 255, 255));
         lblReg.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblReg.setText(props.irjad("regisztracio"));
+        lblReg.setText(props.getProperty("regisztracio"));
 
         lblVezeteknev.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblVezeteknev.setForeground(new java.awt.Color(255, 255, 255));
         lblVezeteknev.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblVezeteknev.setText(props.irjad("xxvezeteknev"));
+        lblVezeteknev.setText(props.getProperty("xxvezeteknev"));
 
         lblKeresztnev.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblKeresztnev.setForeground(new java.awt.Color(255, 255, 255));
         lblKeresztnev.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblKeresztnev.setText(props.irjad("xxkeresztnev"));
+        lblKeresztnev.setText(props.getProperty("xxkeresztnev"));
 
         lblEmail.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblEmail.setForeground(new java.awt.Color(255, 255, 255));
         lblEmail.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblEmail.setText(props.irjad("xxemail"));
+        lblEmail.setText(props.getProperty("xxemail"));
 
-        radioFerfi.setText(props.irjad("xxmale"));
+        radioFerfi.setText(props.getProperty("xxmale"));
 
-        radioNo.setText(props.irjad("xxfemale"));
+        radioNo.setText(props.getProperty("xxfemale"));
 
         lblNem.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblNem.setForeground(new java.awt.Color(255, 255, 255));
         lblNem.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblNem.setText(props.irjad("xxnem"));
+        lblNem.setText(props.getProperty("xxnem"));
 
         lblDatum.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblDatum.setForeground(new java.awt.Color(255, 255, 255));
         lblDatum.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblDatum.setText(props.irjad("xxszuldatum"));
+        lblDatum.setText(props.getProperty("xxszuldatum"));
 
         lblJelszo1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblJelszo1.setForeground(new java.awt.Color(255, 255, 255));
         lblJelszo1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblJelszo1.setText(props.irjad("xxjelszo"));
+        lblJelszo1.setText(props.getProperty("xxjelszo"));
 
         lblJelszo2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblJelszo2.setForeground(new java.awt.Color(255, 255, 255));
         lblJelszo2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblJelszo2.setText(props.irjad("xxrejelszo"));
+        lblJelszo2.setText(props.getProperty("xxrejelszo"));
 
         lblIskola.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblIskola.setForeground(new java.awt.Color(255, 255, 255));
         lblIskola.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblIskola.setText(props.irjad("xxiskola"));
+        lblIskola.setText(props.getProperty("xxiskola"));
 
         lblMunkahely.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblMunkahely.setForeground(new java.awt.Color(255, 255, 255));
         lblMunkahely.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblMunkahely.setText(props.irjad("xxmunkahely"));
+        lblMunkahely.setText(props.getProperty("xxmunkahely"));
 
         lblTajekoztato.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblTajekoztato.setForeground(new java.awt.Color(255, 255, 255));
         lblTajekoztato.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblTajekoztato.setText(props.irjad("xxcsillaggal"));
+        lblTajekoztato.setText(props.getProperty("xxcsillaggal"));
 
-        btnReg.setText(props.irjad("regisztracio"));
+        btnReg.setText(props.getProperty("regisztracio"));
 
-        btnBack.setText(props.irjad("vissza"));
+        btnBack.setText(props.getProperty("vissza"));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

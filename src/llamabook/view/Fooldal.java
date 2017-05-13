@@ -2,12 +2,8 @@ package llamabook.view;
 
 
 import java.awt.Color;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
-import llamabook.controller.PropertiesController;
 import llamabook.controller.MultiLineCellRenderer;
 import llamabook.controller.PropertiesController;
 /**
@@ -15,9 +11,7 @@ import llamabook.controller.PropertiesController;
  * @author ShockWave
  */
 public class Fooldal{
-
-	
-	private javax.swing.JButton btnbekuldbejegyzes;
+    private javax.swing.JButton btnbekuldbejegyzes;
     private javax.swing.JButton btnbekuldkomment;
     private javax.swing.JLabel lblbejegyzes;
     private javax.swing.JLabel lblid;
@@ -32,34 +26,34 @@ public class Fooldal{
     private javax.swing.JTextField txtbejegyzes;
     private javax.swing.JTextField txtid;
     private javax.swing.JTextField txtkomment;
-	private PropertiesController props = new PropertiesController();
+    private PropertiesController props;
 	
 	
 	
 	public Fooldal() {
-		PropertiesController props = new PropertiesController();
+            this.props = new PropertiesController();
 		
-		panel_fooldal = new javax.swing.JPanel();
-        panelBejegyzes = new javax.swing.JPanel();
-        scrollBejegyzes = new javax.swing.JScrollPane();
-        tablaBejegyzes = new javax.swing.JTable();
-        panelKomment = new javax.swing.JPanel();
-        scrollKomment = new javax.swing.JScrollPane();
-        tablaKomment = new javax.swing.JTable();
-        txtbejegyzes = new javax.swing.JTextField();
-        btnbekuldbejegyzes = new javax.swing.JButton();
-        txtid = new javax.swing.JTextField();
-        txtkomment = new javax.swing.JTextField();
-        btnbekuldkomment = new javax.swing.JButton();
-        lblid = new javax.swing.JLabel();
-        lblkomment = new javax.swing.JLabel();
-        lblbejegyzes = new javax.swing.JLabel();
+            panel_fooldal = new javax.swing.JPanel();
+            panelBejegyzes = new javax.swing.JPanel();
+            scrollBejegyzes = new javax.swing.JScrollPane();
+            tablaBejegyzes = new javax.swing.JTable();
+            panelKomment = new javax.swing.JPanel();
+            scrollKomment = new javax.swing.JScrollPane();
+            tablaKomment = new javax.swing.JTable();
+            txtbejegyzes = new javax.swing.JTextField();
+            btnbekuldbejegyzes = new javax.swing.JButton();
+            txtid = new javax.swing.JTextField();
+            txtkomment = new javax.swing.JTextField();
+            btnbekuldkomment = new javax.swing.JButton();
+            lblid = new javax.swing.JLabel();
+            lblkomment = new javax.swing.JLabel();
+            lblbejegyzes = new javax.swing.JLabel();
 
        
     
 		panel_fooldal.setBackground(Color.WHITE);
         panelBejegyzes.setBackground(java.awt.Color.white);
-        panelBejegyzes.setBorder(javax.swing.BorderFactory.createTitledBorder(null, props.irjad("bejegyzesek"), javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
+        panelBejegyzes.setBorder(javax.swing.BorderFactory.createTitledBorder(null, props.getProperty("bejegyzesek"), javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
         panelBejegyzes.setPreferredSize(new java.awt.Dimension(530, 500));
 
         // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -67,6 +61,12 @@ public class Fooldal{
 			public Class getColumnClass(int columnIndex) {
 			return String.class;
 			}
+                        
+                        @Override
+                        public boolean isCellEditable(int row, int col){
+                            return false;
+                        }
+                        
 		};
 		
 		
@@ -79,7 +79,7 @@ public class Fooldal{
 					{"1344", "Teszt Elek", "asd kek lol xd"}
 					
 				}, new Object[]
-				{props.irjad("tableID"), props.irjad("tableName"), props.irjad("tablePost")});
+				{props.getProperty("tableID"), props.getProperty("tableName"), props.getProperty("tablePost")});
 
 		tablaBejegyzes.getTableHeader().setReorderingAllowed(false);
 
@@ -121,7 +121,7 @@ public class Fooldal{
         );
 
         panelKomment.setBackground(java.awt.Color.white);
-        panelKomment.setBorder(javax.swing.BorderFactory.createTitledBorder(null, props.irjad("kommentek"), javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
+        panelKomment.setBorder(javax.swing.BorderFactory.createTitledBorder(null, props.getProperty("kommentek"), javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
         panelKomment.setPreferredSize(new java.awt.Dimension(530, 500));
 
         // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -129,9 +129,14 @@ public class Fooldal{
 			public Class getColumnClass(int columnIndex) {
 			return String.class;
 			}
+                        
+                        @Override
+                        public boolean isCellEditable(int row, int col){
+                            return false;
+                        }
+                        
 		};
-		
-		
+	
 		
 		  asd.setDataVector(new Object[][]
 				{
@@ -141,7 +146,7 @@ public class Fooldal{
 					{"Teszt Elek", "asd kek lol xd\n ez egy szar\ntöbbsoros szöveg"}
 					
 				}, new Object[]
-				{props.irjad("tableName"), props.irjad("tableComment")});
+				{props.getProperty("tableName"), props.getProperty("tableComment")});
 
 		tablaKomment.getTableHeader().setReorderingAllowed(false);
 
@@ -178,17 +183,17 @@ public class Fooldal{
                 .addContainerGap())
         );
 
-        btnbekuldbejegyzes.setText(props.irjad("kuldes"));
+        btnbekuldbejegyzes.setText(props.getProperty("kuldes"));
 
-        btnbekuldkomment.setText(props.irjad("kuldes"));
+        btnbekuldkomment.setText(props.getProperty("kuldes"));
 
         lblid.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblid.setText(props.irjad("id"));
+        lblid.setText(props.getProperty("id"));
 
-        lblkomment.setText(props.irjad("kszoveg"));
+        lblkomment.setText(props.getProperty("kszoveg"));
 
         lblbejegyzes.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblbejegyzes.setText(props.irjad("bszoveg"));
+        lblbejegyzes.setText(props.getProperty("bszoveg"));
 
         javax.swing.GroupLayout panel_fooldalLayout = new javax.swing.GroupLayout(panel_fooldal);
         panel_fooldal.setLayout(panel_fooldalLayout);

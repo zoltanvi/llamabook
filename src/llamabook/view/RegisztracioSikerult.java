@@ -42,19 +42,19 @@ public class RegisztracioSikerult extends javax.swing.JDialog implements ActionL
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 51));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText(props.irjad("sikeresreg"));
+        jLabel1.setText(props.getProperty("sikeresreg"));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 0));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText(props.irjad("mostmarbelephetsz"));
+        jLabel2.setText(props.getProperty("mostmarbelephetsz"));
 
         jLabel4.setFont(new java.awt.Font("Courier New", 0, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("emailcim");
 
-        jButton1.setText(props.irjad("visszabelep"));
+        jButton1.setText(props.getProperty("visszabelep"));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

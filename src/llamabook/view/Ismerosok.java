@@ -2,235 +2,290 @@ package llamabook.view;
 
 
 import java.awt.Color;
+import java.awt.Font;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import javax.swing.*;
 import llamabook.controller.PropertiesController;
+import llamabook.model.ModelDao;
+import llamabook.model.bean.Jelol;
+import llamabook.model.bean.Profil;
 /**
  *
  * @author ShockWave
  */
 public class Ismerosok {
-	 private javax.swing.JButton btnAjanlasKuldese;
-    private javax.swing.JButton btnIsmerosnekJelolom;
-    private javax.swing.JButton btnJelolesTorlese;
-    private javax.swing.JButton btnTorles;
-    private javax.swing.JButton btnVisszaigazolas;
-    private javax.swing.JComboBox<String> comboBoxMialapjan;
-    private javax.swing.JList<String> jList3;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JSeparator jSeparator3;
-    private javax.swing.JLabel lblIsmerosAjanlasa;
-    private javax.swing.JLabel lblIsmerosTorlese;
-    private javax.swing.JLabel lblJelolesekKezelese;
-    private javax.swing.JLabel lblNeki;
-    private javax.swing.JList<String> listFelhasznaloJeloles;
-    private javax.swing.JList<String> listIsmerosTorles;
-    private javax.swing.JList<String> listJelolesekKezelese;
-    private javax.swing.JList<String> listNeki;
-    javax.swing.JPanel panel_ismerosok;
-    private javax.swing.JLabel txtFelhasznaloJeloles;
-	PropertiesController props = new PropertiesController();
+    
+    private LlamabookGUI gui;
+    private Profil profil;
+    private Jelol jelol;
+    
+    private JButton btnAjanlasKuldese;
+    private JButton btnIsmerosnekJelolom;
+    private JButton btnJelolesTorlese;
+    private JButton btnTorles;
+    private JButton btnVisszaigazolas;
+    private JComboBox<String> comboBoxMialapjan;
+    private JList<String> jList3;
+    private JScrollPane jScrollPane1;
+    private JScrollPane jScrollPane2;
+    private JScrollPane jScrollPane3;
+    private JScrollPane jScrollPane4;
+    private JScrollPane jScrollPane5;
+    private JSeparator jSeparator1;
+    private JSeparator jSeparator2;
+    private JSeparator jSeparator3;
+    private JLabel lblIsmerosAjanlasa;
+    private JLabel lblIsmerosTorlese;
+    private JLabel lblJelolesekKezelese;
+    private JLabel lblNeki;
+    private JList<String> listFelhasznaloJeloles;
+    private JList<String> listIsmerosTorles;
+    private JList<String> listJelolesekKezelese;
+    private JList<String> listNeki;
+    public JPanel panel_ismerosok;
+    private JLabel txtFelhasznaloJeloles;
+    private PropertiesController props ;
+    private ModelDao dao;
 	
 	
-	
-	public Ismerosok(){
-		panel_ismerosok = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        listFelhasznaloJeloles = new javax.swing.JList<>();
-        txtFelhasznaloJeloles = new javax.swing.JLabel();
-        btnIsmerosnekJelolom = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        listJelolesekKezelese = new javax.swing.JList<>();
-        lblJelolesekKezelese = new javax.swing.JLabel();
-        btnVisszaigazolas = new javax.swing.JButton();
-        btnJelolesTorlese = new javax.swing.JButton();
-        jSeparator1 = new javax.swing.JSeparator();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jList3 = new javax.swing.JList<>();
-        lblIsmerosAjanlasa = new javax.swing.JLabel();
-        lblNeki = new javax.swing.JLabel();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        listNeki = new javax.swing.JList<>();
-        comboBoxMialapjan = new javax.swing.JComboBox<>();
-        btnAjanlasKuldese = new javax.swing.JButton();
-        lblIsmerosTorlese = new javax.swing.JLabel();
-        jScrollPane5 = new javax.swing.JScrollPane();
-        listIsmerosTorles = new javax.swing.JList<>();
-        btnTorles = new javax.swing.JButton();
-        jSeparator2 = new javax.swing.JSeparator();
-        jSeparator3 = new javax.swing.JSeparator();
+    public Ismerosok(Profil profil, LlamabookGUI gui){
+        this.gui = gui;
+        this.props = new PropertiesController();
+        this.dao = this.gui.getController().getDao();
+        this.profil = profil;
+        this.jelol = new Jelol();
+        
+	this.panel_ismerosok = new JPanel();
+        this.jScrollPane1 = new JScrollPane();
+        this.listFelhasznaloJeloles = new JList<>();
+        this.txtFelhasznaloJeloles = new JLabel();
+        this.btnIsmerosnekJelolom = new JButton();
+        this.jScrollPane2 = new JScrollPane();
+        this.listJelolesekKezelese = new JList<>();
+        this.lblJelolesekKezelese = new JLabel();
+        this.btnVisszaigazolas = new JButton();
+        this.btnJelolesTorlese = new JButton();
+        this.jSeparator1 = new JSeparator();
+        this.jScrollPane3 = new JScrollPane();
+        this.jList3 = new JList<>();
+        this.lblIsmerosAjanlasa = new JLabel();
+        this.lblNeki = new JLabel();
+        this.jScrollPane4 = new JScrollPane();
+        this.listNeki = new JList<>();
+        this.comboBoxMialapjan = new JComboBox<>();
+        this.btnAjanlasKuldese = new JButton();
+        this.lblIsmerosTorlese = new JLabel();
+        this.jScrollPane5 = new JScrollPane();
+        this.listIsmerosTorles = new JList<>();
+        this.btnTorles = new JButton();
+        this.jSeparator2 = new JSeparator();
+        this.jSeparator3 = new JSeparator();
 
       
-        panel_ismerosok.setBackground(java.awt.Color.white);
+        this.panel_ismerosok.setBackground(Color.white);
 
-        listFelhasznaloJeloles.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
-        listFelhasznaloJeloles.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+        this.listFelhasznaloJeloles.setBackground(UIManager.getDefaults().getColor("Button.background"));
+        this.listFelhasznaloJeloles.setModel(new AbstractListModel<String>() {
+        String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+            public String getElementAt(int i) { return strings[i]; }            
+           
+        
         });
         jScrollPane1.setViewportView(listFelhasznaloJeloles);
 
-        txtFelhasznaloJeloles.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        txtFelhasznaloJeloles.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        txtFelhasznaloJeloles.setText(props.irjad("feljel"));
+        txtFelhasznaloJeloles.setFont(new Font("Tahoma", 0, 18)); // NOI18N
+        txtFelhasznaloJeloles.setHorizontalAlignment(SwingConstants.CENTER);
+        txtFelhasznaloJeloles.setText(props.getProperty("feljel"));
 
-        btnIsmerosnekJelolom.setText(props.irjad("btnjelol"));
+        btnIsmerosnekJelolom.setText(props.getProperty("btnjelol"));
 
-        listJelolesekKezelese.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
-        listJelolesekKezelese.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+        listJelolesekKezelese.setBackground(UIManager.getDefaults().getColor("Button.background"));
+        
+        /*
+        String[] s = new String[listVmilyen.size()]
+        for(int i = 0; i < s.length; i++){
+            s[i] = listVmilyen.get(i)
+        }
+        */
+        jelol.setKit_email(this.profil.getEmail());
+        List<Jelol> ismerjelol = dao.listSigns(jelol);
+        String[] strings1 = new String[ismerjelol.size()];
+        
+        AtomicInteger b = new AtomicInteger(0);        
+        ismerjelol.forEach(e ->{
+            strings1[b.getAndIncrement()] = e.getEmail();
+        });
+        
+        listJelolesekKezelese.setModel(new AbstractListModel<String>() {
+            public int getSize() { return strings1.length; }
+            public String getElementAt(int i) { return strings1[i]; }
         });
         jScrollPane2.setViewportView(listJelolesekKezelese);
 
         lblJelolesekKezelese.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        lblJelolesekKezelese.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblJelolesekKezelese.setText(props.irjad("jelkez"));
+        lblJelolesekKezelese.setHorizontalAlignment(SwingConstants.CENTER);
+        lblJelolesekKezelese.setText(props.getProperty("jelkez"));
 
-        btnVisszaigazolas.setText(props.irjad("btnvisszaig"));
+        btnVisszaigazolas.setText(props.getProperty("btnvisszaig"));
 
-        btnJelolesTorlese.setText(props.irjad("btnjeltor"));
+        btnJelolesTorlese.setText(props.getProperty("btnjeltor"));
 
-        jList3.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
-        jList3.setModel(new javax.swing.AbstractListModel<String>() {
+        jList3.setBackground(UIManager.getDefaults().getColor("Button.background"));
+        jList3.setModel(new AbstractListModel<String>() {
+           
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            
+            
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
         jScrollPane3.setViewportView(jList3);
 
         lblIsmerosAjanlasa.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        lblIsmerosAjanlasa.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblIsmerosAjanlasa.setText(props.irjad("ismaj"));
+        lblIsmerosAjanlasa.setHorizontalAlignment(SwingConstants.CENTER);
+        lblIsmerosAjanlasa.setText(props.getProperty("ismaj"));
 
         lblNeki.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        lblNeki.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblNeki.setText(props.irjad("neki"));
+        lblNeki.setHorizontalAlignment(SwingConstants.CENTER);
+        lblNeki.setText(props.getProperty("neki"));
 
-        listNeki.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
-        listNeki.setModel(new javax.swing.AbstractListModel<String>() {
+        listNeki.setBackground(UIManager.getDefaults().getColor("Button.background"));
+        listNeki.setModel(new AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
         jScrollPane4.setViewportView(listNeki);
 
-        comboBoxMialapjan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Kozos ismerosok alapjan", "Munkahely alapjan", "Iskola alapjan" }));
+        comboBoxMialapjan.setModel(new DefaultComboBoxModel<>(new String[] { "Kozos ismerosok alapjan", "Munkahely alapjan", "Iskola alapjan" }));
 
-        btnAjanlasKuldese.setText(props.irjad("btnajanlaskuld"));
+        btnAjanlasKuldese.setText(props.getProperty("btnajanlaskuld"));
 
         lblIsmerosTorlese.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        lblIsmerosTorlese.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblIsmerosTorlese.setText(props.irjad("ismtor"));
-
-        listIsmerosTorles.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
-        listIsmerosTorles.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+        lblIsmerosTorlese.setHorizontalAlignment(SwingConstants.CENTER);
+        lblIsmerosTorlese.setText(props.getProperty("ismtor"));
+       
+        
+        
+        
+        List<Profil> barik = dao.userFriends(profil);
+        String[] strings = new String[barik.size()];
+        
+        AtomicInteger c = new AtomicInteger(0);        
+        barik.forEach(e ->{
+            strings[c.getAndIncrement()] = e.getVezeteknev() + " " + e.getKeresztnev();
+        });
+        
+        listIsmerosTorles.setBackground(UIManager.getDefaults().getColor("Button.background"));
+        listIsmerosTorles.setModel(new AbstractListModel<String>() {
+             @Override
+            public int getSize() { 
+                return strings.length; 
+            }
+            
+            @Override
+            public String getElementAt(int i) { 
+                return strings[i]; 
+            }
         });
         jScrollPane5.setViewportView(listIsmerosTorles);
 
-        btnTorles.setText(props.irjad("btntorlom"));
+        btnTorles.setText(props.getProperty("btntorlom"));
 
-        jSeparator3.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jSeparator3.setOrientation(SwingConstants.VERTICAL);
 
-        javax.swing.GroupLayout panel_ismerosokLayout = new javax.swing.GroupLayout(panel_ismerosok);
+        GroupLayout panel_ismerosokLayout = new GroupLayout(panel_ismerosok);
         panel_ismerosok.setLayout(panel_ismerosokLayout);
         panel_ismerosokLayout.setHorizontalGroup(
-            panel_ismerosokLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_ismerosokLayout.createSequentialGroup()
+            panel_ismerosokLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(GroupLayout.Alignment.TRAILING, panel_ismerosokLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panel_ismerosokLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panel_ismerosokLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addGroup(panel_ismerosokLayout.createSequentialGroup()
-                        .addGroup(panel_ismerosokLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(panel_ismerosokLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
                             .addGroup(panel_ismerosokLayout.createSequentialGroup()
                                 .addComponent(btnVisszaigazolas)
                                 .addGap(241, 241, 241)
                                 .addComponent(btnJelolesTorlese))
-                            .addGroup(panel_ismerosokLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(lblJelolesekKezelese, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 469, Short.MAX_VALUE)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panel_ismerosokLayout.createSequentialGroup()
+                            .addGroup(panel_ismerosokLayout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(lblJelolesekKezelese, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 469, Short.MAX_VALUE)
+                                .addComponent(jScrollPane2, GroupLayout.Alignment.LEADING)
+                                .addComponent(jSeparator1, GroupLayout.Alignment.LEADING)
+                                .addComponent(jScrollPane1, GroupLayout.Alignment.LEADING)
+                                .addGroup(GroupLayout.Alignment.LEADING, panel_ismerosokLayout.createSequentialGroup()
                                     .addGap(153, 153, 153)
                                     .addComponent(btnIsmerosnekJelolom))))
                         .addGap(55, 55, 55)
-                        .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jSeparator3, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                         .addGap(27, 27, 27))
                     .addGroup(panel_ismerosokLayout.createSequentialGroup()
-                        .addComponent(txtFelhasznaloJeloles, javax.swing.GroupLayout.PREFERRED_SIZE, 469, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGroup(panel_ismerosokLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_ismerosokLayout.createSequentialGroup()
+                        .addComponent(txtFelhasznaloJeloles, GroupLayout.PREFERRED_SIZE, 469, GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(panel_ismerosokLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addGroup(GroupLayout.Alignment.TRAILING, panel_ismerosokLayout.createSequentialGroup()
                         .addComponent(btnTorles)
                         .addGap(213, 213, 213))
                     .addGroup(panel_ismerosokLayout.createSequentialGroup()
                         .addGap(35, 35, 35)
-                        .addGroup(panel_ismerosokLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(panel_ismerosokLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jSeparator2, GroupLayout.Alignment.TRAILING)
                             .addComponent(jScrollPane3)
-                            .addComponent(lblIsmerosAjanlasa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblNeki, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblIsmerosAjanlasa, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblNeki, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jScrollPane4)
                             .addGroup(panel_ismerosokLayout.createSequentialGroup()
-                                .addComponent(comboBoxMialapjan, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(comboBoxMialapjan, GroupLayout.PREFERRED_SIZE, 322, GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(btnAjanlasKuldese, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE))
-                            .addComponent(lblIsmerosTorlese, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnAjanlasKuldese, GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE))
+                            .addComponent(lblIsmerosTorlese, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jScrollPane5))
                         .addContainerGap())))
         );
         panel_ismerosokLayout.setVerticalGroup(
-            panel_ismerosokLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            panel_ismerosokLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(panel_ismerosokLayout.createSequentialGroup()
-                .addGroup(panel_ismerosokLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_ismerosokLayout.createSequentialGroup()
+                .addGroup(panel_ismerosokLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addGroup(GroupLayout.Alignment.TRAILING, panel_ismerosokLayout.createSequentialGroup()
                         .addGap(492, 492, 492)
-                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jSeparator2, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblIsmerosTorlese)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_ismerosokLayout.createSequentialGroup()
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane5, GroupLayout.PREFERRED_SIZE, 192, GroupLayout.PREFERRED_SIZE))
+                    .addGroup(GroupLayout.Alignment.TRAILING, panel_ismerosokLayout.createSequentialGroup()
                         .addGap(17, 17, 17)
-                        .addGroup(panel_ismerosokLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(panel_ismerosokLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                             .addComponent(txtFelhasznaloJeloles)
                             .addComponent(lblIsmerosAjanlasa))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panel_ismerosokLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panel_ismerosokLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
                             .addGroup(panel_ismerosokLayout.createSequentialGroup()
-                                .addGroup(panel_ismerosokLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(panel_ismerosokLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
                                     .addGroup(panel_ismerosokLayout.createSequentialGroup()
-                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 323, GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(btnIsmerosnekJelolom)
                                         .addGap(17, 17, 17)
-                                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(jSeparator1, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE))
                                     .addGroup(panel_ismerosokLayout.createSequentialGroup()
-                                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jScrollPane3, GroupLayout.PREFERRED_SIZE, 179, GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(lblNeki)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(jScrollPane4)))
                                 .addGap(27, 27, 27)
-                                .addGroup(panel_ismerosokLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addGroup(panel_ismerosokLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                     .addComponent(lblJelolesekKezelese)
-                                    .addComponent(comboBoxMialapjan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(comboBoxMialapjan, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                     .addComponent(btnAjanlasKuldese))
                                 .addGap(8, 8, 8)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jScrollPane2, GroupLayout.PREFERRED_SIZE, 248, GroupLayout.PREFERRED_SIZE))
                             .addComponent(jSeparator3))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panel_ismerosokLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panel_ismerosokLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panel_ismerosokLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addGroup(panel_ismerosokLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(btnVisszaigazolas)
                         .addComponent(btnTorles))
                     .addComponent(btnJelolesTorlese))

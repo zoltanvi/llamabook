@@ -23,7 +23,7 @@ public class PropertiesController {
 		}
         }
 
-	public String irjad(String kulcs) {
+	public String getProperty(String kulcs) {
 		String visszaadom = this.props.getProperty(kulcs);
 		return visszaadom;
 	}

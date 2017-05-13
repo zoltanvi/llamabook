@@ -55,9 +55,9 @@ public class ModelDao {
 			
 			try {
 				
-				String connectionStr = props.irjad("thin") + props.irjad("host") +  ":" + props.irjad("port") + ":" + props.irjad("sid");
+				String connectionStr = props.getProperty("thin") + props.getProperty("host") +  ":" + props.getProperty("port") + ":" + props.getProperty("sid");
 				
-				this.conn = DriverManager.getConnection(connectionStr, props.irjad("AttilaUsername"), props.irjad("AttilaPassword"));
+				this.conn = DriverManager.getConnection(connectionStr, props.getProperty("AttilaUsername"), props.getProperty("AttilaPassword"));
 				
 				
 				if (this.conn != null) {
@@ -141,7 +141,7 @@ public class ModelDao {
 
 
         
-	// profil mennyi csoportba van benne 0?
+	// profil mennyi csoportba van benne 0
 	public int userGroupNumber(Csatlakozik join){
 		int csoportokszama = 0;
 		String profilGNumber = "SELECT count(email) FROM Csatlakozik WHERE email = ?";
@@ -159,7 +159,7 @@ public class ModelDao {
 		return csoportokszama;
 	}
 		
-	// Elméletileg jó viszsa adka az ismerösök számát 0?
+	// Elméletileg jó viszsa adka az ismerösök számát 0
 	public int userFriendsnumber(Jelol sign){
 		int ismerosok = 0;
 		String profilFriendNumber = "SELECT Count(*) FROM Jelol WHERE isFriend = 1 AND email = ?";
@@ -179,10 +179,11 @@ public class ModelDao {
 
 	/*-----------------------------------------------------------------------------------------------------------------------*/
 	
-	// felhasználó ismerősei kiíratása
-	public List<Profil> userFriends(Profil user){
-		String listismer= "SELECT Profil.vezeteknev, Profil.keresztnev, Profil.email FROM Profil, Jelol WHERE Profil.email = ? AND Profil.email = Jelol.email  AND Jelol.isFriend = 1 ";
-		List<Profil> ismer_profil = new ArrayList();
+	// felhasználó ismerősei kiíratása o
+	public List<Profil> userFriends(Profil user){              
+               String listismer = "select p.vezeteknev, p.keresztnev, p.email from jelol j inner join profil p on (j.email=p.email or j.kit_email=p.email) and p.email<>j.email where j.email=? and j.isfriend = 1"; // by Karesz
+               
+                List<Profil> ismer_profil = new ArrayList();
 
 		try(PreparedStatement pst = this.conn.prepareStatement(listismer);){
 
@@ -281,6 +282,32 @@ public class ModelDao {
 		return profil_lista;
 	}
 
+        
+        /// kidolgozásalatt
+        public List<Profil> whoisnotfrie(Profil user){
+            String whono = "SELECT FROM profil p where";
+            List<Profil> list = new ArrayList();
+            try(PreparedStatement pst = this.conn.prepareStatement(whono);){
+                //pst.setString(" ");
+                ResultSet rs = pst.executeQuery();
+                
+                while(rs.next()){
+                    Profil p = new Profil();
+                
+                    list.add(p);
+                }
+                } catch (SQLException e) {
+			System.out.println("Nem sikerült kiírni az ismerösöket! :( ");
+			e.printStackTrace();
+		}
+        
+                return list;
+            }
+        
+        
+        
+        
+        
 	/*-----------------------------------------------------------------------------------------------------------------------*/
 
 	// jeloles elküldése
@@ -305,14 +332,13 @@ public class ModelDao {
 
 	//listáza ki a függőbe lévő jelöléseket
 	public List<Jelol> listSigns(Jelol jelol){
-		String Jeloles_LIST = "SELECT Jelol(*) FROM Jelol WHERE isFriend = 0";
+		String Jeloles_LIST = "SELECT p.vezeteknev, p.keresztnev FROM JELOL j, PROFIL p WHERE   j.KIT_EMAIL = ? and isFriend = 0 ";
 		List<Jelol> jelolesek = new ArrayList();
-
-		try(Connection conn = DriverManager.getConnection(DATABASE_FILE);
-				Statement st = conn.createStatement();
-				)
-		{
-			ResultSet rs = st.executeQuery(Jeloles_LIST);
+                
+                try(PreparedStatement pst = this.conn.prepareStatement(Jeloles_LIST);){
+			pst.setString(1, jelol.getEmail());
+			ResultSet rs = pst.executeQuery();
+		
 
 			while (rs.next()) {
 				Jelol j = new Jelol();
@@ -741,5 +767,20 @@ public class ModelDao {
                     return successful;
                 }   
 }
+/*
+Lekérdezés funkciók:
+
+- Felhasználó regisztrálása
+- Felhasználó regsiztálás közbe email ellenőrzés
+- Felhasználó belépés
+- Felashználó ismerősei száma
+- Felhasználó mennyi csoportban van benne
+- Felhasználó ismerősei listázása (NEM TRIVIÁLIS)
+
+
+
+
+
+*/
 
 
