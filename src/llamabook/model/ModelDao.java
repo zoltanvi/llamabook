@@ -285,15 +285,16 @@ public class ModelDao {
         
         /// kidolgozásalatt
         public List<Profil> whoisnotfrie(Profil user){
-            String whono = "SELECT FROM profil p where";
+            String whono = "select pr.* from profil pr where pr.email not in (select j.kit_email from profil p inner join jelol j on j.email=p.email and p.email= ? ) and pr.email<>?"; // by Karesz
             List<Profil> list = new ArrayList();
             try(PreparedStatement pst = this.conn.prepareStatement(whono);){
-                //pst.setString(" ");
+                pst.setString(1, user.getEmail());
+                pst.setString(2, user.getEmail());
                 ResultSet rs = pst.executeQuery();
                 
                 while(rs.next()){
                     Profil p = new Profil();
-                
+                    
                     list.add(p);
                 }
                 } catch (SQLException e) {

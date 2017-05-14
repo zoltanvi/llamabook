@@ -6,10 +6,6 @@ import java.awt.Font;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import javax.swing.DefaultListModel;
 import llamabook.controller.PropertiesController;
 import llamabook.model.ModelDao;
 import llamabook.model.bean.Jelol;
@@ -107,12 +103,6 @@ public class Ismerosok {
 
         listJelolesekKezelese.setBackground(UIManager.getDefaults().getColor("Button.background"));
         
-        /*
-        String[] s = new String[listVmilyen.size()]
-        for(int i = 0; i < s.length; i++){
-            s[i] = listVmilyen.get(i)
-        }
-        */
         jelol.setKit_email(this.profil.getEmail());
         List<Jelol> ismerjelol = dao.listSigns(jelol);
         String[] strings1 = new String[ismerjelol.size()];
@@ -193,10 +183,19 @@ public class Ismerosok {
             public String getElementAt(int i) { 
                 return strings[i]; 
             }
+            
+            
         });
+        
+        
         jScrollPane5.setViewportView(listIsmerosTorles);
 
         btnTorles.setText(props.getProperty("btntorlom"));
+        
+        btnTorles.addActionListener(e -> {     
+            System.out.println(listIsmerosTorles.getSelectedValue());
+            
+        });
 
         jSeparator3.setOrientation(SwingConstants.VERTICAL);
 
