@@ -746,7 +746,7 @@ public class ModelDao {
                 
                 
                 }      
-                
+                // már reg email
                 public boolean regYetUser(String email){
                     boolean successful =false;
                     String REGYETUSER = "SELECT COUNT(*) FROM PROFIL WHERE PROFIL.EMAIL = ? ";
@@ -766,7 +766,28 @@ public class ModelDao {
 			e.printStackTrace();
                     }
                     return successful;
-                }   
+                } 
+                
+                public List<Profil> allProfil(){
+                    String allprofil = "SELECT p.vezeteknev, p.keresztnev from Profil p ";
+                    List<Profil> profilList = new ArrayList<Profil>();
+                    try(PreparedStatement pst = this.conn.prepareStatement(allprofil)){
+                            
+                        ResultSet rs = pst.executeQuery();
+                        while(rs.next()){
+                            Profil p = new Profil();
+                            p.setVezeteknev(rs.getString("vezeteknev"));
+                            p.setKeresztnev(rs.getString("keresztnev"));
+                            profilList.add(p);
+                        }
+                        
+                    } catch (Exception e) {
+                        System.out.println("Nem tudom listázni :( ");
+			e.printStackTrace();
+                    }
+                    
+                    return profilList; 
+                }
 }
 /*
 Lekérdezés funkciók:

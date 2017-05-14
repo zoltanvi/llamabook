@@ -192,8 +192,10 @@ public class Ismerosok {
 
         btnTorles.setText(props.getProperty("btntorlom"));
         
-        btnTorles.addActionListener(e -> {     
+        btnTorles.addActionListener(e -> {     // még nem jó
             System.out.println(listIsmerosTorles.getSelectedValue());
+            Jelol jelol = new Jelol();
+            gui.getController().signDelete(jelol);
             
         });
 
