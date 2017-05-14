@@ -125,9 +125,10 @@ public class Adatlap {
 
             txtsex.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
             
-            if(nem == 0){
+            if(nem == 1){
                 txtsex.setText("Férfi");
-            } else{
+            }
+			if(nem == 0){
                 txtsex.setText("Nő");
             }
             
