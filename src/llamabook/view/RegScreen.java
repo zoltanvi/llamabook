@@ -13,6 +13,7 @@ import llamabook.model.bean.Profil;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ButtonGroup;
 /**
  *
  * @author ShockWave
@@ -251,7 +252,10 @@ public class RegScreen extends javax.swing.JFrame implements ActionListener{
 		setResizable(false);
 		setVisible(true);
 		setLocation(600, 100);
-		txtDatum.setToolTipText("<html><font size=\"15\"><b>Pl: 96-SZEPT.-02 </b></font><br>Hónapok:<br>- JAN<br>- FEBR<br>- MÁRC<br>- ÁPR<br>- MÁJ<br>- JÚN<br>- JÚL<br>- AUG<br>- SZEPT<br>- OKT<br>- NOV<br>- DEC</html>");
+		ButtonGroup buttongroup = new ButtonGroup();
+		buttongroup.add(radioFerfi);
+		buttongroup.add(radioNo);
+		//txtDatum.setToolTipText("<html><font size=\"15\"><b>Pl: 96-SZEPT.-02 </b></font><br>Hónapok:<br>- JAN<br>- FEBR<br>- MÁRC<br>- ÁPR<br>- MÁJ<br>- JÚN<br>- JÚL<br>- AUG<br>- SZEPT<br>- OKT<br>- NOV<br>- DEC</html>");
 		btnReg.addActionListener(this);
 		btnBack.addActionListener(this);
         pack();
