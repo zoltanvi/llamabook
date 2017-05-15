@@ -304,10 +304,7 @@ public class ModelDao {
         
                 return list;
             }
-        
-        
-        
-        
+            
         
 	/*-----------------------------------------------------------------------------------------------------------------------*/
 
@@ -787,6 +784,22 @@ public class ModelDao {
                     }
                     
                     return profilList; 
+                }
+                // ismerős törlése
+                public boolean friendDelete(Jelol sign){
+                    boolean sf =  false;
+                    String fdq= "Delete From jelol where ki_email = ? and kit_email = ? ";
+                    try(PreparedStatement pst = this.conn.prepareStatement(fdq)){
+                        pst.setString(1, sign.getEmail());
+                        pst.setString(2, sign.getKit_email());
+                        
+                        sf = pst.executeUpdate() == 1;
+                        
+                    } catch (Exception e) {
+                        System.out.println("Nem tudom listázni :( ");
+			e.printStackTrace();
+                    }
+                    return sf;
                 }
 }
 /*

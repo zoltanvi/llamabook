@@ -25,7 +25,8 @@ public class Profil {
         this.munkahely = munkahely;
         this.iskola = iskola;
     }
-
+    
+    
     public Profil() {
     }
 

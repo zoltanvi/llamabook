@@ -3,11 +3,14 @@ package llamabook.view;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.*;
 import llamabook.controller.PropertiesController;
 import llamabook.model.ModelDao;
+import llamabook.model.bean.DeletableProfs;
 import llamabook.model.bean.Jelol;
 import llamabook.model.bean.Profil;
 /**
@@ -162,40 +165,56 @@ public class Ismerosok {
         lblIsmerosTorlese.setText(props.getProperty("ismtor"));
        
         
+       
+        // TODO: kell egy ListModel osztály, aminek a konstruktora kapja a dp-t és a neveket
+        // ezt eltárolja saját privát adattagként
+        // DeleteListModel extends AbstractListModel
+        // public DeleteListModel(List<String> nevek, HashMap<String, String> delete)
         
+  
         
-        List<Profil> barik = dao.userFriends(profil);
-        String[] strings = new String[barik.size()];
+        DeletableProfs dp = new DeletableProfs();
         
-        AtomicInteger c = new AtomicInteger(0);        
-        barik.forEach(e ->{
-            strings[c.getAndIncrement()] = e.getVezeteknev() + " " + e.getKeresztnev();
+        dao.userFriends(profil).forEach(ba -> {
+            dp.add(ba.getEmail(), ba.getVezeteknev()+" "+ba.getKeresztnev());
         });
         
+        List<String> nevek = new ArrayList<>();
+        
+       for(Map.Entry<String, String> entry : dp.getDeleteableProfs().entrySet()){
+           nevek.add(entry.getValue());
+       }
+        
+        AtomicInteger c = new AtomicInteger(0);        
+     
+        
         listIsmerosTorles.setBackground(UIManager.getDefaults().getColor("Button.background"));
-        listIsmerosTorles.setModel(new AbstractListModel<String>() {
-             @Override
+        
+        ListModel lm = new AbstractListModel<String>(){
+              @Override
             public int getSize() { 
-                return strings.length; 
+                return dp.getDeleteableProfs().size();
             }
             
             @Override
             public String getElementAt(int i) { 
-                return strings[i]; 
+                return nevek.get(i);
             }
             
+            public void remove(int index){
+                
+            }
             
-        });
+        };
         
-        
+        listIsmerosTorles.setModel(lm);
+               
         jScrollPane5.setViewportView(listIsmerosTorles);
 
         btnTorles.setText(props.getProperty("btntorlom"));
         
         btnTorles.addActionListener(e -> {     // még nem jó
-            System.out.println(listIsmerosTorles.getSelectedValue());
-            Jelol jelol = new Jelol();
-            gui.getController().signDelete(jelol);
+            listIsmerosTorles.remove(listIsmerosTorles.getSelectedIndex());
             
         });
 

@@ -157,7 +157,7 @@ public class LlamabookGUI extends JFrame implements ActionListener{
 			panel_cardcontainer.setBackground(Color.black);
 			
 			// Példányosítom a főoldalt, úgyis az a kezdő oldal ami betölt. Aztán a menü hatására a többi is létrejöhet.
-			Fooldal fooldal = new Fooldal();
+			Fooldal fooldal = new Fooldal(this.profil);
 			panel_cardcontainer.add(fooldal.panel_fooldal, BorderLayout.CENTER);
 			     setVisible(true);
 
@@ -207,7 +207,7 @@ public class LlamabookGUI extends JFrame implements ActionListener{
 			panel_cardcontainer.revalidate();
 		}
 		if(e.getSource() == button_fooldal){
-			Fooldal fooldal = new Fooldal();
+			Fooldal fooldal = new Fooldal(this.profil);
 			System.out.println("főoldal MENÜ");
 			panel_cardcontainer.removeAll();
 			panel_cardcontainer.add(fooldal.panel_fooldal, BorderLayout.CENTER);

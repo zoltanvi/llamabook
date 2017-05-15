@@ -6,6 +6,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
 import llamabook.controller.MultiLineCellRenderer;
 import llamabook.controller.PropertiesController;
+import llamabook.model.bean.Profil;
 /**
  *
  * @author ShockWave
@@ -30,7 +31,7 @@ public class Fooldal{
 	
 	
 	
-	public Fooldal() {
+	public Fooldal(Profil p) {
             this.props = new PropertiesController();
 		
             panel_fooldal = new javax.swing.JPanel();
