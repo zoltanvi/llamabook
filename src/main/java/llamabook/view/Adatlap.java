@@ -346,8 +346,8 @@ public class Adatlap {
 		// profimage.setIcon(new
 		// ImageIcon(getClass().getResource("/llamabook/resources/dalaillama.jpg")));
 		try {
-			profimage.setIcon(new ImageIcon(
-					ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream("dalailama.jpg"))));
+			profimage.setIcon(new ImageIcon(ImageIO
+					.read(Thread.currentThread().getContextClassLoader().getResourceAsStream("dalaillama.jpg"))));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
