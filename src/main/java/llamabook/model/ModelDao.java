@@ -1,5 +1,10 @@
 package llamabook.model;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -10,6 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 import llamabook.controller.PropertiesController;
 import llamabook.model.bean.Csatlakozik;
@@ -755,7 +763,47 @@ public class ModelDao {
 		}
 		return sf;
 	}
+	
+	public ImageIcon imgShow(String email) {
+		ImageIcon proff = null;
+		String kep_mutat = "SELECT IMAGE from kepek where email = ? and isprof = 1";
+		try (PreparedStatement pst = this.conn.prepareStatement(kep_mutat);) {
+
+			pst.setString(1, email);
+
+			ResultSet rs = pst.executeQuery();
+
+			while (rs.next()) {
+				Blob b = rs.getBlob(1);//1 az első oszlopot jelent az adatbázisból
+				byte barr[] = b.getBytes(1, (int) b.length());
+
+				BufferedImage image;
+				try {
+					image = ImageIO.read(new ByteArrayInputStream(barr));
+					
+					Image dimg = image.getScaledInstance(210, 280, Image.SCALE_SMOOTH);
+					// profimage felbontás: 210*280
+					proff = new ImageIcon(dimg);
+
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Nem sikerült lekérni a profilképet! :( ");
+			e.printStackTrace();
+		}
+		return proff;
+		
+	}
+	
 }
+		
+			// ***********************************************************
+		
+
 /*
  * Lekérdezés funkciók:
  *

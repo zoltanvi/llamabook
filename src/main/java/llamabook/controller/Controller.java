@@ -1,6 +1,17 @@
 package llamabook.controller;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.sql.Blob;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 import llamabook.model.ModelDao;
 import llamabook.model.bean.Csatlakozik;
@@ -124,5 +135,11 @@ public class Controller {
 	public List<Profil> getAllUser() {
 		return model.allProfil();
 	}
+	
+	public ImageIcon imgShow(String email) {
+		return model.imgShow(email);
+		
+	}
+	
 
 }

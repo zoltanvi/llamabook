@@ -19,6 +19,7 @@ import javax.swing.LayoutStyle;
 
 import llamabook.controller.Controller;
 import llamabook.controller.PropertiesController;
+import llamabook.model.ModelDao;
 import llamabook.model.bean.Csatlakozik;
 import llamabook.model.bean.Jelol;
 import llamabook.model.bean.Profil;
@@ -152,8 +153,7 @@ public class Adatlap {
 
 		if (nem == 1) {
 			txtsex.setText("Férfi");
-		}
-		if (nem == 0) {
+		} else {
 			txtsex.setText("Nő");
 		}
 
@@ -184,9 +184,6 @@ public class Adatlap {
 
 		lblmeghivottak.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
 		lblmeghivottak.setText(Integer.toString(csoportagsag));
-
-		// ismerosadatlap.setModel(new DefaultComboBoxModel<>(new String[] {
-		// "Zoli", "Attila", "Ă�kos", "Teszt" }));
 
 		ismerosadatlap.setModel(new DefaultComboBoxModel<>(getProfiles()));
 
@@ -362,12 +359,11 @@ public class Adatlap {
 
 		// profimage.setIcon(new
 		// ImageIcon(getClass().getResource("/llamabook/resources/dalaillama.jpg")));
-		try {
-			profimage.setIcon(new ImageIcon(ImageIO
-					.read(Thread.currentThread().getContextClassLoader().getResourceAsStream("dalaillama.jpg"))));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		
+		//	profimage.setIcon(new ImageIcon(ImageIO
+		//			.read(Thread.currentThread().getContextClassLoader().getResourceAsStream("dalaillama.jpg"))));
+		profimage.setIcon(this.controller.imgShow(email));	
+			
 	}
 
 	private void addMegnyitListener(JButton jButton12, Vector<String> vector, JComboBox<String> combobox) {
@@ -385,6 +381,7 @@ public class Adatlap {
 					this.txtsex.setText(p.getNem() == 1 ? "férfi" : "nő");
 					this.lblmeghivottak.setText(this.controller.userGroupNumber(p.getEmail()) + "");
 					this.jLabel2.setText(this.controller.userFriendsnumber(p.getEmail()) + "");
+					this.profimage.setIcon(this.controller.imgShow(p.getEmail()));
 				}
 			});
 

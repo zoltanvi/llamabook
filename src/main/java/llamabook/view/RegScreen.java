@@ -3,6 +3,7 @@ package llamabook.view;
 import com.sun.jndi.toolkit.ctx.Continuation;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import javax.swing.ImageIcon;
@@ -13,6 +14,8 @@ import llamabook.model.bean.Profil;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
 /**
  *
@@ -248,7 +251,13 @@ public class RegScreen extends javax.swing.JFrame implements ActionListener{
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-		lblRegIcon.setIcon(new ImageIcon(getClass().getResource("/llamabook/resources/registicon.png")));
+		
+        try {
+			lblRegIcon.setIcon(new ImageIcon(ImageIO.read(
+					Thread.currentThread().getContextClassLoader().getResourceAsStream("registicon.png"))));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		setResizable(false);
 		setVisible(true);
 		setLocation(600, 100);
