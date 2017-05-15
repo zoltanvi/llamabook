@@ -1,8 +1,5 @@
 package llamabook.model;
 
-
-
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -13,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import llamabook.controller.PropertiesController;
 import llamabook.model.bean.Csatlakozik;
 import llamabook.model.bean.Group;
@@ -22,62 +20,59 @@ import llamabook.model.bean.Poszt;
 import llamabook.model.bean.Profil;
 import llamabook.model.bean.Uzen;
 
-
-
 public class ModelDao {
-
-	//private Properties pro =  new Properties("jdbc:oracle:thin:@","localhost","4000","kabinet");
+	// private Properties pro = new
+	// Properties("jdbc:oracle:thin:@","localhost","4000","kabinet");
 	private String DATABASE_FILE;
-        private final PropertiesController props = new PropertiesController();
-        private static Connection conn;
-        
-        
-        public static void closeConnection(){
-            try {
-                conn.close();
-                if(conn.isClosed()){
-                    System.out.println("Sikeres db kapcsolat lezárás");
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(ModelDao.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+	private final PropertiesController props = new PropertiesController();
+	private static Connection conn;
 
-	public ModelDao(){
-			try {
-				Class.forName("oracle.jdbc.driver.OracleDriver");
-				
-			} catch (ClassNotFoundException ex) {
-				System.out.println("Nem talalhato driver!");
-				System.exit(1);
+	public static void closeConnection() {
+		try {
+			conn.close();
+			if (conn.isClosed()) {
+				System.out.println("Sikeres db kapcsolat lezárás");
 			}
-			
-			
-			try {
-				
-				String connectionStr = props.getProperty("thin") + props.getProperty("host") +  ":" + props.getProperty("port") + ":" + props.getProperty("sid");
-				
-				this.conn = DriverManager.getConnection(connectionStr, props.getProperty("AttilaUsername"), props.getProperty("AttilaPassword"));
-				
-				
-				if (this.conn != null) {
-					System.out.println("Sikeres kapcsolodas az adatbazishoz! :)");
-				}
-				
-			} catch (SQLException e) {
-				System.out.println("Nem sikerult kapcsolodnom az adatbazishoz! :( ");
-				System.exit(1);
+		} catch (SQLException ex) {
+			Logger.getLogger(ModelDao.class.getName()).log(Level.SEVERE, null, ex);
+		}
+	}
+
+	public ModelDao() {
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+
+		} catch (ClassNotFoundException ex) {
+			System.out.println("Nem talalhato driver!");
+			System.exit(1);
+		}
+
+		try {
+
+			String connectionStr = props.getProperty("thin") + props.getProperty("host") + ":"
+					+ props.getProperty("port") + ":" + props.getProperty("sid");
+
+			this.conn = DriverManager.getConnection(connectionStr, props.getProperty("AttilaUsername"),
+					props.getProperty("AttilaPassword"));
+
+			if (this.conn != null) {
+				System.out.println("Sikeres kapcsolodas az adatbazishoz! :)");
 			}
+
+		} catch (SQLException e) {
+			System.out.println("Nem sikerult kapcsolodnom az adatbazishoz! :( ");
+			System.exit(1);
+		}
 	}
 
 	/*-----------------------------------------------------------------------------------------------------------------------*/
 
 	// felhasznalo regisztralasa az adatbazisba 0
-	public boolean userRegis(Profil user){
+	public boolean userRegis(Profil user) {
 		boolean successful = false;
 		String regiszUser = "INSERT INTO PROFIL(email ,vezeteknev, keresztnev, nem, birthdate, jelszo, munkahely, iskola) VALUES (?, ?, ?, ?, TO_DATE(?,'YYYY-MM-DD'), ?, ?, ?)";
-		try(PreparedStatement pst = this.conn.prepareStatement(regiszUser)){
-              
+		try (PreparedStatement pst = this.conn.prepareStatement(regiszUser)) {
+
 			pst.setString(1, user.getEmail());
 			pst.setString(2, user.getVezeteknev());
 			pst.setString(3, user.getKeresztnev());
@@ -88,10 +83,8 @@ public class ModelDao {
 			pst.setString(8, user.getIskola());
 
 			successful = pst.executeUpdate() == 1;
-                        
-                        
-         
-		} catch (SQLException e){
+
+		} catch (SQLException e) {
 			System.out.println("A regisztráció sikertelen volt! :( ");
 			e.printStackTrace();
 		}
@@ -99,93 +92,85 @@ public class ModelDao {
 		return successful;
 	}
 
-
-        
-	//user belep a profiljába 0
-	public Profil userLoggingIn(Profil user){
+	// user belep a profiljába 0
+	public Profil userLoggingIn(Profil user) {
 		String EnterUser = "SELECT * FROM PROFIL WHERE PROFIL.EMAIL = ? AND PROFIL.JELSZO = ?";
 
-		try(PreparedStatement pst = this.conn.prepareStatement(EnterUser);){
+		try (PreparedStatement pst = this.conn.prepareStatement(EnterUser);) {
 
 			pst.setString(1, user.getEmail());
 			pst.setString(2, user.getJelszo());
 			ResultSet rs = pst.executeQuery();
-                        
-                            rs.next();
-                            
-                            
-                            Profil p = new Profil();
-                            p.setEmail(user.getEmail()); // ugyanez itt is a helyzet
-                            p.setVezeteknev(rs.getString(2));
-                            p.setKeresztnev(rs.getString(3));
-                            p.setNem(rs.getInt(4));
-                            p.setBirthdate(rs.getDate(5).toString());
-                            p.setJelszo(user.getJelszo()); // van már egy objectünk amiben van jelszó
-                            p.setMunkahely(rs.getString(7));
-                            p.setIskola(rs.getString(8));
-                           
-                           
-                            
-                            return p;
-                            
-                     
-                                
-			
-		} catch(SQLException e){
+
+			rs.next();
+
+			Profil p = new Profil();
+			p.setEmail(user.getEmail()); // ugyanez itt is a helyzet
+			p.setVezeteknev(rs.getString(2));
+			p.setKeresztnev(rs.getString(3));
+			p.setNem(rs.getInt(4));
+			p.setBirthdate(rs.getDate(5).toString());
+			p.setJelszo(user.getJelszo()); // van már egy objectünk amiben van
+											// jelszó
+			p.setMunkahely(rs.getString(7));
+			p.setIskola(rs.getString(8));
+
+			return p;
+
+		} catch (SQLException e) {
 			System.out.println("Belépés sikertelen volt! :(");
-                        e.printStackTrace();
-                         return null;
+			e.printStackTrace();
+			return null;
 		}
 
 	}
 
-
-        
 	// profil mennyi csoportba van benne 0
-	public int userGroupNumber(Csatlakozik join){
+	public int userGroupNumber(String email) {
 		int csoportokszama = 0;
 		String profilGNumber = "SELECT count(email) FROM Csatlakozik WHERE email = ?";
-		try(PreparedStatement pst = this.conn.prepareStatement(profilGNumber);){
+		try (PreparedStatement pst = this.conn.prepareStatement(profilGNumber);) {
 
-			pst.setString(1, join.getEmail());// saját emailjet kell megadnia
+			pst.setString(1, email);// saját emailjet kell megadnia
 			ResultSet rs = pst.executeQuery();
-			rs.next();//0. ról 1. re
+			rs.next();// 0. ról 1. re
 			csoportokszama = rs.getInt(1); // 1 cella, count() érték
 
-		} catch(SQLException e){
+		} catch (SQLException e) {
 			System.out.println("Csoportok száma amiben benne van sikertelen volt! :(");
 
 		}
 		return csoportokszama;
 	}
-		
+
 	// Elméletileg jó viszsa adka az ismerösök számát 0
-	public int userFriendsnumber(Jelol sign){
+	public int userFriendsnumber(String email) {
 		int ismerosok = 0;
 		String profilFriendNumber = "SELECT Count(*) FROM Jelol WHERE isFriend = 1 AND email = ?";
-		try(PreparedStatement pst = this.conn.prepareStatement(profilFriendNumber);){
+		try (PreparedStatement pst = this.conn.prepareStatement(profilFriendNumber);) {
 
-			pst.setString(1, sign.getEmail());// 
+			pst.setString(1, email);//
 			ResultSet rs = pst.executeQuery();
-				
-			rs.next();// 0. ról ami üres 1. sorra lépteti  
+
+			rs.next();// 0. ról ami üres 1. sorra lépteti
 			ismerosok = rs.getInt(1);
 
-		} catch(SQLException e){
+		} catch (SQLException e) {
 			System.out.println("Ismerösök száma kiadás sikertelen volt! :(");
 		}
 		return ismerosok;
 	}
 
 	/*-----------------------------------------------------------------------------------------------------------------------*/
-	
-	// felhasználó ismerősei kiíratása o
-	public List<Profil> userFriends(Profil user){              
-               String listismer = "select p.vezeteknev, p.keresztnev, p.email from jelol j inner join profil p on (j.email=p.email or j.kit_email=p.email) and p.email<>j.email where j.email=? and j.isfriend = 1"; // by Karesz
-               
-                List<Profil> ismer_profil = new ArrayList();
 
-		try(PreparedStatement pst = this.conn.prepareStatement(listismer);){
+	// felhasználó ismerősei kiíratása o
+	public List<Profil> userFriends(Profil user) {
+		String listismer = "select p.vezeteknev, p.keresztnev, p.email from jelol j inner join profil p on (j.email=p.email or j.kit_email=p.email) and p.email<>j.email where j.email=? and j.isfriend = 1"; // by
+																																																				// Karesz
+
+		List<Profil> ismer_profil = new ArrayList();
+
+		try (PreparedStatement pst = this.conn.prepareStatement(listismer);) {
 
 			pst.setString(1, user.getEmail());
 			ResultSet rs = pst.executeQuery();
@@ -205,13 +190,13 @@ public class ModelDao {
 
 		return ismer_profil;
 	}
-	
+
 	// ismeros kereses 1. 2. paraméterrel
-	public List<Profil> userSeek(Profil user){
+	public List<Profil> userSeek(Profil user) {
 		String keresismeros = "SELECT Profil(*) FROM Profil WHERE Profil.vezeteknev = ? AND Profil.keresztnev = ? ";
 		List<Profil> profil_lista = new ArrayList();
 
-		try(PreparedStatement pst = this.conn.prepareStatement(keresismeros);){
+		try (PreparedStatement pst = this.conn.prepareStatement(keresismeros);) {
 			pst.setString(1, user.getVezeteknev());
 			pst.setString(2, user.getKeresztnev());
 			ResultSet rs = pst.executeQuery();
@@ -233,11 +218,11 @@ public class ModelDao {
 	}
 
 	// ismeros kereses 1. paraméterrel (csak vezeteknev)
-	public List<Profil> userseekFirst(Profil user){
+	public List<Profil> userseekFirst(Profil user) {
 		String keresismeros1 = "SELECT Profil(*) FROM Profil WHERE Profil.vezeteknev = ?";
 		List<Profil> profil_lista = new ArrayList();
 
-		try(PreparedStatement pst = this.conn.prepareStatement(keresismeros1);){
+		try (PreparedStatement pst = this.conn.prepareStatement(keresismeros1);) {
 			pst.setString(1, user.getVezeteknev());
 			ResultSet rs = pst.executeQuery();
 
@@ -258,11 +243,11 @@ public class ModelDao {
 	}
 
 	// ismeros kereses 2. paraméterrel (csak keresztnev)
-	public List<Profil> userseekSecond(Profil user){
+	public List<Profil> userseekSecond(Profil user) {
 		String keresismeros2 = "SELECT Profil(*) FROM Profil WHERE Profil.keresztnev = ?";
 		List<Profil> profil_lista = new ArrayList();
 
-		try(PreparedStatement pst = this.conn.prepareStatement(keresismeros2);){
+		try (PreparedStatement pst = this.conn.prepareStatement(keresismeros2);) {
 			pst.setString(1, user.getKeresztnev());
 			ResultSet rs = pst.executeQuery();
 
@@ -282,61 +267,58 @@ public class ModelDao {
 		return profil_lista;
 	}
 
-        
-        /// kidolgozásalatt
-        public List<Profil> whoisnotfrie(Profil user){
-            String whono = "select pr.* from profil pr where pr.email not in (select j.kit_email from profil p inner join jelol j on j.email=p.email and p.email= ? ) and pr.email<>?"; // by Karesz
-            List<Profil> list = new ArrayList();
-            try(PreparedStatement pst = this.conn.prepareStatement(whono);){
-                pst.setString(1, user.getEmail());
-                pst.setString(2, user.getEmail());
-                ResultSet rs = pst.executeQuery();
-                
-                while(rs.next()){
-                    Profil p = new Profil();
-                    
-                    list.add(p);
-                }
-                } catch (SQLException e) {
+	/// kidolgozásalatt
+	public List<Profil> whoisnotfrie(Profil user) {
+		String whono = "select pr.* from profil pr where pr.email not in (select j.kit_email from profil p inner join jelol j on j.email=p.email and p.email= ? ) and pr.email<>?"; // by
+																																													// Karesz
+		List<Profil> list = new ArrayList();
+		try (PreparedStatement pst = this.conn.prepareStatement(whono);) {
+			pst.setString(1, user.getEmail());
+			pst.setString(2, user.getEmail());
+			ResultSet rs = pst.executeQuery();
+
+			while (rs.next()) {
+				Profil p = new Profil();
+
+				list.add(p);
+			}
+		} catch (SQLException e) {
 			System.out.println("Nem sikerült kiírni az ismerösöket! :( ");
 			e.printStackTrace();
 		}
-        
-                return list;
-            }
-            
-        
+
+		return list;
+	}
+
 	/*-----------------------------------------------------------------------------------------------------------------------*/
 
 	// jeloles elküldése
-	public boolean friendSign(Jelol jelol){
+	public boolean friendSign(Jelol jelol) {
 		boolean successful = false;
 		String Jeloles_LIST = "INSERT INTO Jelol (email ,kit_email, isFriend) VALUES (?, ?, ?)";
-		try(PreparedStatement pst = this.conn.prepareStatement(Jeloles_LIST);){
+		try (PreparedStatement pst = this.conn.prepareStatement(Jeloles_LIST);) {
 
 			pst.setString(1, jelol.getEmail());
 			pst.setString(2, jelol.getKit_email());
 			pst.setBoolean(3, jelol.isFriend());
 
-
 			successful = pst.executeUpdate() == 1;
 
-		} catch (SQLException e){
+		} catch (SQLException e) {
 			System.out.println("Jelölés sikertelen vagy már megtörtént! :( ");
 			e.printStackTrace();
 		}
 		return successful;
 	}
 
-	//listáza ki a függőbe lévő jelöléseket
-	public List<Jelol> listSigns(Jelol jelol){
+	// listáza ki a függőbe lévő jelöléseket
+	public List<Jelol> listSigns(Jelol jelol) {
 		String Jeloles_LIST = "SELECT p.vezeteknev, p.keresztnev FROM JELOL j, PROFIL p WHERE   j.KIT_EMAIL = ? and isFriend = 0 ";
 		List<Jelol> jelolesek = new ArrayList();
-                
-                try(PreparedStatement pst = this.conn.prepareStatement(Jeloles_LIST);){
+
+		try (PreparedStatement pst = this.conn.prepareStatement(Jeloles_LIST);) {
 			pst.setString(1, jelol.getEmail());
 			ResultSet rs = pst.executeQuery();
-		
 
 			while (rs.next()) {
 				Jelol j = new Jelol();
@@ -353,62 +335,56 @@ public class ModelDao {
 		return jelolesek;
 	}
 
-	//ismerem , elfogoadom 0 át  1 re állít
-	public boolean signAccept(Jelol sign){
-		boolean successful = false ;
+	// ismerem , elfogoadom 0 át 1 re állít
+	public boolean signAccept(Jelol sign) {
+		boolean successful = false;
 		String signUpdate = " UPDATE Jelol SET Jelol.isFriend = 1 WHERE Jelol.email = ? AND Jelol.kit_email = ? ";
-		try(Connection conn = DriverManager.getConnection(DATABASE_FILE);
-				PreparedStatement pst = conn.prepareStatement(signUpdate);
-				)
-		{
+		try (Connection conn = DriverManager.getConnection(DATABASE_FILE);
+				PreparedStatement pst = conn.prepareStatement(signUpdate);) {
 
 			pst.setString(1, sign.getEmail()); // sajátod
 			pst.setString(2, sign.getKit_email()); // kit akarsz törölni
 
 			successful = pst.executeUpdate() == 1;
 
-		} catch (SQLException e){
+		} catch (SQLException e) {
 			System.out.println("A csoport létrehozás sikertelen volt! :( ");
 			e.printStackTrace();
 		}
 		return successful;
 	}
-	
-	//ha nem ismerem , akkor törlöm
-	public boolean signDelete(Jelol sign){
-		boolean successful = false ;
+
+	// ha nem ismerem , akkor törlöm
+	public boolean signDelete(Jelol sign) {
+		boolean successful = false;
 		String signDelete = " DELETE FROM Jelol WHERE Jelol.email = ? Jelol.kit_email = ? ";
-		try(Connection conn = DriverManager.getConnection(DATABASE_FILE);
-				PreparedStatement pst = conn.prepareStatement(signDelete);
-				)
-		{
+		try (Connection conn = DriverManager.getConnection(DATABASE_FILE);
+				PreparedStatement pst = conn.prepareStatement(signDelete);) {
 			pst.setString(1, sign.getEmail()); // sajatod
 			pst.setString(2, sign.getKit_email()); // kit akarsz törölni
 
 			successful = pst.executeUpdate() == 1;
 
-		} catch (SQLException e){
+		} catch (SQLException e) {
 			System.out.println("A csoport létrehozás sikertelen volt! :( ");
 			e.printStackTrace();
 		}
 		return successful;
 	}
-	
+
 	/*-----------------------------------------------------------------------------------------------------------------------*/
 
 	// csoport létrehozása
-	public boolean createGroup(Group group){
-		boolean successful  = false;
+	public boolean createGroup(Group group) {
+		boolean successful = false;
 		String CREAT_GROUP = "INSERT INTO Group (nev) VALUES (?)";
-		try(Connection conn = DriverManager.getConnection(DATABASE_FILE);
-				PreparedStatement pst = conn.prepareStatement(CREAT_GROUP);
-				)
-		{
+		try (Connection conn = DriverManager.getConnection(DATABASE_FILE);
+				PreparedStatement pst = conn.prepareStatement(CREAT_GROUP);) {
 			pst.setString(1, group.getCsoportnev());
 
 			successful = pst.executeUpdate() == 1;
 
-		} catch (SQLException e){
+		} catch (SQLException e) {
 			System.out.println("A csoport létrehozás sikertelen volt! :( ");
 			e.printStackTrace();
 		}
@@ -417,22 +393,19 @@ public class ModelDao {
 	}
 
 	// csoport belépés
-	public boolean joinGroup(Csatlakozik join){
+	public boolean joinGroup(Csatlakozik join) {
 		boolean successful = false;
 		String JOIN_GROUP = "INSERT INTO CSATLAKOZIK(csoportID, emial) VALUES ( ?, ?)";
 
-		try(Connection conn = DriverManager.getConnection(DATABASE_FILE);
-				PreparedStatement pst = conn.prepareStatement(JOIN_GROUP);
-				){
-			
+		try (Connection conn = DriverManager.getConnection(DATABASE_FILE);
+				PreparedStatement pst = conn.prepareStatement(JOIN_GROUP);) {
+
 			pst.setInt(1, join.getCsoportID());
 			pst.setString(2, join.getEmail());
 
-		
-
 			successful = pst.executeUpdate() == 1;
 
-		} catch (SQLException e){
+		} catch (SQLException e) {
 			System.out.println("A csoporthoz való csatlakozás sikertelen volt! :( ");
 			e.printStackTrace();
 		}
@@ -442,14 +415,11 @@ public class ModelDao {
 	}
 
 	// összes csoport kilistázása
-	public List<Group> listGroup(){
+	public List<Group> listGroup() {
 		String List_GROUP = "SELECT Csoport(*) FROM Csoport";
 		List<Group> groups = new ArrayList();
 
-		try(Connection conn = DriverManager.getConnection(DATABASE_FILE);
-				Statement st = conn.createStatement();
-				)
-		{
+		try (Connection conn = DriverManager.getConnection(DATABASE_FILE); Statement st = conn.createStatement();) {
 			ResultSet rs = st.executeQuery(List_GROUP);
 
 			while (rs.next()) {
@@ -467,20 +437,19 @@ public class ModelDao {
 	}
 
 	// csoport tagok számának kiírása
-	public List<Group> groupsmemberNumber(Group cs){
-		String CSoportletszam_count= "SELECT Count(*) FROM Csoport WHERE csoportNev = ? ";
+	public List<Group> groupsmemberNumber(Group cs) {
+		String CSoportletszam_count = "SELECT Count(*) FROM Csoport WHERE csoportNev = ? ";
 		List<Group> group = new ArrayList();
-		try(Connection conn = DriverManager.getConnection(DATABASE_FILE);
-				PreparedStatement pst = conn.prepareStatement(CSoportletszam_count);
-				){
+		try (Connection conn = DriverManager.getConnection(DATABASE_FILE);
+				PreparedStatement pst = conn.prepareStatement(CSoportletszam_count);) {
 
 			pst.setString(1, cs.getCsoportnev());
 
 			ResultSet rs = pst.executeQuery();
 
 			rs.next();
-			
-		} catch (SQLException e){
+
+		} catch (SQLException e) {
 			System.out.println("Új üzi küldés sikertelen volt! :( ");
 			e.printStackTrace();
 		}
@@ -491,20 +460,19 @@ public class ModelDao {
 	/*-----------------------------------------------------------------------------------------------------------------------*/
 
 	// Üzcsi dobás
-	public boolean sendMessage(Uzen message){
+	public boolean sendMessage(Uzen message) {
 		boolean successful = false;
-		String SEND_MES ="INSERT INTO Uzen(email, kinek_email, uzenet) VALUES(?, ?, ?) ";
+		String SEND_MES = "INSERT INTO Uzen(email, kinek_email, uzenet) VALUES(?, ?, ?) ";
 
-		try(Connection conn = DriverManager.getConnection(DATABASE_FILE);
-				PreparedStatement pst = conn.prepareStatement(SEND_MES);
-				){
+		try (Connection conn = DriverManager.getConnection(DATABASE_FILE);
+				PreparedStatement pst = conn.prepareStatement(SEND_MES);) {
 			pst.setString(1, message.getEmail());
 			pst.setString(2, message.getKinek_email());
 			pst.setString(3, message.getUzenet());
 
 			successful = pst.executeUpdate() == 1;
 
-		} catch (SQLException e){
+		} catch (SQLException e) {
 			System.out.println("Új üzi küldés sikertelen volt! :( ");
 			e.printStackTrace();
 		}
@@ -512,14 +480,12 @@ public class ModelDao {
 		return successful;
 	}
 
-	//Üzcsi listázás
-	public List<Uzen> listMessage(Uzen message){
+	// Üzcsi listázás
+	public List<Uzen> listMessage(Uzen message) {
 		List<Uzen> Uzenetek = new ArrayList();
 		String List_Uzen = "SELECT Uzen(*) FROM Uzen WHERE ( email = ? AND kinek_email = ? ) OR ( email = ? AND kinek_email = ? )";
-		try(Connection conn = DriverManager.getConnection(DATABASE_FILE);
-				PreparedStatement pst = conn.prepareStatement(List_Uzen);
-				)
-		{
+		try (Connection conn = DriverManager.getConnection(DATABASE_FILE);
+				PreparedStatement pst = conn.prepareStatement(List_Uzen);) {
 			pst.setString(1, message.getEmail());
 			pst.setString(2, message.getKinek_email());
 			pst.setString(3, message.getKinek_email());
@@ -545,13 +511,12 @@ public class ModelDao {
 	/*-----------------------------------------------------------------------------------------------------------------------*/
 
 	// Poszt létrehozása
-	public boolean posztCreate(Poszt post){
+	public boolean posztCreate(Poszt post) {
 		boolean successful = false;
 		String create_poszt = "INSERT INTO Poszt(email, datum, bejegyzes) VALUES (?, ?, ?)";
 
-		try(Connection conn = DriverManager.getConnection(DATABASE_FILE);
-				PreparedStatement pst = conn.prepareStatement(create_poszt);
-				){
+		try (Connection conn = DriverManager.getConnection(DATABASE_FILE);
+				PreparedStatement pst = conn.prepareStatement(create_poszt);) {
 
 			pst.setString(1, post.getEmail());
 			pst.setDate(2, post.getDatum());
@@ -559,22 +524,20 @@ public class ModelDao {
 
 			successful = pst.executeUpdate() == 1;
 
-		} catch (SQLException e){
+		} catch (SQLException e) {
 			System.out.println("Új üzi küldés sikertelen volt! :( ");
 			e.printStackTrace();
 		}
 
 		return successful;
 	}
-	
+
 	// Listázza a profil posztjait
-	public List<Poszt> listPoszt(Poszt post){
+	public List<Poszt> listPoszt(Poszt post) {
 		List<Poszt> Posts = new ArrayList();
 		String List_Uzen = "SELECT Poszt(*) FROM Poszt WHERE Poszt.email = ? ORDER BY Poszt.datum ASC ";
-		try(Connection conn = DriverManager.getConnection(DATABASE_FILE);
-				PreparedStatement pst = conn.prepareStatement(List_Uzen);
-				)
-		{
+		try (Connection conn = DriverManager.getConnection(DATABASE_FILE);
+				PreparedStatement pst = conn.prepareStatement(List_Uzen);) {
 			pst.setString(1, post.getEmail());
 			ResultSet rs = pst.executeQuery();
 
@@ -596,37 +559,34 @@ public class ModelDao {
 	/*-----------------------------------------------------------------------------------------------------------------------*/
 
 	// kommentel poszt allá
-	public boolean createCommment(Kommentel comment){
+	public boolean createCommment(Kommentel comment) {
 		boolean successful = false;
 		String create_poszt = "INSERT INTO Kommentel(email, posztid, komment) VALUES (?, ?, ?)";
 
-		try(Connection conn = DriverManager.getConnection(DATABASE_FILE);
-				PreparedStatement pst = conn.prepareStatement(create_poszt);
-				){
+		try (Connection conn = DriverManager.getConnection(DATABASE_FILE);
+				PreparedStatement pst = conn.prepareStatement(create_poszt);) {
 
 			pst.setString(1, comment.getEmail());
 			pst.setInt(2, comment.getPosztID());
 			pst.setString(3, comment.getKomment());
 
-
 			successful = pst.executeUpdate() == 1;
 
-		} catch (SQLException e){
+		} catch (SQLException e) {
 			System.out.println("Új üzi küldés sikertelen volt! :( ");
 			e.printStackTrace();
 		}
 
 		return successful;
 	}
-	
-	 // kommentek listázása // gondolkozok 
-	public List<Kommentel> listComment(Kommentel comment){
+
+	// kommentek listázása // gondolkozok
+	public List<Kommentel> listComment(Kommentel comment) {
 		List<Kommentel> comments = new ArrayList();
 		String commentlist = "WHERE email, komment FROM Kommentel WHERE posztID = ? ";
-		
-		try(Connection conn = DriverManager.getConnection(DATABASE_FILE);
-				PreparedStatement pst = conn.prepareStatement(commentlist);
-				){
+
+		try (Connection conn = DriverManager.getConnection(DATABASE_FILE);
+				PreparedStatement pst = conn.prepareStatement(commentlist);) {
 
 			pst.setString(1, comment.getEmail());
 			ResultSet rs = pst.executeQuery();
@@ -637,23 +597,19 @@ public class ModelDao {
 				c.setKomment(rs.getString("komment"));
 				comments.add(c);
 			}
-		} catch (SQLException e){
+		} catch (SQLException e) {
 			System.out.println("Kommentek listázása sikertelen volt! :( ");
 			e.printStackTrace();
 		}
-		
+
 		return comments;
 	}
 	/*-----------------------------------------------------------------------------------------------------------------------*/
 
-	
-	
-	public List<Profil> szulinap_List(Profil user){
+	public List<Profil> szulinap_List(Profil user) {
 		String List_szulinap = "SELECT Profil.vezeteknev, Profil.keresztnev, Profil.birthdate FROM Profil WHERE MONTH(Profile.birthdate) = 5";
 		List<Profil> szulnaposok = new ArrayList();
-		try(Connection conn = DriverManager.getConnection(DATABASE_FILE);
-				Statement st = conn.createStatement();)
-		{
+		try (Connection conn = DriverManager.getConnection(DATABASE_FILE); Statement st = conn.createStatement();) {
 			ResultSet rs = st.executeQuery(List_szulinap);
 
 			while (rs.next()) {
@@ -670,13 +626,11 @@ public class ModelDao {
 		}
 		return szulnaposok;
 	}
-	
-	public List<Profil> ismerosMunka_list(Profil user){
+
+	public List<Profil> ismerosMunka_list(Profil user) {
 		String List_ismerosMunka = "SELECT Profil.vezeteknev, Profil.keresznev FROM Profil, Jelol FULL OUTER JOIN Jelol ON  Profil.email = Jelol.email WHERE Jelol.isFriend = 0 AND Profil.munkahely ...========= még kigondolom";
-		List<Profil> ismMunka = new ArrayList<Profil>();
-		try(Connection conn = DriverManager.getConnection(DATABASE_FILE);
-				Statement st = conn.createStatement();)
-		{
+		List<Profil> ismMunka = new ArrayList<>();
+		try (Connection conn = DriverManager.getConnection(DATABASE_FILE); Statement st = conn.createStatement();) {
 			ResultSet rs = st.executeQuery(List_ismerosMunka);
 
 			while (rs.next()) {
@@ -692,15 +646,13 @@ public class ModelDao {
 			e.printStackTrace();
 		}
 		return ismMunka;
-		
-	}        
-        
-        	public List<Profil> ismerosSuli_list(Profil user){
+
+	}
+
+	public List<Profil> ismerosSuli_list(Profil user) {
 		String List_ismerosSuli = "SELECT Profil.vezeteknev, Profil.keresznev FROM Profil, Jelol FULL OUTER JOIN Jelol ON  Profil.email = Jelol.email WHERE Jelol.isFriend = 0 AND ========= ezt is kigondolom még ";
-		List<Profil> ismSuli = new ArrayList<Profil>();
-		try(Connection conn = DriverManager.getConnection(DATABASE_FILE);
-				Statement st = conn.createStatement();)
-		{
+		List<Profil> ismSuli = new ArrayList<>();
+		try (Connection conn = DriverManager.getConnection(DATABASE_FILE); Statement st = conn.createStatement();) {
 			ResultSet rs = st.executeQuery(List_ismerosSuli);
 
 			while (rs.next()) {
@@ -716,15 +668,13 @@ public class ModelDao {
 			e.printStackTrace();
 		}
 		return ismSuli;
-		
+
 	}
-     
-                public List<Profil> ismerosSzulinap_list(Profil user){
+
+	public List<Profil> ismerosSzulinap_list(Profil user) {
 		String List_ismerosSzulinap = "SELECT Profil.vezeteknev, Profil.keresznev FROM Profil, Jelol FULL OUTER JOIN Jelol ON  Profil.email = Jelol.email WHERE Jelol.isFriend = 0 AND   ========= ezt is kigondolom még ";
-		List<Profil> ismSzulnap = new ArrayList<Profil>();
-		try(Connection conn = DriverManager.getConnection(DATABASE_FILE);
-				Statement st = conn.createStatement();)
-		{
+		List<Profil> ismSzulnap = new ArrayList<>();
+		try (Connection conn = DriverManager.getConnection(DATABASE_FILE); Statement st = conn.createStatement();) {
 			ResultSet rs = st.executeQuery(List_ismerosSzulinap);
 
 			while (rs.next()) {
@@ -740,82 +690,81 @@ public class ModelDao {
 			e.printStackTrace();
 		}
 		return ismSzulnap;
-                
-                
-                }      
-                // már reg email
-                public boolean regYetUser(String email){
-                    boolean successful =false;
-                    String REGYETUSER = "SELECT COUNT(*) FROM PROFIL WHERE PROFIL.EMAIL = ? ";
-                    try(PreparedStatement pst = this.conn.prepareStatement(REGYETUSER)){
-                        
-                        
-                        pst.setString(1,email);
-                        ResultSet rs = pst.executeQuery();
-                        rs.next();
-                        if(rs.getInt(1) == 0){
-                            successful = pst.executeUpdate() == 1;
-                        }
-                        
-                        
-                    } catch (Exception e) {
-                        System.out.println("Email cím foglalt! :( ");
+
+	}
+
+	// már reg email
+	public boolean regYetUser(String email) {
+		boolean successful = false;
+		String REGYETUSER = "SELECT COUNT(*) FROM PROFIL WHERE PROFIL.EMAIL = ? ";
+		try (PreparedStatement pst = this.conn.prepareStatement(REGYETUSER)) {
+
+			pst.setString(1, email);
+			ResultSet rs = pst.executeQuery();
+			rs.next();
+			if (rs.getInt(1) == 0) {
+				successful = pst.executeUpdate() == 1;
+			}
+
+		} catch (Exception e) {
+			System.out.println("Email cím foglalt! :( ");
 			e.printStackTrace();
-                    }
-                    return successful;
-                } 
-                
-                public List<Profil> allProfil(){
-                    String allprofil = "SELECT p.vezeteknev, p.keresztnev from Profil p ";
-                    List<Profil> profilList = new ArrayList<Profil>();
-                    try(PreparedStatement pst = this.conn.prepareStatement(allprofil)){
-                            
-                        ResultSet rs = pst.executeQuery();
-                        while(rs.next()){
-                            Profil p = new Profil();
-                            p.setVezeteknev(rs.getString("vezeteknev"));
-                            p.setKeresztnev(rs.getString("keresztnev"));
-                            profilList.add(p);
-                        }
-                        
-                    } catch (Exception e) {
-                        System.out.println("Nem tudom listázni :( ");
+		}
+		return successful;
+	}
+
+	public List<Profil> allProfil() {
+		String allprofil = "SELECT * FROM PROFIL P ";
+		List<Profil> profilList = new ArrayList<>();
+		try (PreparedStatement pst = this.conn.prepareStatement(allprofil)) {
+
+			ResultSet rs = pst.executeQuery();
+			while (rs.next()) {
+				Profil p = new Profil();
+				p.setEmail(rs.getString(1));
+				p.setVezeteknev(rs.getString(2));
+				p.setKeresztnev(rs.getString(3));
+				p.setNem(rs.getInt(4));
+				p.setBirthdate(rs.getDate(5).toString());
+				p.setMunkahely(rs.getString(7));
+				p.setIskola(rs.getString(8));
+				profilList.add(p);
+			}
+
+		} catch (Exception e) {
+			System.out.println("Nem tudom listázni :( ");
 			e.printStackTrace();
-                    }
-                    
-                    return profilList; 
-                }
-                // ismerős törlése
-                public boolean friendDelete(Jelol sign){
-                    boolean sf =  false;
-                    String fdq= "Delete From jelol where ki_email = ? and kit_email = ? ";
-                    try(PreparedStatement pst = this.conn.prepareStatement(fdq)){
-                        pst.setString(1, sign.getEmail());
-                        pst.setString(2, sign.getKit_email());
-                        
-                        sf = pst.executeUpdate() == 1;
-                        
-                    } catch (Exception e) {
-                        System.out.println("Nem tudom listázni :( ");
+		}
+
+		return profilList;
+	}
+
+	// ismerős törlése
+	public boolean friendDelete(Jelol sign) {
+		boolean sf = false;
+		String fdq = "Delete From jelol where ki_email = ? and kit_email = ? ";
+		try (PreparedStatement pst = this.conn.prepareStatement(fdq)) {
+			pst.setString(1, sign.getEmail());
+			pst.setString(2, sign.getKit_email());
+
+			sf = pst.executeUpdate() == 1;
+
+		} catch (Exception e) {
+			System.out.println("Nem tudom listázni :( ");
 			e.printStackTrace();
-                    }
-                    return sf;
-                }
+		}
+		return sf;
+	}
 }
 /*
-Lekérdezés funkciók:
-
-- Felhasználó regisztrálása
-- Felhasználó regsiztálás közbe email ellenőrzés
-- Felhasználó belépés
-- Felashználó ismerősei száma
-- Felhasználó mennyi csoportban van benne
-- Felhasználó ismerősei listázása (NEM TRIVIÁLIS)
-
-
-
-
-
-*/
-
-
+ * Lekérdezés funkciók:
+ *
+ * - Felhasználó regisztrálása - Felhasználó regsiztálás közbe email ellenőrzés
+ * - Felhasználó belépés - Felashználó ismerősei száma - Felhasználó mennyi
+ * csoportban van benne - Felhasználó ismerősei listázása (NEM TRIVIÁLIS)
+ *
+ *
+ *
+ *
+ *
+ */

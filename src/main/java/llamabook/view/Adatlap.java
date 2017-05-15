@@ -2,6 +2,7 @@ package llamabook.view;
 
 import java.awt.Color;
 import java.io.IOException;
+import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -59,7 +60,7 @@ public class Adatlap {
 	private JLabel txtname;
 	private JLabel txtschool;
 	private JLabel txtsex;
-	PropertiesController props = new PropertiesController();
+	PropertiesController props;
 
 	private String vnev;
 	private String knev;
@@ -72,8 +73,19 @@ public class Adatlap {
 	private int ismerosokszama;
 	private int csoportagsag;
 
-	public Adatlap(LlamabookGUI gui) {
+	public Vector<String> getProfiles() {
+		Vector<String> nevek = new Vector<>();
 
+		this.controller.getAllUser().forEach(e -> {
+			nevek.add(e.getVezeteknev() + " " + e.getKeresztnev());
+		});
+
+		return nevek;
+	}
+
+	public Adatlap(LlamabookGUI gui, Controller controller) {
+		this.props = new PropertiesController();
+		this.controller = controller;
 		this.gui = gui;
 		this.vnev = gui.ProfilVezeteknev();
 		this.knev = gui.ProfilKeresztnev();
@@ -85,11 +97,11 @@ public class Adatlap {
 
 		this.jelol = new Jelol();
 		jelol.setEmail(email);
-		this.ismerosokszama = gui.getController().userFriendsnumber(jelol);
+		this.ismerosokszama = gui.getController().userFriendsnumber(jelol.getEmail());
 
 		this.csatlakozik = new Csatlakozik();
 		csatlakozik.setEmail(email);
-		this.csoportagsag = gui.getController().userGroupNumber(csatlakozik);
+		this.csoportagsag = gui.getController().userGroupNumber(csatlakozik.getEmail());
 
 		panel_adatlap = new JPanel();
 		adatlap_belso = new JPanel();
@@ -173,9 +185,14 @@ public class Adatlap {
 		lblmeghivottak.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
 		lblmeghivottak.setText(Integer.toString(csoportagsag));
 
-		ismerosadatlap.setModel(new DefaultComboBoxModel<>(new String[] { "Zoli", "Attila", "Ă�kos", "Teszt" }));
+		// ismerosadatlap.setModel(new DefaultComboBoxModel<>(new String[] {
+		// "Zoli", "Attila", "Ă�kos", "Teszt" }));
+
+		ismerosadatlap.setModel(new DefaultComboBoxModel<>(getProfiles()));
 
 		jButton1.setText(props.getProperty("megnyitas"));
+
+		addMegnyitListener(jButton1, getProfiles(), ismerosadatlap);
 
 		jLabel1.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
 		jLabel1.setText(props.getProperty("ismerosok"));
@@ -351,6 +368,27 @@ public class Adatlap {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void addMegnyitListener(JButton jButton12, Vector<String> vector, JComboBox<String> combobox) {
+		jButton12.addActionListener(e -> {
+			System.out.println(combobox.getSelectedItem());
+			this.controller.getAllUser().forEach(p -> {
+				String nev = p.getVezeteknev() + " " + p.getKeresztnev();
+
+				if (nev.equals(combobox.getSelectedItem())) {
+
+					this.txtdate.setText(p.getBirthdate());
+					this.txtjob.setText(p.getMunkahely());
+					this.txtname.setText(nev);
+					this.txtschool.setText(p.getIskola());
+					this.txtsex.setText(p.getNem() == 1 ? "férfi" : "nő");
+					this.lblmeghivottak.setText(this.controller.userGroupNumber(p.getEmail()) + "");
+					this.jLabel2.setText(this.controller.userFriendsnumber(p.getEmail()) + "");
+				}
+			});
+
+		});
 	}
 
 }

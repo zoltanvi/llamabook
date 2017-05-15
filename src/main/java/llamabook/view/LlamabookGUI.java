@@ -182,7 +182,7 @@ public class LlamabookGUI extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == button_adatlap) {
-			Adatlap adatlap = new Adatlap(this);
+			Adatlap adatlap = new Adatlap(this, this.controller);
 			System.out.println("adatlap MENÜ");
 			panel_cardcontainer.removeAll();
 			panel_cardcontainer.add(adatlap.panel_adatlap, BorderLayout.CENTER);

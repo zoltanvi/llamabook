@@ -1,11 +1,7 @@
 package llamabook.model.bean;
 
-
-import java.sql.Date;
-
-
 public class Profil {
-    
+
 	private String email;
 	private String vezeteknev;
 	private String keresztnev;
@@ -15,23 +11,21 @@ public class Profil {
 	private String munkahely;
 	private String iskola;
 
-    public Profil(String email, String vezeteknev, String keresztnev, int nem, String birthdate, String jelszo, String munkahely, String iskola) {
-        this.email = email;
-        this.vezeteknev = vezeteknev;
-        this.keresztnev = keresztnev;
-        this.nem = nem;
-        this.birthdate = birthdate;
-        this.jelszo = jelszo;
-        this.munkahely = munkahely;
-        this.iskola = iskola;
-    }
-    
-    
-    public Profil() {
-    }
+	public Profil(String email, String vezeteknev, String keresztnev, int nem, String birthdate, String jelszo,
+			String munkahely, String iskola) {
+		this.email = email;
+		this.vezeteknev = vezeteknev;
+		this.keresztnev = keresztnev;
+		this.nem = nem;
+		this.birthdate = birthdate;
+		this.jelszo = jelszo;
+		this.munkahely = munkahely;
+		this.iskola = iskola;
+	}
 
-    
-        
+	public Profil() {
+	}
+
 	public String getEmail() {
 		return email;
 	}
@@ -96,7 +90,11 @@ public class Profil {
 		this.iskola = iskola;
 	}
 
- 
-        
+	@Override
+	public String toString() {
+		return "Profil [email=" + email + ", vezeteknev=" + vezeteknev + ", keresztnev=" + keresztnev + ", nem=" + nem
+				+ ", birthdate=" + birthdate + ", jelszo=" + jelszo + ", munkahely=" + munkahely + ", iskola=" + iskola
+				+ "]";
+	}
 
 }
