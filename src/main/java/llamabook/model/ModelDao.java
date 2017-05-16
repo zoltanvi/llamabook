@@ -773,8 +773,8 @@ public class ModelDao {
 
 			ResultSet rs = pst.executeQuery();
 
-			while (rs.next()) {
-				Blob b = rs.getBlob(1);//1 az első oszlopot jelent az adatbázisból
+			if (rs.next()) {
+				Blob b = rs.getBlob(1);
 				byte barr[] = b.getBytes(1, (int) b.length());
 
 				BufferedImage image;
@@ -784,12 +784,23 @@ public class ModelDao {
 					Image dimg = image.getScaledInstance(210, 280, Image.SCALE_SMOOTH);
 					// profimage felbontás: 210*280
 					proff = new ImageIcon(dimg);
+					
 
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 				
+			} else {
+			    System.out.println("anonym profimage");
+			  
+			   try {
+				return new ImageIcon(ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream("anonym2.png")));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+			} 
+			
 
 		} catch (SQLException e) {
 			System.out.println("Nem sikerült lekérni a profilképet! :( ");

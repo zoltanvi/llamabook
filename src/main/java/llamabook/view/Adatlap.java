@@ -132,6 +132,7 @@ public class Adatlap {
 		adatlap_belso.setBackground(new java.awt.Color(255, 255, 255));
 
 		profimage.setText("Kep_placeholder");
+		
 		profimage.setBorder(BorderFactory.createEtchedBorder());
 
 		lblname.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
@@ -362,6 +363,10 @@ public class Adatlap {
 		
 		//	profimage.setIcon(new ImageIcon(ImageIO
 		//			.read(Thread.currentThread().getContextClassLoader().getResourceAsStream("dalaillama.jpg"))));
+		
+		
+		
+		
 		profimage.setIcon(this.controller.imgShow(email));	
 			
 	}
