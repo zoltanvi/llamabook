@@ -1,12 +1,10 @@
 package llamabook.view;
 
-
 import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.swing.AbstractListModel;
 import javax.swing.DefaultComboBoxModel;
@@ -19,7 +17,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.LayoutStyle;
-import javax.swing.ListModel;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
@@ -29,6 +26,7 @@ import llamabook.model.bean.DeletableProfs;
 import llamabook.model.bean.DeleteListModel;
 import llamabook.model.bean.Jelol;
 import llamabook.model.bean.Profil;
+
 /**
  *
  * @author ShockWave
@@ -64,11 +62,10 @@ public class Ismerosok {
 	private JList<String> listNeki;
 	public JPanel panel_ismerosok;
 	private JLabel txtFelhasznaloJeloles;
-	private PropertiesController props ;
+	private PropertiesController props;
 	private ModelDao dao;
 
-
-	public Ismerosok(Profil profil, LlamabookGUI gui){
+	public Ismerosok(Profil profil, LlamabookGUI gui) {
 		this.gui = gui;
 		this.props = new PropertiesController();
 		this.dao = this.gui.getController().getDao();
@@ -101,17 +98,21 @@ public class Ismerosok {
 		this.jSeparator2 = new JSeparator();
 		this.jSeparator3 = new JSeparator();
 
-
 		this.panel_ismerosok.setBackground(Color.white);
 
 		this.listFelhasznaloJeloles.setBackground(UIManager.getDefaults().getColor("Button.background"));
 		this.listFelhasznaloJeloles.setModel(new AbstractListModel<String>() {
 			String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-			@Override
-			public int getSize() { return strings.length; }
-			@Override
-			public String getElementAt(int i) { return strings[i]; }
 
+			@Override
+			public int getSize() {
+				return strings.length;
+			}
+
+			@Override
+			public String getElementAt(int i) {
+				return strings[i];
+			}
 
 		});
 		jScrollPane1.setViewportView(listFelhasznaloJeloles);
@@ -125,42 +126,48 @@ public class Ismerosok {
 		listJelolesekKezelese.setBackground(UIManager.getDefaults().getColor("Button.background"));
 		jScrollPane2.setViewportView(listJelolesekKezelese);
 
+		// elutasítás
+		AcceptListModel alm = new AcceptListModel(this.dao.listSigns(this.profil));
+		DeleteListModel dlm = new DeleteListModel(this.dao.userFriends(this.profil));
+
+		listJelolesekKezelese.setModel(alm);
+
+		btnJelolesTorlese.addActionListener(e -> {
+			Jelol j = new Jelol();
+			j.setEmail(alm.getEmailByName(listJelolesekKezelese.getSelectedValue()));
+			j.setKit_email(this.profil.getEmail());
+			if (this.dao.signDelete(j)) {
+				alm.refresh(this.dao.listSigns(this.profil));
+			}
+		});
+
+
+		// VISSZAIGAZOLÁS
+
+		btnVisszaigazolas.addActionListener(e -> {
+			Jelol j = new Jelol();
+			j.setEmail(alm.getEmailByName(listJelolesekKezelese.getSelectedValue()));
+			j.setKit_email(this.profil.getEmail());
+
+			if(this.dao.signAccept(j)){
+				alm.refresh(this.dao.listSigns(this.profil));
+				dlm.refresh(this.dao.userFriends(this.profil));
+			}
+		});
+
+
+		// TÖRLÉS
 		DeletableProfs dp1 = new DeletableProfs();
 
 		dao.listSigns(profil).forEach(ba1 -> {
-			dp1.add(ba1.getEmail(), ba1.getVezeteknev()+" "+ba1.getKeresztnev());
+			dp1.add(ba1.getEmail(), ba1.getVezeteknev() + " " + ba1.getKeresztnev());
 		});
 
 		List<String> nevek1 = new ArrayList<>();
 
-		for(Map.Entry<String, String> entry1 : dp1.getDeleteableProfs().entrySet()){
+		for (Map.Entry<String, String> entry1 : dp1.getDeleteableProfs().entrySet()) {
 			nevek1.add(entry1.getValue());
 		}
-
-		AtomicInteger c1 = new AtomicInteger(0);
-
-
-		ListModel lm1 = new AbstractListModel<String>(){
-			@Override
-			public int getSize() {
-				return dp1.getDeleteableProfs().size();
-			}
-
-			@Override
-			public String getElementAt(int i) {
-				return nevek1.get(i);
-			}
-
-		};
-
-		listJelolesekKezelese.setModel(lm1);
-		// felkeltölteni hozzá adatb h tryolni lehetsen
-
-
-
-
-
-
 
 		lblJelolesekKezelese.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 		lblJelolesekKezelese.setHorizontalAlignment(SwingConstants.CENTER);
@@ -175,11 +182,15 @@ public class Ismerosok {
 
 			String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
 
+			@Override
+			public int getSize() {
+				return strings.length;
+			}
 
 			@Override
-			public int getSize() { return strings.length; }
-			@Override
-			public String getElementAt(int i) { return strings[i]; }
+			public String getElementAt(int i) {
+				return strings[i];
+			}
 		});
 		jScrollPane3.setViewportView(jList3);
 
@@ -187,35 +198,34 @@ public class Ismerosok {
 		lblIsmerosAjanlasa.setHorizontalAlignment(SwingConstants.CENTER);
 		lblIsmerosAjanlasa.setText(props.getProperty("ismaj"));
 
-
 		lblNeki.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 		lblNeki.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNeki.setText(props.getProperty("neki"));
 
-
-
-
-
 		listNeki.setBackground(UIManager.getDefaults().getColor("Button.background"));
 		listNeki.setModel(new AbstractListModel<String>() {
 			String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+
 			@Override
-			public int getSize() { return strings.length; }
+			public int getSize() {
+				return strings.length;
+			}
+
 			@Override
-			public String getElementAt(int i) { return strings[i]; }
+			public String getElementAt(int i) {
+				return strings[i];
+			}
 		});
 		jScrollPane4.setViewportView(listNeki);
 
-		comboBoxMialapjan.setModel(new DefaultComboBoxModel<>(new String[] { "Kozos ismerosok alapjan", "Munkahely alapjan", "Iskola alapjan" }));
+		comboBoxMialapjan.setModel(new DefaultComboBoxModel<>(
+				new String[] { "Kozos ismerosok alapjan", "Munkahely alapjan", "Iskola alapjan" }));
 
 		btnAjanlasKuldese.setText(props.getProperty("btnajanlaskuld"));
 
 		lblIsmerosTorlese.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 		lblIsmerosTorlese.setHorizontalAlignment(SwingConstants.CENTER);
 		lblIsmerosTorlese.setText(props.getProperty("ismtor"));
-
-
-		DeleteListModel dlm = new DeleteListModel(this.dao.userFriends(this.profil));
 
 		listIsmerosTorles.setModel(dlm);
 
@@ -225,8 +235,9 @@ public class Ismerosok {
 
 		btnTorles.setText(props.getProperty("btntorlom"));
 
-		btnTorles.addActionListener(e -> {     // már jó!!!! :)
-			if(this.dao.friendDelete(this.profil.getEmail(), dlm.getEmailByName(listIsmerosTorles.getSelectedValue()))){
+		btnTorles.addActionListener(e -> { // már jó!!!! :)
+			if (this.dao.friendDelete(this.profil.getEmail(),
+					dlm.getEmailByName(listIsmerosTorles.getSelectedValue()))) {
 				dlm.refresh(this.dao.userFriends(this.profil));
 			}
 		});
@@ -235,99 +246,144 @@ public class Ismerosok {
 
 		GroupLayout panel_ismerosokLayout = new GroupLayout(panel_ismerosok);
 		panel_ismerosok.setLayout(panel_ismerosokLayout);
-		panel_ismerosokLayout.setHorizontalGroup(
-				panel_ismerosokLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-				.addGroup(GroupLayout.Alignment.TRAILING, panel_ismerosokLayout.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(panel_ismerosokLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-								.addGroup(panel_ismerosokLayout.createSequentialGroup()
-										.addGroup(panel_ismerosokLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-												.addGroup(panel_ismerosokLayout.createSequentialGroup()
-														.addComponent(btnVisszaigazolas)
-														.addGap(241, 241, 241)
+		panel_ismerosokLayout
+		.setHorizontalGroup(panel_ismerosokLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+				.addGroup(GroupLayout.Alignment.TRAILING, panel_ismerosokLayout
+						.createSequentialGroup()
+						.addContainerGap().addGroup(
+								panel_ismerosokLayout
+								.createParallelGroup(GroupLayout.Alignment.LEADING)
+								.addGroup(
+										panel_ismerosokLayout.createSequentialGroup()
+										.addGroup(panel_ismerosokLayout
+												.createParallelGroup(
+														GroupLayout.Alignment.TRAILING)
+												.addGroup(panel_ismerosokLayout
+														.createSequentialGroup()
+														.addComponent(btnVisszaigazolas).addGap(
+																241, 241,
+																241)
 														.addComponent(btnJelolesTorlese))
-												.addGroup(panel_ismerosokLayout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
-														.addComponent(lblJelolesekKezelese, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 469, Short.MAX_VALUE)
-														.addComponent(jScrollPane2, GroupLayout.Alignment.LEADING)
-														.addComponent(jSeparator1, GroupLayout.Alignment.LEADING)
-														.addComponent(jScrollPane1, GroupLayout.Alignment.LEADING)
-														.addGroup(GroupLayout.Alignment.LEADING, panel_ismerosokLayout.createSequentialGroup()
+												.addGroup(panel_ismerosokLayout
+														.createParallelGroup(
+																GroupLayout.Alignment.TRAILING,
+																false)
+														.addComponent(lblJelolesekKezelese,
+																GroupLayout.Alignment.LEADING,
+																GroupLayout.DEFAULT_SIZE, 469,
+																Short.MAX_VALUE)
+														.addComponent(jScrollPane2,
+																GroupLayout.Alignment.LEADING)
+														.addComponent(jSeparator1,
+																GroupLayout.Alignment.LEADING)
+														.addComponent(jScrollPane1,
+																GroupLayout.Alignment.LEADING)
+														.addGroup(GroupLayout.Alignment.LEADING,
+																panel_ismerosokLayout
+																.createSequentialGroup()
 																.addGap(153, 153, 153)
-																.addComponent(btnIsmerosnekJelolom))))
+																.addComponent(
+																		btnIsmerosnekJelolom))))
 										.addGap(55, 55, 55)
-										.addComponent(jSeparator3, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addComponent(jSeparator3, GroupLayout.PREFERRED_SIZE,
+												GroupLayout.DEFAULT_SIZE,
+												GroupLayout.PREFERRED_SIZE)
 										.addGap(27, 27, 27))
 								.addGroup(panel_ismerosokLayout.createSequentialGroup()
-										.addComponent(txtFelhasznaloJeloles, GroupLayout.PREFERRED_SIZE, 469, GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+										.addComponent(txtFelhasznaloJeloles, GroupLayout.PREFERRED_SIZE,
+												469, GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED,
+												GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
 						.addGroup(panel_ismerosokLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-								.addGroup(GroupLayout.Alignment.TRAILING, panel_ismerosokLayout.createSequentialGroup()
-										.addComponent(btnTorles)
+								.addGroup(GroupLayout.Alignment.TRAILING,
+										panel_ismerosokLayout.createSequentialGroup().addComponent(btnTorles)
 										.addGap(213, 213, 213))
-								.addGroup(panel_ismerosokLayout.createSequentialGroup()
-										.addGap(35, 35, 35)
-										.addGroup(panel_ismerosokLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+								.addGroup(panel_ismerosokLayout.createSequentialGroup().addGap(35, 35, 35)
+										.addGroup(panel_ismerosokLayout
+												.createParallelGroup(GroupLayout.Alignment.LEADING, false)
 												.addComponent(jSeparator2, GroupLayout.Alignment.TRAILING)
 												.addComponent(jScrollPane3)
-												.addComponent(lblIsmerosAjanlasa, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-												.addComponent(lblNeki, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+												.addComponent(lblIsmerosAjanlasa, GroupLayout.DEFAULT_SIZE,
+														GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+												.addComponent(lblNeki, GroupLayout.DEFAULT_SIZE,
+														GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 												.addComponent(jScrollPane4)
 												.addGroup(panel_ismerosokLayout.createSequentialGroup()
-														.addComponent(comboBoxMialapjan, GroupLayout.PREFERRED_SIZE, 322, GroupLayout.PREFERRED_SIZE)
-														.addGap(18, 18, 18)
-														.addComponent(btnAjanlasKuldese, GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE))
-												.addComponent(lblIsmerosTorlese, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+														.addComponent(comboBoxMialapjan,
+																GroupLayout.PREFERRED_SIZE, 322,
+																GroupLayout.PREFERRED_SIZE)
+														.addGap(18, 18, 18).addComponent(btnAjanlasKuldese,
+																GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE))
+												.addComponent(lblIsmerosTorlese, GroupLayout.DEFAULT_SIZE,
+														GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 												.addComponent(jScrollPane5))
-										.addContainerGap())))
-				);
+										.addContainerGap()))));
 		panel_ismerosokLayout.setVerticalGroup(
-				panel_ismerosokLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-				.addGroup(panel_ismerosokLayout.createSequentialGroup()
-						.addGroup(panel_ismerosokLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-								.addGroup(GroupLayout.Alignment.TRAILING, panel_ismerosokLayout.createSequentialGroup()
+				panel_ismerosokLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(panel_ismerosokLayout
+						.createSequentialGroup().addGroup(panel_ismerosokLayout
+								.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(
+										GroupLayout.Alignment.TRAILING, panel_ismerosokLayout.createSequentialGroup()
 										.addGap(492, 492, 492)
-										.addComponent(jSeparator2, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addComponent(jSeparator2, GroupLayout.PREFERRED_SIZE, 10,
+												GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED,
+												GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 										.addComponent(lblIsmerosTorlese)
 										.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-										.addComponent(jScrollPane5, GroupLayout.PREFERRED_SIZE, 192, GroupLayout.PREFERRED_SIZE))
+										.addComponent(jScrollPane5, GroupLayout.PREFERRED_SIZE, 192,
+												GroupLayout.PREFERRED_SIZE))
 								.addGroup(GroupLayout.Alignment.TRAILING, panel_ismerosokLayout.createSequentialGroup()
 										.addGap(17, 17, 17)
-										.addGroup(panel_ismerosokLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-												.addComponent(txtFelhasznaloJeloles)
+										.addGroup(panel_ismerosokLayout
+												.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(
+														txtFelhasznaloJeloles)
 												.addComponent(lblIsmerosAjanlasa))
 										.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-										.addGroup(panel_ismerosokLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+										.addGroup(panel_ismerosokLayout
+												.createParallelGroup(GroupLayout.Alignment.LEADING, false)
 												.addGroup(panel_ismerosokLayout.createSequentialGroup()
-														.addGroup(panel_ismerosokLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+														.addGroup(panel_ismerosokLayout
+																.createParallelGroup(GroupLayout.Alignment.LEADING,
+																		false)
 																.addGroup(panel_ismerosokLayout.createSequentialGroup()
-																		.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 323, GroupLayout.PREFERRED_SIZE)
-																		.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+																		.addComponent(jScrollPane1,
+																				GroupLayout.PREFERRED_SIZE, 323,
+																				GroupLayout.PREFERRED_SIZE)
+																		.addPreferredGap(
+																				LayoutStyle.ComponentPlacement.RELATED)
 																		.addComponent(btnIsmerosnekJelolom)
-																		.addGap(17, 17, 17)
-																		.addComponent(jSeparator1, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE))
+																		.addGap(17, 17, 17).addComponent(jSeparator1,
+																				GroupLayout.PREFERRED_SIZE, 10,
+																				GroupLayout.PREFERRED_SIZE))
 																.addGroup(panel_ismerosokLayout.createSequentialGroup()
-																		.addComponent(jScrollPane3, GroupLayout.PREFERRED_SIZE, 179, GroupLayout.PREFERRED_SIZE)
-																		.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+																		.addComponent(jScrollPane3,
+																				GroupLayout.PREFERRED_SIZE, 179,
+																				GroupLayout.PREFERRED_SIZE)
+																		.addPreferredGap(
+																				LayoutStyle.ComponentPlacement.RELATED)
 																		.addComponent(lblNeki)
-																		.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+																		.addPreferredGap(
+																				LayoutStyle.ComponentPlacement.RELATED)
 																		.addComponent(jScrollPane4)))
 														.addGap(27, 27, 27)
-														.addGroup(panel_ismerosokLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+														.addGroup(panel_ismerosokLayout
+																.createParallelGroup(GroupLayout.Alignment.BASELINE)
 																.addComponent(lblJelolesekKezelese)
-																.addComponent(comboBoxMialapjan, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+																.addComponent(comboBoxMialapjan,
+																		GroupLayout.PREFERRED_SIZE,
+																		GroupLayout.DEFAULT_SIZE,
+																		GroupLayout.PREFERRED_SIZE)
 																.addComponent(btnAjanlasKuldese))
-														.addGap(8, 8, 8)
-														.addComponent(jScrollPane2, GroupLayout.PREFERRED_SIZE, 248, GroupLayout.PREFERRED_SIZE))
+														.addGap(8, 8, 8).addComponent(jScrollPane2,
+																GroupLayout.PREFERRED_SIZE, 248,
+																GroupLayout.PREFERRED_SIZE))
 												.addComponent(jSeparator3))))
 						.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 						.addGroup(panel_ismerosokLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
 								.addGroup(panel_ismerosokLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-										.addComponent(btnVisszaigazolas)
-										.addComponent(btnTorles))
+										.addComponent(btnVisszaigazolas).addComponent(btnTorles))
 								.addComponent(btnJelolesTorlese))
-						.addContainerGap(41, Short.MAX_VALUE))
-				);
+						.addContainerGap(41, Short.MAX_VALUE)));
 
 		panel_ismerosok.setBackground(new Color(214, 217, 223));
 

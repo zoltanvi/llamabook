@@ -173,7 +173,7 @@ public class ModelDao {
 
 	// felhasználó ismerősei kiíratása o
 	public List<Profil> userFriends(Profil user) {
-		String listismer = "select p.vezeteknev, p.keresztnev, p.email from jelol j inner join profil p on (j.email=p.email or j.kit_email=p.email) and p.email<>j.email where j.email=? and j.isfriend = 1"; // by
+		String listismer = "select p.vezeteknev, p.keresztnev, p.email from jelol j inner join profil p on (j.email=p.email) or (j.KIT_EMAIL=p.email) and (p.email<>?) where j.email=? or j.kit_email=? and isfriend = 1"; // by
 		// Karesz
 
 		List<Profil> ismer_profil = new ArrayList();
@@ -181,6 +181,8 @@ public class ModelDao {
 		try (PreparedStatement pst = this.conn.prepareStatement(listismer);) {
 
 			pst.setString(1, user.getEmail());
+			pst.setString(2, user.getEmail());
+			pst.setString(3, user.getEmail());
 			ResultSet rs = pst.executeQuery();
 
 			while (rs.next()) {
@@ -320,7 +322,7 @@ public class ModelDao {
 
 	// listáza ki a függőbe lévő jelöléseket
 	public List<Profil> listSigns(Profil user) {
-		String Jeloles_LIST = "SELECT p.vezeteknev, p.keresztnev, p.email FROM JELOL j, PROFIL p WHERE   j.KIT_EMAIL = ? and isFriend = 0 ";
+		String Jeloles_LIST = "select * from jelol j inner join profil p on p.email = j.email where j.kit_email=? and j.ISFRIEND=0";
 		List<Profil> users = new ArrayList();
 
 		try (PreparedStatement pst = this.conn.prepareStatement(Jeloles_LIST);) {
@@ -346,8 +348,7 @@ public class ModelDao {
 	public boolean signAccept(Jelol sign) {
 		boolean successful = false;
 		String signUpdate = " UPDATE Jelol SET Jelol.isFriend = 1 WHERE Jelol.email = ? AND Jelol.kit_email = ? ";
-		try (Connection conn = DriverManager.getConnection(DATABASE_FILE);
-				PreparedStatement pst = conn.prepareStatement(signUpdate);) {
+		try (PreparedStatement pst = this.conn.prepareStatement(signUpdate);) {
 
 			pst.setString(1, sign.getEmail()); // sajátod
 			pst.setString(2, sign.getKit_email()); // kit akarsz törölni
@@ -364,9 +365,8 @@ public class ModelDao {
 	// ha nem ismerem , akkor törlöm
 	public boolean signDelete(Jelol sign) {
 		boolean successful = false;
-		String signDelete = " DELETE FROM Jelol WHERE Jelol.email = ? Jelol.kit_email = ? ";
-		try (Connection conn = DriverManager.getConnection(DATABASE_FILE);
-				PreparedStatement pst = conn.prepareStatement(signDelete);) {
+		String signDelete = " DELETE FROM JELOL J WHERE J.EMAIL = ? AND J.KIT_EMAIL = ?";
+		try (PreparedStatement pst = this.conn.prepareStatement(signDelete);) {
 			pst.setString(1, sign.getEmail()); // sajatod
 			pst.setString(2, sign.getKit_email()); // kit akarsz törölni
 
