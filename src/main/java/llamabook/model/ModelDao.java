@@ -119,7 +119,7 @@ public class ModelDao {
 			p.setNem(rs.getInt(4));
 			p.setBirthdate(rs.getDate(5).toString());
 			p.setJelszo(user.getJelszo()); // van már egy objectünk amiben van
-											// jelszó
+			// jelszó
 			p.setMunkahely(rs.getString(7));
 			p.setIskola(rs.getString(8));
 
@@ -174,7 +174,7 @@ public class ModelDao {
 	// felhasználó ismerősei kiíratása o
 	public List<Profil> userFriends(Profil user) {
 		String listismer = "select p.vezeteknev, p.keresztnev, p.email from jelol j inner join profil p on (j.email=p.email or j.kit_email=p.email) and p.email<>j.email where j.email=? and j.isfriend = 1"; // by
-																																																				// Karesz
+		// Karesz
 
 		List<Profil> ismer_profil = new ArrayList();
 
@@ -277,8 +277,7 @@ public class ModelDao {
 
 	/// kidolgozásalatt
 	public List<Profil> whoisnotfrie(Profil user) {
-		String whono = "select pr.* from profil pr where pr.email not in (select j.kit_email from profil p inner join jelol j on j.email=p.email and p.email= ? ) and pr.email<>?"; // by
-																																													// Karesz
+		String whono = "select pr.* from profil pr where pr.email not in (select j.kit_email from profil p inner join jelol j on j.email=p.email and p.email= ? ) and pr.email<>?";
 		List<Profil> list = new ArrayList();
 		try (PreparedStatement pst = this.conn.prepareStatement(whono);) {
 			pst.setString(1, user.getEmail());
@@ -320,27 +319,27 @@ public class ModelDao {
 	}
 
 	// listáza ki a függőbe lévő jelöléseket
-	public List<Jelol> listSigns(Jelol jelol) {
-		String Jeloles_LIST = "SELECT p.vezeteknev, p.keresztnev FROM JELOL j, PROFIL p WHERE   j.KIT_EMAIL = ? and isFriend = 0 ";
-		List<Jelol> jelolesek = new ArrayList();
+	public List<Profil> listSigns(Profil user) {
+		String Jeloles_LIST = "SELECT p.vezeteknev, p.keresztnev, p.email FROM JELOL j, PROFIL p WHERE   j.KIT_EMAIL = ? and isFriend = 0 ";
+		List<Profil> users = new ArrayList();
 
 		try (PreparedStatement pst = this.conn.prepareStatement(Jeloles_LIST);) {
-			pst.setString(1, jelol.getEmail());
+			pst.setString(1, user.getEmail());
 			ResultSet rs = pst.executeQuery();
 
 			while (rs.next()) {
-				Jelol j = new Jelol();
-				j.setEmail(rs.getString("email"));
-				j.setKit_email(rs.getString("kit_email"));
-				j.setFriend(rs.getBoolean("isFriend"));
-				jelolesek.add(j);
+				Profil u = new Profil();
+				u.setVezeteknev(rs.getString("vezeteknev"));
+				u.setKeresztnev(rs.getString("keresztnev"));
+				u.setEmail(rs.getString("email"));
+				users.add(u);
 			}
 
 		} catch (SQLException e) {
 			System.out.println("Nem sikerült kiírni a jelöléseket! :( ");
 			e.printStackTrace();
 		}
-		return jelolesek;
+		return users;
 	}
 
 	// ismerem , elfogoadom 0 át 1 re állít
@@ -763,7 +762,7 @@ public class ModelDao {
 		}
 		return sf;
 	}
-	
+
 	public ImageIcon imgShow(String email) {
 		ImageIcon proff = null;
 		String kep_mutat = "SELECT IMAGE from kepek where email = ? and isprof = 1";
@@ -780,40 +779,40 @@ public class ModelDao {
 				BufferedImage image;
 				try {
 					image = ImageIO.read(new ByteArrayInputStream(barr));
-					
+
 					Image dimg = image.getScaledInstance(210, 280, Image.SCALE_SMOOTH);
 					// profimage felbontás: 210*280
 					proff = new ImageIcon(dimg);
-					
+
 
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				
+
 			} else {
-			    System.out.println("anonym profimage");
-			  
-			   try {
-				return new ImageIcon(ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream("anonym2.png")));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("anonym profimage");
+
+				try {
+					return new ImageIcon(ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream("anonym2.png")));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-			} 
-			
+
 
 		} catch (SQLException e) {
 			System.out.println("Nem sikerült lekérni a profilképet! :( ");
 			e.printStackTrace();
 		}
 		return proff;
-		
+
 	}
-	
+
 }
-		
-			// ***********************************************************
-		
+
+// ***********************************************************
+
 
 /*
  * Lekérdezés funkciók:

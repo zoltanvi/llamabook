@@ -122,29 +122,11 @@ public class Ismerosok {
 		btnIsmerosnekJelolom.setText(props.getProperty("btnjelol"));
 
 		listJelolesekKezelese.setBackground(UIManager.getDefaults().getColor("Button.background"));
-		/*
-		jelol.setKit_email(this.profil.getEmail());
-		List<Jelol> ismerjelol = dao.listSigns(jelol);
-		String[] strings1 = new String[ismerjelol.size()];
-
-		AtomicInteger b = new AtomicInteger(0);
-		ismerjelol.forEach(e ->{
-			strings1[b.getAndIncrement()] = e.getEmail();
-		});
-
-		listJelolesekKezelese.setModel(new AbstractListModel<String>() {
-			@Override
-			public int getSize() { return strings1.length; }
-			@Override
-			public String getElementAt(int i) { return strings1[i]; }
-		});*/
-
 		jScrollPane2.setViewportView(listJelolesekKezelese);
 
-		/*
 		DeletableProfs dp1 = new DeletableProfs();
 
-		dao.userFriends(profil).forEach(ba1 -> {
+		dao.listSigns(profil).forEach(ba1 -> {
 			dp1.add(ba1.getEmail(), ba1.getVezeteknev()+" "+ba1.getKeresztnev());
 		});
 
@@ -170,7 +152,9 @@ public class Ismerosok {
 
 		};
 
-		 */
+		listJelolesekKezelese.setModel(lm1);
+		// felkeltölteni hozzá adatb h tryolni lehetsen
+
 
 
 
