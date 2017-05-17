@@ -747,12 +747,14 @@ public class ModelDao {
 	}
 
 	// ismerős törlése
-	public boolean friendDelete(Jelol sign) {
+	public boolean friendDelete(String email1, String email2) {
 		boolean sf = false;
-		String fdq = "Delete From jelol where ki_email = ? and kit_email = ? ";
+		String fdq = "Delete From jelol where (email = ? and kit_email = ?) or (email = ? and kit_email = ?)";
 		try (PreparedStatement pst = this.conn.prepareStatement(fdq)) {
-			pst.setString(1, sign.getEmail());
-			pst.setString(2, sign.getKit_email());
+			pst.setString(1, email1);
+			pst.setString(2, email2);
+			pst.setString(3, email2);
+			pst.setString(4, email1);
 
 			sf = pst.executeUpdate() == 1;
 

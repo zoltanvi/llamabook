@@ -26,6 +26,7 @@ import javax.swing.UIManager;
 import llamabook.controller.PropertiesController;
 import llamabook.model.ModelDao;
 import llamabook.model.bean.DeletableProfs;
+import llamabook.model.bean.DeleteListModel;
 import llamabook.model.bean.Jelol;
 import llamabook.model.bean.Profil;
 /**
@@ -214,46 +215,20 @@ public class Ismerosok {
 		lblIsmerosTorlese.setText(props.getProperty("ismtor"));
 
 
+		DeleteListModel dlm = new DeleteListModel(this.dao.userFriends(this.profil));
 
-		DeletableProfs dp = new DeletableProfs();
-
-		dao.userFriends(profil).forEach(ba -> {
-			dp.add(ba.getEmail(), ba.getVezeteknev()+" "+ba.getKeresztnev());
-		});
-
-		List<String> nevek = new ArrayList<>();
-
-		for(Map.Entry<String, String> entry : dp.getDeleteableProfs().entrySet()){
-			nevek.add(entry.getValue());
-		}
-
-		AtomicInteger c = new AtomicInteger(0);
-
+		listIsmerosTorles.setModel(dlm);
 
 		listIsmerosTorles.setBackground(UIManager.getDefaults().getColor("Button.background"));
-
-		ListModel lm = new AbstractListModel<String>(){
-			@Override
-			public int getSize() {
-				return dp.getDeleteableProfs().size();
-			}
-
-			@Override
-			public String getElementAt(int i) {
-				return nevek.get(i);
-			}
-
-		};
-
-		listIsmerosTorles.setModel(lm);
 
 		jScrollPane5.setViewportView(listIsmerosTorles);
 
 		btnTorles.setText(props.getProperty("btntorlom"));
 
-		btnTorles.addActionListener(e -> {     // még nem jó
-			listIsmerosTorles.remove(listIsmerosTorles.getSelectedIndex());
-
+		btnTorles.addActionListener(e -> {     // már jó!!!! :)
+			if(this.dao.friendDelete(this.profil.getEmail(), dlm.getEmailByName(listIsmerosTorles.getSelectedValue()))){
+				dlm.refresh(this.dao.userFriends(this.profil));
+			}
 		});
 
 		jSeparator3.setOrientation(SwingConstants.VERTICAL);

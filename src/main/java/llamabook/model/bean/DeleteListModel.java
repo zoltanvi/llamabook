@@ -5,41 +5,46 @@
  */
 package llamabook.model.bean;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+
 import javax.swing.AbstractListModel;
-import javax.swing.event.EventListenerList;
 
 // DeleteListModel extends AbstractListModel
-  // public DeleteListModel(List<String> nevek, HashMap<String, String> delete)
+// public DeleteListModel(List<String> nevek, HashMap<String, String> delete)
 
 public class DeleteListModel extends AbstractListModel {
-    
-    public DeleteListModel(List<String> nevek, HashMap<String, String> delete){
-        nevek = new ArrayList<String>();
-        delete = new HashMap<String, String>();
-        
+	private List<Profil> profilok;
 
-    }
+	public DeleteListModel(List<Profil> userFriends) {
+		this.profilok = userFriends;
+	}
 
-    public EventListenerList getListenerList() {
-        return listenerList;
-    }
+	public void setProfilok(List<Profil> profs) {
+		this.profilok = profs;
+	}
 
-    public void setListenerList(EventListenerList listenerList) {
-        this.listenerList = listenerList;
-    }
-   
-    
-    @Override
-    public int getSize() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+	@Override
+	public int getSize() {
+		return this.profilok.size();
+	}
 
-    @Override
-    public Object getElementAt(int index) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-   
+	@Override
+	public Object getElementAt(int index) {
+		return this.profilok.get(index).getVezeteknev() + " " + this.profilok.get(index).getKeresztnev();
+	}
+
+	public void refresh(List<Profil> profs) {
+		setProfilok(profs);
+		fireContentsChanged(this, 0, profs.size());
+	}
+
+	public String getEmailByName(String name){
+		for(Profil p : this.profilok){
+			if(name.equals(p.getVezeteknev() + " " + p.getKeresztnev())){
+				return p.getEmail();
+			}
+		}
+		return null;
+	}
+
 }
