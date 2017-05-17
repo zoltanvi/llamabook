@@ -277,9 +277,9 @@ public class ModelDao {
 		return profil_lista;
 	}
 
-	/// kidolgozásalatt
-	public List<Profil> whoisnotfrie(Profil user) {
-		String whono = "select pr.* from profil pr where pr.email not in (select j.kit_email from profil p inner join jelol j on j.email=p.email and p.email= ? ) and pr.email<>?";
+	/// kidolgozásalatt - Karesz megcsinálta
+	public List<Profil> whoisnotfriend(Profil user) {
+		String whono = "select pr.vezeteknev, pr.keresztnev, pr.email from profil pr where pr.email not in (select j.kit_email from profil p inner join jelol j on j.email=p.email and p.email= ? ) and pr.email<>?";
 		List<Profil> list = new ArrayList();
 		try (PreparedStatement pst = this.conn.prepareStatement(whono);) {
 			pst.setString(1, user.getEmail());
@@ -288,6 +288,9 @@ public class ModelDao {
 
 			while (rs.next()) {
 				Profil p = new Profil();
+				p.setVezeteknev(rs.getString(1));
+				p.setKeresztnev(rs.getString(2));
+				p.setEmail(rs.getString(3));
 
 				list.add(p);
 			}
@@ -304,12 +307,11 @@ public class ModelDao {
 	// jeloles elküldése
 	public boolean friendSign(Jelol jelol) {
 		boolean successful = false;
-		String Jeloles_LIST = "INSERT INTO Jelol (email ,kit_email, isFriend) VALUES (?, ?, ?)";
+		String Jeloles_LIST = "INSERT INTO Jelol (email ,kit_email, isFriend) VALUES (?, ?, 0)";
 		try (PreparedStatement pst = this.conn.prepareStatement(Jeloles_LIST);) {
 
 			pst.setString(1, jelol.getEmail());
 			pst.setString(2, jelol.getKit_email());
-			pst.setBoolean(3, jelol.isFriend());
 
 			successful = pst.executeUpdate() == 1;
 
@@ -382,12 +384,11 @@ public class ModelDao {
 	/*-----------------------------------------------------------------------------------------------------------------------*/
 
 	// csoport létrehozása
-	public boolean createGroup(Group group) {
+	public boolean createGroup(String nev) {
 		boolean successful = false;
 		String CREAT_GROUP = "INSERT INTO Group (nev) VALUES (?)";
-		try (Connection conn = DriverManager.getConnection(DATABASE_FILE);
-				PreparedStatement pst = conn.prepareStatement(CREAT_GROUP);) {
-			pst.setString(1, group.getCsoportnev());
+		try (PreparedStatement pst = this.conn.prepareStatement(CREAT_GROUP);) {
+			pst.setString(1, nev);
 
 			successful = pst.executeUpdate() == 1;
 
@@ -464,6 +465,13 @@ public class ModelDao {
 		return group;
 	}
 
+	public boolean LeaveGroup(){
+		boolean sf = false;
+		String query = "DELETE FROM ";
+
+		return sf;
+	}
+
 	/*-----------------------------------------------------------------------------------------------------------------------*/
 
 	// Üzcsi dobás
@@ -515,10 +523,30 @@ public class ModelDao {
 		return Uzenetek;
 	}
 
+
+	public boolean createPost(String ki, String kinek, String bejegyzes){
+		boolean succ = false;
+		String sql = "INSERT INTO POSZT VALUES((SELECT MAX(POSZTID)+1 FROM POSZT), TO_DATE(SYSDATE,'YYYY-MM-DD-HH24-MI-SS'), ?, ?, ?)";
+		try(PreparedStatement pst = this.conn.prepareStatement(sql)){
+
+			pst.setString(1, bejegyzes);
+			pst.setString(2, ki);
+			pst.setString(3, kinek);
+
+			succ = pst.executeUpdate() == 1;
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return succ;
+	}
+
 	/*-----------------------------------------------------------------------------------------------------------------------*/
 
 	// Poszt létrehozása
-	public boolean posztCreate(Poszt post) {
+	/*public boolean posztCreate(Poszt post) {
 		boolean successful = false;
 		String create_poszt = "INSERT INTO Poszt(email, datum, bejegyzes) VALUES (?, ?, ?)";
 
@@ -540,20 +568,19 @@ public class ModelDao {
 	}
 
 	// Listázza a profil posztjait
-	public List<Poszt> listPoszt(Poszt post) {
+	/*public List<Poszt> listPoszt(Profil p) {
 		List<Poszt> Posts = new ArrayList();
-		String List_Uzen = "SELECT Poszt(*) FROM Poszt WHERE Poszt.email = ? ORDER BY Poszt.datum ASC ";
-		try (Connection conn = DriverManager.getConnection(DATABASE_FILE);
-				PreparedStatement pst = conn.prepareStatement(List_Uzen);) {
-			pst.setString(1, post.getEmail());
+		String List_Uzen = "select po.posztid, p.vezeteknev, p.keresztnev, po.BEJEGYZES from poszt po inner join profil p on po.KI_EMAIL=p.EMAIL and po.KINEK_EMAIL=?";
+		try (PreparedStatement pst = this.conn.prepareStatement(List_Uzen);) {
+			pst.setString(1, p.getEmail());
 			ResultSet rs = pst.executeQuery();
 
 			while (rs.next()) {
-				Poszt p = new Poszt();
-				p.setEmail(rs.getString("email"));
-				p.setBejegyzes(rs.getString("bejegyzes"));
-				p.setDatum(rs.getDate("datum"));
-				Posts.add(p);
+				Poszt po = new Poszt();
+				po.setEmail(rs.getString("email"));
+				po.setBejegyzes(rs.getString("bejegyzes"));
+				po.setDatum(rs.getDate("datum"));
+				Posts.add(po);
 			}
 
 		} catch (SQLException e) {
@@ -561,7 +588,31 @@ public class ModelDao {
 			e.printStackTrace();
 		}
 		return Posts;
+	}*/
+
+	public List<Poszt> getPosts(Profil p){
+		List<Poszt> posztok = new ArrayList<>();
+
+		String sql = "select po.posztid, p.vezeteknev, p.keresztnev, po.BEJEGYZES from poszt po inner join profil p on po.KI_EMAIL=p.EMAIL and po.KINEK_EMAIL=?";
+		try(PreparedStatement ps = this.conn.prepareStatement(sql)){
+			ps.setString(1, p.getEmail());
+
+			ResultSet rs = ps.executeQuery();
+
+			while(rs.next()){
+				posztok.add(new Poszt((rs.getString(2) + " " + rs.getString(3)), rs.getInt(1), rs.getString(4)));
+			}
+
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return posztok;
 	}
+
+
 
 	/*-----------------------------------------------------------------------------------------------------------------------*/
 

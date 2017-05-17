@@ -1,45 +1,31 @@
 package llamabook.model.bean;
 
-
-import java.sql.Date;
-
-
 public class Poszt {
-	
-	private String email;
-	private int PosztID;
-	private Date datum;
+
+	private String nev;
+	private int posztID;
 	private String bejegyzes;
-
-	public String getEmail() {
-		return bejegyzes;
+	public String getNev() {
+		return nev;
 	}
-
-	public void setEmail(String email) {
-		this.email = email;
+	public void setNev(String nev) {
+		this.nev = nev;
 	}
-
 	public int getPosztID() {
-		return PosztID;
+		return posztID;
 	}
-
 	public void setPosztID(int posztID) {
-		PosztID = posztID;
+		this.posztID = posztID;
 	}
-
-	public Date getDatum() {
-		return datum;
-	}
-
-	public void setDatum(Date datum) {
-		this.datum = datum;
-	}
-
 	public String getBejegyzes() {
 		return bejegyzes;
 	}
-
 	public void setBejegyzes(String bejegyzes) {
+		this.bejegyzes = bejegyzes;
+	}
+	public Poszt(String nev, int posztID, String bejegyzes) {
+		this.nev = nev;
+		this.posztID = posztID;
 		this.bejegyzes = bejegyzes;
 	}
 

@@ -6,10 +6,10 @@ import javax.swing.AbstractListModel;
 
 import llamabook.model.bean.Profil;
 
-public class AcceptListModel extends AbstractListModel {
+public class CustomListModel extends AbstractListModel {
 	private List<Profil> profilok;
 
-	public AcceptListModel(List<Profil> profilok) {
+	public CustomListModel(List<Profil> profilok) {
 		this.profilok = profilok;
 	}
 

@@ -79,8 +79,8 @@ public class Controller {
 		return model.signDelete(sign);
 	}
 
-	public boolean createGroup(Group group) {
-		return model.createGroup(group);
+	public boolean createGroup(String nev) {
+		return model.createGroup(nev);
 	}
 
 	public boolean joinGroup(Csatlakozik join) {
@@ -103,12 +103,8 @@ public class Controller {
 		return model.listMessage(message);
 	}
 
-	public boolean posztCreate(Poszt post) {
-		return model.posztCreate(post);
-	}
-
-	public List<Poszt> listPoszt(Poszt post) {
-		return model.listPoszt(post);
+	public List<Poszt> listPoszt(Profil p) {
+		return model.getPosts(p);
 	}
 
 	public boolean createCommment(Kommentel comment) {

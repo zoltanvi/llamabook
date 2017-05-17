@@ -23,7 +23,6 @@ import javax.swing.UIManager;
 import llamabook.controller.PropertiesController;
 import llamabook.model.ModelDao;
 import llamabook.model.bean.DeletableProfs;
-import llamabook.model.bean.DeleteListModel;
 import llamabook.model.bean.Jelol;
 import llamabook.model.bean.Profil;
 
@@ -101,20 +100,6 @@ public class Ismerosok {
 		this.panel_ismerosok.setBackground(Color.white);
 
 		this.listFelhasznaloJeloles.setBackground(UIManager.getDefaults().getColor("Button.background"));
-		this.listFelhasznaloJeloles.setModel(new AbstractListModel<String>() {
-			String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-
-			@Override
-			public int getSize() {
-				return strings.length;
-			}
-
-			@Override
-			public String getElementAt(int i) {
-				return strings[i];
-			}
-
-		});
 		jScrollPane1.setViewportView(listFelhasznaloJeloles);
 
 		txtFelhasznaloJeloles.setFont(new Font("Tahoma", 0, 18)); // NOI18N
@@ -126,12 +111,26 @@ public class Ismerosok {
 		listJelolesekKezelese.setBackground(UIManager.getDefaults().getColor("Button.background"));
 		jScrollPane2.setViewportView(listJelolesekKezelese);
 
-		// elutasítás
-		AcceptListModel alm = new AcceptListModel(this.dao.listSigns(this.profil));
-		DeleteListModel dlm = new DeleteListModel(this.dao.userFriends(this.profil));
+		CustomListModel alm = new CustomListModel(this.dao.listSigns(this.profil));
+		CustomListModel dlm = new CustomListModel(this.dao.userFriends(this.profil));
+		CustomListModel srlm = new CustomListModel(this.dao.whoisnotfriend(this.profil));
 
+		// jelölés küldése
+		this.listFelhasznaloJeloles.setModel(srlm); // JList<>
+
+		this.btnIsmerosnekJelolom.addActionListener(e -> {
+			Jelol j = new Jelol();
+			j.setEmail(this.profil.getEmail());
+			j.setKit_email(srlm.getEmailByName(this.listFelhasznaloJeloles.getSelectedValue()));
+
+			if (this.dao.friendSign(j)) {
+				srlm.refresh(this.dao.whoisnotfriend(this.profil));
+			}
+
+		});
+
+		// jelölés törlése
 		listJelolesekKezelese.setModel(alm);
-
 		btnJelolesTorlese.addActionListener(e -> {
 			Jelol j = new Jelol();
 			j.setEmail(alm.getEmailByName(listJelolesekKezelese.getSelectedValue()));
@@ -141,7 +140,6 @@ public class Ismerosok {
 			}
 		});
 
-
 		// VISSZAIGAZOLÁS
 
 		btnVisszaigazolas.addActionListener(e -> {
@@ -149,12 +147,11 @@ public class Ismerosok {
 			j.setEmail(alm.getEmailByName(listJelolesekKezelese.getSelectedValue()));
 			j.setKit_email(this.profil.getEmail());
 
-			if(this.dao.signAccept(j)){
+			if (this.dao.signAccept(j)) {
 				alm.refresh(this.dao.listSigns(this.profil));
 				dlm.refresh(this.dao.userFriends(this.profil));
 			}
 		});
-
 
 		// TÖRLÉS
 		DeletableProfs dp1 = new DeletableProfs();
