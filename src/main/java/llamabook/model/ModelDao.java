@@ -3,6 +3,7 @@ package llamabook.model;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.Connection;
@@ -475,24 +476,20 @@ public class ModelDao {
 	/*-----------------------------------------------------------------------------------------------------------------------*/
 
 	// Üzcsi dobás
-	public boolean sendMessage(Uzen message) {
-		boolean successful = false;
-		String SEND_MES = "INSERT INTO Uzen(email, kinek_email, uzenet) VALUES(?, ?, ?) ";
+	public void sendMessage(Uzen message) {
+		String SEND_MES = "INSERT INTO Uzen VALUES(?, ?, ?) ";
 
-		try (Connection conn = DriverManager.getConnection(DATABASE_FILE);
-				PreparedStatement pst = conn.prepareStatement(SEND_MES);) {
+		try (PreparedStatement pst = this.conn.prepareStatement(SEND_MES);) {
 			pst.setString(1, message.getEmail());
 			pst.setString(2, message.getKinek_email());
 			pst.setString(3, message.getUzenet());
-
-			successful = pst.executeUpdate() == 1;
-
+// nemteljesen működik/ TODO 
 		} catch (SQLException e) {
 			System.out.println("Új üzi küldés sikertelen volt! :( ");
 			e.printStackTrace();
 		}
 
-		return successful;
+		
 	}
 
 	// Üzcsi listázás
@@ -862,6 +859,118 @@ public class ModelDao {
 
 	}
 
+	public List<String> sajatKepek(String email){
+		String list_images = "select kepid from kepek where email = ?";
+		List<String> imglist =  new ArrayList<>();
+
+		try (PreparedStatement pst = this.conn.prepareStatement(list_images);) {
+			pst.setString(1, email);
+			ResultSet rs = pst.executeQuery();
+
+			
+			while (rs.next()) {
+				 imglist.add(rs.getString(1));
+			}
+		} catch (SQLException e) {
+			System.out.println("Nem sikerült kilistázni az ajánlott ismerősöket iskola alapján.");
+			e.printStackTrace();
+		}
+
+		return imglist;
+	}
+	
+	
+	public ImageIcon imageNezzem(int id) {
+		ImageIcon proff = null;
+		String kep_mutat = "SELECT IMAGE from kepek where kepid = ?";
+		try (PreparedStatement pst = this.conn.prepareStatement(kep_mutat);) {
+
+			pst.setInt(1, id);
+			ResultSet rs = pst.executeQuery();
+			if (rs.next()) {
+				Blob b = rs.getBlob(1);
+				byte barr[] = b.getBytes(1, (int) b.length());
+
+				BufferedImage image;
+				try {
+					image = ImageIO.read(new ByteArrayInputStream(barr));
+					Image dimg = image.getScaledInstance(500, 500, Image.SCALE_SMOOTH);
+					proff = new ImageIcon(dimg);
+
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Nem sikerült lekérni a képet! :( ");
+			e.printStackTrace();
+		}
+		return proff;
+
+	}
+	
+	
+	public void kepfeltolt(String email, String where) throws IOException {
+		ImageIcon keep = null;
+		String kepbeszur = "insert into kepek (kepid, filesize, image, isprof, email, album)"
+				+ " values(?,?,?,?,?,?)";
+		try (PreparedStatement pst = this.conn.prepareStatement(kepbeszur);) {
+
+			pst.setInt(1, 444);
+			pst.setInt(2, 833);
+			
+			FileInputStream fin = new FileInputStream(where);
+			pst.setBinaryStream(3, fin, fin.available());
+			
+			pst.setInt(4, 0);
+			pst.setString(5, email);
+			pst.setString(6, "default_album");
+			
+			pst.executeUpdate();
+			
+
+			} catch (SQLException e) {
+		
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+	
+	
+	public List<String> uzenetprint(Uzen message) {
+		String uzenetszoveg;
+		List<String> Uzenetek = new ArrayList();
+		String List_Uzen = "SELECT Uzenet FROM Uzen WHERE ( email = ? AND kinek_email = ? ) OR ( email = ? AND kinek_email = ? )";
+		try (PreparedStatement pst = this.conn.prepareStatement(List_Uzen);) {
+			
+			pst.setString(1, message.getEmail());
+			pst.setString(2, message.getKinek_email());
+			pst.setString(3, message.getKinek_email());
+			pst.setString(4, message.getEmail());
+
+			ResultSet rs = pst.executeQuery();
+
+			while (rs.next()) {
+			//	Uzen m = new Uzen();
+			//	m.setEmail(rs.getString("email"));
+			//	m.setKinek_email(rs.getString("kinek_email"));
+			//	m.setUzenet(rs.getString("uzenet"));
+				uzenetszoveg = rs.getString("uzenet");
+				Uzenetek.add(uzenetszoveg);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Nem sikerült kilistázni az üzeneteket! :( ");
+			e.printStackTrace();
+		}
+		return Uzenetek;
+	}
+	
+	
 }
 
 // ***********************************************************

@@ -400,8 +400,10 @@ public class RegScreen extends javax.swing.JFrame implements ActionListener{
                             setVisible(false);
                         }
                        
-			RegisztracioSikerult reg = new RegisztracioSikerult(this, rootPaneCheckingEnabled);
-			reg.setVisible(true);
+                        LoginScreen login = new LoginScreen(controller) ;
+                        JOptionPane.showMessageDialog(this, "Sikeres regisztráció!", "Figyelem!",
+        						JOptionPane.INFORMATION_MESSAGE);
+                       // LoginScreen login = new LoginScreen(controller) ;
 			dispose();
 		}
 		if(e.getSource() == btnBack){

@@ -1,7 +1,17 @@
 package llamabook.view;
 
 import java.awt.Color;
+import java.io.File;
+import java.io.IOException;
+import java.sql.PreparedStatement;
+
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+import llamabook.controller.Controller;
 import llamabook.controller.PropertiesController;
+import llamabook.model.ModelDao;
+import llamabook.model.bean.Profil;
 
 
 /**
@@ -9,6 +19,11 @@ import llamabook.controller.PropertiesController;
  * @author ShockWave
  */
 public class Kepek {
+	
+	private Controller controller;
+	private Profil profil;
+	
+	private ModelDao dao;
 	
 	 private javax.swing.JButton btngalerialetrehoz;
     private javax.swing.JButton btnismeroskepek;
@@ -35,7 +50,12 @@ public class Kepek {
     private javax.swing.JTextField txtgaleriacreate;
 	private javax.swing.JButton btnfeltoltes;
 	PropertiesController props = new PropertiesController();
-	public Kepek(){
+	String filePath;
+	
+	public Kepek(Controller controller, Profil profil){
+		this.controller = controller;
+		this.profil = profil;
+		this.dao = this.controller.getDao();
 		
 		panel_kepek = new javax.swing.JPanel();
         btnsajatkepek = new javax.swing.JButton();
@@ -223,6 +243,51 @@ public class Kepek {
 
      panel_kepek.setBackground(new Color(214, 217, 223));
 
+     btnmutasdsajatismeroskepek.addActionListener(e -> {
+    	 lbl_image.setIcon(this.controller.imageNezzem(Integer.parseInt(listsajatismeros.getSelectedValue())));	 
+    	 
+     });
+     
+     
+     btntalloz.addActionListener(e -> {
+    	  			
+ 				JFileChooser fc = new JFileChooser();
+ 				
+ 				fc.setCurrentDirectory(new File("C:/Users/ShockWave/Desktop/kepek"));
+ 				fc.setDialogTitle("Kep kivalasztasa");
+ 				fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+ 				fc.setFileFilter(new FileNameExtensionFilter("Image Files", "jpg", "png", "tif"));
+ 				fc.showOpenDialog(fc);
+ 				System.out.println(fc.getSelectedFile().getAbsolutePath());
+ 				txtfilesource.setText(fc.getSelectedFile().getAbsolutePath());
+ 				filePath = fc.getSelectedFile().getAbsolutePath();
+
+ 		 
+     });
+     
+     btnfeltoltes.addActionListener(e -> {
+    	 	 System.out.println("csokifasz");
+    	try {
+			this.dao.kepfeltolt(this.profil.getEmail(), filePath);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			System.out.println("kurvanagy csokifasz");
+			e1.printStackTrace();
+		}
+ 		
+     });
+     
+     
+    PictureListModel plm = new PictureListModel(this.dao.sajatKepek(this.profil.getEmail()));
+    
+    btnsajatkepek.addActionListener(e -> {
+    	listsajatismeros.setModel(plm);
+    });
+      
+     
+     
+     
+     
       
 	}
 }

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package llamabook.view;
 
 import java.awt.BorderLayout;
@@ -10,56 +5,72 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Insets;
+import java.awt.List;
+import java.awt.SecondaryLoop;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Vector;
+
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import llamabook.controller.PropertiesController;
 
-/**
- *
- * @author ShockWave
- */
+import llamabook.controller.Controller;
+import llamabook.controller.PropertiesController;
+import llamabook.model.ModelDao;
+import llamabook.model.bean.Profil;
+import llamabook.model.bean.Uzen;
+
+
 public class Uzenetek {
 	
 	JPanel panel_uzenetek = new JPanel();
+	JTextArea txtUzenetszoveg;
+	private Controller controller;
+	private LlamabookGUI gui;
+	private ModelDao dao;
+	private Profil profil;
+	JButton buttonSelect;
+	JComboBox<String> listAll = new JComboBox<>();
 	
-	public Uzenetek(){
+public Vector<String> getProfiles() {
+		Vector<String> nevek = new Vector<>();
+
+		this.controller.getAllUser().forEach(e -> {
+			nevek.add(e.getVezeteknev() + " " + e.getKeresztnev());
+		});
+
+	return nevek;
+}
+	
+	
+	public Uzenetek(LlamabookGUI gui, Controller controller, Profil profil){
 		
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		this.controller = controller;
+		this.gui = gui;
+		this.dao = this.controller.getDao();
+		this.profil = profil;
 		PropertiesController props = new PropertiesController();
 		panel_uzenetek.setLayout(new BorderLayout(0, 0));
 		
 		JPanel toppanel = new JPanel();
 		panel_uzenetek.add(toppanel, BorderLayout.NORTH);
 		toppanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+
 		
-		JRadioButton rdbtnBaratok = new JRadioButton(props.getProperty("uzism"));
-		toppanel.add(rdbtnBaratok);
-		String feltolt[] = {"Zoli", "Attila", "Akos", "Aztakurva", "JesszusMaria"};
-		JComboBox<String> listFriends = new JComboBox<>(feltolt);
-		listFriends.setBackground(Color.WHITE);
-		toppanel.add(listFriends);
-		
-		
-		JRadioButton rdbtnMindenki = new JRadioButton(props.getProperty("uzmind"));
-		toppanel.add(rdbtnMindenki);
-		String feltolt2[] = {"Ismeretlen", "Egy masik ismeretlen", "Egy ismeros", "Nem tudni", "Koko Jambo"};
-		JComboBox<String> listAll = new JComboBox<>(feltolt2);
 		listAll.setBackground(Color.WHITE);
 		toppanel.add(listAll);
-		JButton buttonSelect = new JButton(LabelsAndProperties.buttonselect);
+		buttonSelect = new JButton(LabelsAndProperties.buttonselect);
 		toppanel.add(buttonSelect);
 		
-		ButtonGroup bg = new ButtonGroup();
-		bg.add(rdbtnBaratok);
-		bg.add(rdbtnMindenki);
+
 		JPanel centerpanel = new JPanel();
 		panel_uzenetek.add(centerpanel, BorderLayout.CENTER);
 		centerpanel.setLayout(new BorderLayout(0, 0));
@@ -67,7 +78,7 @@ public class Uzenetek {
 		JScrollPane scrollPane = new JScrollPane();
 		centerpanel.add(scrollPane, BorderLayout.CENTER);
 		
-		JTextArea txtUzenetszoveg = new JTextArea();
+		txtUzenetszoveg = new JTextArea();
 		txtUzenetszoveg.setLineWrap(true);
 		scrollPane.setViewportView(txtUzenetszoveg);
 		txtUzenetszoveg.setMargin(new Insets(10, 10, 10, 10));
@@ -93,32 +104,80 @@ public class Uzenetek {
 		buttonSubmit.setBackground(SystemColor.activeCaption);
 		buttonpanel.add(buttonSubmit);
 		
-		buttonSelect.addActionListener((ActionEvent e) -> {
-			if(e.getSource() == buttonSelect){
-				if(rdbtnBaratok.isSelected()){
-					txtUzenetszoveg.setText((String)(listFriends.getSelectedItem()) + " kijelolve");
-				}
-				else if(rdbtnMindenki.isSelected()){
-					txtUzenetszoveg.setText((String)(listAll.getSelectedItem()) + " kijelolve");
-				}
-				else {
-					txtUzenetszoveg.setText("Kerlek jelold ki valamelyiket! (ismerosök) (mindenki)");
-				}
-				
-			}
-		});
+
+		addMegnyitListener(buttonSelect, getProfiles(), listAll);
+		
+		
+		listAll.setModel(new DefaultComboBoxModel<>(getProfiles()));
+		
 		
 		buttonSubmit.addActionListener((ActionEvent e) -> {
 			if(e.getSource() == buttonSubmit && txtElnemkuldott.getText().length() > 0 ){
 					
-		txtUzenetszoveg.setText(txtUzenetszoveg.getText() + "\n"
-				+ "_______________________________________________\n" + txtElnemkuldott.getText());
+				
+				this.controller.getAllUser().forEach(p -> {
+					
+					String nev = p.getVezeteknev() + " " + p.getKeresztnev();
+					
+					if (nev.equals(listAll.getSelectedItem())) {
+
+						Uzen uzen = new Uzen();
+						uzen.setEmail(this.profil.getEmail());
+						uzen.setKinek_email(p.getEmail());
+						uzen.setUzenet(txtElnemkuldott.getText());
+						System.out.println(txtElnemkuldott.getText());
+						this.dao.sendMessage(uzen);
+					}
+				});
+				
+		
+		
+		
 		txtElnemkuldott.setText(null);
+			
+			
 			}
 			
 		});
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		
 		
+		
 	}
+	
+	
+	private void addMegnyitListener(JButton jButton12, Vector<String> vector, JComboBox<String> combobox) {
+		System.out.println("megnyomtad");
+		
+		jButton12.addActionListener(e -> {
+
+			 System.out.println(combobox.getSelectedItem());
+
+			this.controller.getAllUser().forEach(p -> {
+				String nev = p.getVezeteknev() + " " + p.getKeresztnev();
+				
+
+				if (nev.equals(combobox.getSelectedItem())) {
+
+					Uzen uzen = new Uzen();
+					uzen.setEmail(this.profil.getEmail());
+					uzen.setKinek_email(p.getEmail());
+					
+					// TODO this.dao.uzenetprint(uzen);
+				//	txtUzenetszoveg.setText(txtUzenetszoveg.getText() + "\n <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< \n" + this.dao.uzenetprint(uzen) + "\n");
+					txtUzenetszoveg.setText(null);
+					for (int i = 0; i < this.dao.uzenetprint(uzen).size(); i++) {
+						txtUzenetszoveg.setText(txtUzenetszoveg.getText() + "\n <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< \n" + this.dao.uzenetprint(uzen).get(i) + "\n");
+					}
+					
+					
+				}
+			});
+
+		}
+
+		);
+		
+		
+	} 
 }

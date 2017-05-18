@@ -191,7 +191,7 @@ public class LlamabookGUI extends JFrame implements ActionListener {
 
 		}
 		if (e.getSource() == button_kepek) {
-			Kepek kepek = new Kepek();
+			Kepek kepek = new Kepek(this.controller, this.profil);
 			System.out.println("képek MENÜ");
 			panel_cardcontainer.removeAll();
 			panel_cardcontainer.add(kepek.panel_kepek, BorderLayout.CENTER);
@@ -215,7 +215,7 @@ public class LlamabookGUI extends JFrame implements ActionListener {
 			panel_cardcontainer.revalidate();
 		}
 		if (e.getSource() == button_uzenetek) {
-			Uzenetek uzenetek = new Uzenetek();
+			Uzenetek uzenetek = new Uzenetek(this, this.controller, this.profil);
 			System.out.println("üzenetek MENÜ");
 			panel_cardcontainer.removeAll();
 			panel_cardcontainer.add(uzenetek.panel_uzenetek, BorderLayout.CENTER);

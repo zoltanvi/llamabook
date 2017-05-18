@@ -201,7 +201,8 @@ public class LoginScreen extends javax.swing.JFrame implements ActionListener {
 				this.setVisible(false);
 			} else {
 
-				System.out.println("Nem található");
+				JOptionPane.showMessageDialog(this, "Nem található ilyen felhasználó az adatbázisban!", "Hiba!",
+						JOptionPane.ERROR_MESSAGE);
 			}
 
 		}

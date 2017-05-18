@@ -95,8 +95,7 @@ public class Controller {
 		return model.groupsmemberNumber(group);
 	}
 
-	public boolean sendMessage(Uzen message) {
-		return model.sendMessage(message);
+	public void sendMessage(Uzen message) {
 	}
 
 	public List<Uzen> listMessage(Uzen message) {
@@ -128,7 +127,16 @@ public class Controller {
 
 	}
 
+	public List<String> sajatKepek(String email) {
+		return model.sajatKepek(email);
+	}
 
+	public ImageIcon imageNezzem(int id) {
+		return model.imageNezzem(id);
+	}
+	
+	public void kepfeltolt(String email, String where){
+	}
 
 
 }

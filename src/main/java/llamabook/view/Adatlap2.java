@@ -39,9 +39,6 @@ public class Adatlap2 {
 
 	JPanel panel_adatlap;
 	JPanel header;
-	
-	
-	private JComboBox<String> comboSelectProfil;
 	private JTextField textSzuldatum;
 	private JTextField textNem;
 	private JTextField textIskola;
@@ -75,6 +72,9 @@ public class Adatlap2 {
 	private JPanel panel;
 	private JTextField textVezeteknev;
 	private JTextField textKeresztnev;
+	private JPanel panelcombo;
+	private JComboBox<String> comboSelectProfil;
+	private JButton btnMegnyitProfil;
 	
 	public Vector<String> getProfiles() {
 		Vector<String> nevek = new Vector<>();
@@ -116,30 +116,37 @@ public class Adatlap2 {
 		panel_adatlap.setLayout(new BorderLayout(0, 0));
 		
 		header = new JPanel();
-		//header.setBackground(Color.white);
+		header.setBorder(new EmptyBorder(0, 0, 0, 40));
 		panel_adatlap.add(header, BorderLayout.NORTH);
 		GridBagLayout gbl_header = new GridBagLayout();
-		gbl_header.columnWidths = new int[]{0, 210, 155, 469, 0, 0};
-		gbl_header.rowHeights = new int[]{0, 0, 280, 0};
+		gbl_header.columnWidths = new int[]{0, 210, 30, 469, 0, 0};
+		gbl_header.rowHeights = new int[]{0, 31, 280, 0};
 		gbl_header.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_header.rowWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
 		header.setLayout(gbl_header);
 		header.setBorder(new EmptyBorder(30, 0, 0, 0));
-		comboSelectProfil = new JComboBox<>();
-		GridBagConstraints gbc_comboSelectProfil = new GridBagConstraints();
-		gbc_comboSelectProfil.insets = new Insets(0, 0, 5, 5);
-		gbc_comboSelectProfil.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboSelectProfil.gridx = 3;
-		gbc_comboSelectProfil.gridy = 1;
-		header.add(comboSelectProfil, gbc_comboSelectProfil);
-		//comboSelectProfil.setBorder(new EmptyBorder(30, 0, 0, 0));
-		
+				
 		lblProfimage = new JLabel();
-		//lblProfimage.setBorder(BorderFactory.createEtchedBorder());
+		
 		lblProfimage.setBorder(new EmptyBorder(0, 40, 30, 30));
 		lblProfimage.setSize(new Dimension(210, 280));
 
 		btnModosit = new JButton("Modosit");
+		
+		panelcombo = new JPanel();
+		GridBagConstraints gbc_panelcombo = new GridBagConstraints();
+		gbc_panelcombo.insets = new Insets(0, 0, 5, 5);
+		gbc_panelcombo.fill = GridBagConstraints.BOTH;
+		gbc_panelcombo.gridx = 3;
+		gbc_panelcombo.gridy = 1;
+		header.add(panelcombo, gbc_panelcombo);
+		panelcombo.setLayout(new BorderLayout(0, 0));
+		//header.setBorder(new EmptyBorder(50, 100, 0, 0));
+		comboSelectProfil = new JComboBox();
+		panelcombo.add(comboSelectProfil, BorderLayout.CENTER);
+		
+		btnMegnyitProfil = new JButton("Megnyit");
+		panelcombo.add(btnMegnyitProfil, BorderLayout.EAST);
 		
 		GridBagConstraints gbc_lblProfimage = new GridBagConstraints();
 		gbc_lblProfimage.insets = new Insets(0, 0, 0, 5);
@@ -313,9 +320,6 @@ public class Adatlap2 {
 		textCsoport.setText(Integer.toString(csoportagsag));
 		
 		comboSelectProfil.setModel(new DefaultComboBoxModel<>(getProfiles()));
-		addMegnyitListener(btnModosit, getProfiles(), comboSelectProfil);
-		
-		
 		
 		GridBagConstraints gbc_btnModosit = new GridBagConstraints();
 		gbc_btnModosit.gridx = 2;
@@ -325,6 +329,7 @@ public class Adatlap2 {
 		JPanel bejegyzesek = new JPanel();
 		
 		
+		addMegnyitListener(btnMegnyitProfil, getProfiles(), comboSelectProfil);
 		
 		
 		
@@ -458,3 +463,4 @@ public class Adatlap2 {
 
 	
 }
+	
