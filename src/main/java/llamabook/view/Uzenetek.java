@@ -123,9 +123,11 @@ public Vector<String> getProfiles() {
 
 						Uzen uzen = new Uzen();
 						uzen.setEmail(this.profil.getEmail());
+						System.out.println("Ő KÜLD: "+this.profil.getEmail());
+						System.out.println("NEKI: " + p.getEmail());
 						uzen.setKinek_email(p.getEmail());
 						uzen.setUzenet(txtElnemkuldott.getText());
-						System.out.println(txtElnemkuldott.getText());
+						System.out.println("Üzenet szövege: "+ txtElnemkuldott.getText());
 						this.dao.sendMessage(uzen);
 					}
 				});

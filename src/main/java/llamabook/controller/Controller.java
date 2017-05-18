@@ -98,9 +98,6 @@ public class Controller {
 	public void sendMessage(Uzen message) {
 	}
 
-	public List<Uzen> listMessage(Uzen message) {
-		return model.listMessage(message);
-	}
 
 	public List<Poszt> listPoszt(Profil p) {
 		return model.getPosts(p);

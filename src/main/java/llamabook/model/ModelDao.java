@@ -119,8 +119,7 @@ public class ModelDao {
 			p.setKeresztnev(rs.getString(3));
 			p.setNem(rs.getInt(4));
 			p.setBirthdate(rs.getDate(5).toString());
-			p.setJelszo(user.getJelszo()); // van már egy objectünk amiben van
-			// jelszó
+			p.setJelszo(user.getJelszo()); 
 			p.setMunkahely(rs.getString(7));
 			p.setIskola(rs.getString(8));
 
@@ -140,10 +139,10 @@ public class ModelDao {
 		String profilGNumber = "SELECT count(email) FROM Csatlakozik WHERE email = ?";
 		try (PreparedStatement pst = this.conn.prepareStatement(profilGNumber);) {
 
-			pst.setString(1, email);// saját emailjet kell megadnia
+			pst.setString(1, email);
 			ResultSet rs = pst.executeQuery();
 			rs.next();// 0. ról 1. re
-			csoportokszama = rs.getInt(1); // 1 cella, count() érték
+			csoportokszama = rs.getInt(1);
 
 		} catch (SQLException e) {
 			System.out.println("Csoportok száma amiben benne van sikertelen volt! :(");
@@ -152,7 +151,7 @@ public class ModelDao {
 		return csoportokszama;
 	}
 
-	// Elméletileg jó viszsa adka az ismerösök számát 0
+	//ismerősök száma
 	public int userFriendsnumber(String email) {
 		int ismerosok = 0;
 		String profilFriendNumber = "SELECT Count(*) FROM Jelol WHERE isFriend = 1 AND email = ?";
@@ -174,8 +173,8 @@ public class ModelDao {
 
 	// felhasználó ismerősei kiíratása o
 	public List<Profil> userFriends(Profil user) {
-		String listismer = "select p.vezeteknev, p.keresztnev, p.email from jelol j inner join profil p on (j.email=p.email) or (j.KIT_EMAIL=p.email) and (p.email<>?) where j.email=? or j.kit_email=? and isfriend = 1"; // by
-		// Karesz
+		String listismer = "select p.vezeteknev, p.keresztnev, p.email from jelol j inner join profil p on (j.email=p.email) or (j.KIT_EMAIL=p.email) and (p.email<>?) where j.email=? or j.kit_email=? and isfriend = 1"; 
+		
 
 		List<Profil> ismer_profil = new ArrayList();
 
@@ -278,7 +277,7 @@ public class ModelDao {
 		return profil_lista;
 	}
 
-	/// kidolgozásalatt - Karesz megcsinálta
+	
 	public List<Profil> whoisnotfriend(Profil user) {
 		String whono = "select pr.vezeteknev, pr.keresztnev, pr.email from profil pr where pr.email not in (select j.kit_email from profil p inner join jelol j on j.email=p.email and p.email= ? ) and pr.email<>?";
 		List<Profil> list = new ArrayList();
@@ -475,15 +474,20 @@ public class ModelDao {
 
 	/*-----------------------------------------------------------------------------------------------------------------------*/
 
-	// Üzcsi dobás
+	// üzenet küldés
 	public void sendMessage(Uzen message) {
-		String SEND_MES = "INSERT INTO Uzen VALUES(?, ?, ?) ";
+		String SEND_MES = "INSERT INTO Uzen2 VALUES (?, ?, ?) ";
 
 		try (PreparedStatement pst = this.conn.prepareStatement(SEND_MES);) {
 			pst.setString(1, message.getEmail());
 			pst.setString(2, message.getKinek_email());
-			pst.setString(3, message.getUzenet());
-// nemteljesen működik/ TODO 
+			pst.setString(3, message.getEmail() + " üzeni: " + message.getUzenet());
+			//System.out.println("Küldő email:"+message.getEmail());
+			//System.out.println("Fogadó email:"+message.getKinek_email());
+
+			//System.out.println("Üzenet szövege::"+message.getUzenet());
+			pst.executeQuery();
+
 		} catch (SQLException e) {
 			System.out.println("Új üzi küldés sikertelen volt! :( ");
 			e.printStackTrace();
@@ -492,33 +496,6 @@ public class ModelDao {
 		
 	}
 
-	// Üzcsi listázás
-	public List<Uzen> listMessage(Uzen message) {
-		List<Uzen> Uzenetek = new ArrayList();
-		String List_Uzen = "SELECT Uzen(*) FROM Uzen WHERE ( email = ? AND kinek_email = ? ) OR ( email = ? AND kinek_email = ? )";
-		try (Connection conn = DriverManager.getConnection(DATABASE_FILE);
-				PreparedStatement pst = conn.prepareStatement(List_Uzen);) {
-			pst.setString(1, message.getEmail());
-			pst.setString(2, message.getKinek_email());
-			pst.setString(3, message.getKinek_email());
-			pst.setString(4, message.getEmail());
-
-			ResultSet rs = pst.executeQuery();
-
-			while (rs.next()) {
-				Uzen m = new Uzen();
-				m.setEmail(rs.getString("email"));
-				m.setKinek_email(rs.getString("kinek_email"));
-				m.setUzenet(rs.getString("uzenet"));
-				Uzenetek.add(m);
-			}
-
-		} catch (SQLException e) {
-			System.out.println("Nem sikerült kilistázni az üzeneteket! :( ");
-			e.printStackTrace();
-		}
-		return Uzenetek;
-	}
 
 
 	public boolean createPost(String ki, String kinek, String bejegyzes){
@@ -533,7 +510,7 @@ public class ModelDao {
 			succ = pst.executeUpdate() == 1;
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 
@@ -542,7 +519,6 @@ public class ModelDao {
 
 	/*-----------------------------------------------------------------------------------------------------------------------*/
 
-	// Poszt létrehozása
 	/*public boolean posztCreate(Poszt post) {
 		boolean successful = false;
 		String create_poszt = "INSERT INTO Poszt(email, datum, bejegyzes) VALUES (?, ?, ?)";
@@ -602,7 +578,7 @@ public class ModelDao {
 
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 
@@ -613,7 +589,7 @@ public class ModelDao {
 
 	/*-----------------------------------------------------------------------------------------------------------------------*/
 
-	// kommentel poszt allá
+	// kommentel poszt alá
 	public boolean createCommment(Kommentel comment) {
 		boolean successful = false;
 		String create_poszt = "INSERT INTO Kommentel(email, posztid, komment) VALUES (?, ?, ?)";
@@ -635,7 +611,7 @@ public class ModelDao {
 		return successful;
 	}
 
-	// kommentek listázása // gondolkozok
+	// kommentek listázása
 	public List<Kommentel> listComment(Kommentel comment) {
 		List<Kommentel> comments = new ArrayList();
 		String commentlist = "WHERE email, komment FROM Kommentel WHERE posztID = ? ";
@@ -845,7 +821,7 @@ public class ModelDao {
 				try {
 					return new ImageIcon(ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream("anonym2.png")));
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 				}
 			}
@@ -944,7 +920,7 @@ public class ModelDao {
 	public List<String> uzenetprint(Uzen message) {
 		String uzenetszoveg;
 		List<String> Uzenetek = new ArrayList();
-		String List_Uzen = "SELECT Uzenet FROM Uzen WHERE ( email = ? AND kinek_email = ? ) OR ( email = ? AND kinek_email = ? )";
+		String List_Uzen = "SELECT Uzenet FROM Uzen2 WHERE ( email = ? AND kinek_email = ? ) OR ( email = ? AND kinek_email = ? )";
 		try (PreparedStatement pst = this.conn.prepareStatement(List_Uzen);) {
 			
 			pst.setString(1, message.getEmail());
@@ -972,19 +948,3 @@ public class ModelDao {
 	
 	
 }
-
-// ***********************************************************
-
-
-/*
- * Lekérdezés funkciók:
- *
- * - Felhasználó regisztrálása - Felhasználó regsiztálás közbe email ellenőrzés
- * - Felhasználó belépés - Felashználó ismerősei száma - Felhasználó mennyi
- * csoportban van benne - Felhasználó ismerősei listázása (NEM TRIVIÁLIS)
- *
- *
- *
- *
- *
- */
