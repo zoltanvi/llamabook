@@ -156,11 +156,7 @@ public class LlamabookGUI extends JFrame implements ActionListener {
 		button_adatlap.addActionListener(this);
 		button_fooldal.addActionListener(this);
 
-		//////////////////////////////// HEY BOSS, I HAVE A CANCER PLES
-		//////////////////////////////// \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-		// karesz is azt kapott ennek a kódnak a láttán
-		// menutitle.setIcon(new
-		//////////////////////////////// ImageIcon(getClass().getResource("/llamabook/resources/icon.png")));
+
 		try {
 			menutitle.setIcon(new ImageIcon(
 					ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream("icon.png"))));
